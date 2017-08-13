@@ -32,7 +32,7 @@ public class MyActionListener implements ActionListener {
     	
     	//Show up "About me" Frame
         if (e.getActionCommand().equals("me")){
-            JOptionPane.showMessageDialog(null,"Check https://github.com/lithiumGN to stay updated", "About", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Check https://github.com/lithiumSR to stay updated", "About", JOptionPane.INFORMATION_MESSAGE);
         }
         
         //"Run with archdps" button is pressed
