@@ -32,12 +32,18 @@ public class CoreFrame extends JFrame{
 
     public CoreFrame(String dir){
         super("Guild Wars 2 Launcher");
+        path_string=dir;
+        
+        
+        //Adding icon
         try {
 			this.setIconImage(ImageIO.read(new File("gw2_64_1-0.png")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        //Change look and feel of the Swing JFrame
         try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -46,27 +52,41 @@ public class CoreFrame extends JFrame{
 			e.printStackTrace();
 		}
         
-        path_string=dir;
+        //Settings of the CoreFrame object 
         this.setSize(320,270);
         this.setVisible(true);
         this.setLayout(new GridLayout(1,2));
         this.setResizable(false);
-        arg_string.addMouseListener(new MyMouseListener(this));
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
+        
+        
+        //Default settings for some elements of the CoreFrame
         arg_string.setText("Example: -autologin, -noaudio, -bmp ");
         arg_string.setForeground(Color.GRAY);
         status.setForeground(new Color(204,102,0));
-
+        arg_string.setSize(3,5);
+        path.setForeground(new Color(0,102,51));
+        
+        //Setting up the action commands to be used by the listeners
         startwith.setActionCommand("with");
         startwithout.setActionCommand("without");
         me.setActionCommand("me");
         background.setActionCommand("background");
         
+        
+        //Create MyActionListener
         MyActionListener mal= new MyActionListener(path_string,this);
+        
+        //Add Listeners
         startwith.addActionListener(mal);
         startwithout.addActionListener(mal);
         me.addActionListener(mal);
         background.addActionListener(mal);
+        arg_string.addMouseListener(new MyMouseListener(this));
 
+        //Creation of multiple JPanel
         JPanel top =new JPanel (new GridLayout(2,1));
         JPanel bot = new JPanel(new FlowLayout());
         JPanel mid= new JPanel(new GridLayout(5,1));
@@ -75,40 +95,33 @@ public class CoreFrame extends JFrame{
         JPanel main1 =new JPanel (new BorderLayout());
         JPanel about= new JPanel(new BorderLayout());
 
-        arg_string.setSize(3,5);
-
-
-        path.setForeground(new Color(0,102,51));
-
+        //Add elements to the JPanels already created
         about.add(me,BorderLayout.EAST);
         sel.add(status);
         sel2.add(path);
         top.add(sel2);
         top.add(sel);
-
         mid.add(arg);
         mid.add(arg_string);
         mid.add(autostart);
         mid.add(background);
         mid.add(about);
-
         bot.add(startwith);
         bot.add(startwithout);
-
-
         main1.add(top,BorderLayout.NORTH);
         main1.add(bot,BorderLayout.SOUTH);
         main1.add(mid,BorderLayout.CENTER);
         this.add(main1);
 
+        
+        //Creating borders
         top.setBorder(BorderFactory.createTitledBorder("Status"));
         mid.setBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder("Settings"),
                         BorderFactory.createEmptyBorder(5,5,5,5)));
 
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
     }
 
 

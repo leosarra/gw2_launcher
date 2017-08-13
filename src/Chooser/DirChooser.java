@@ -14,6 +14,8 @@ public class DirChooser implements Task {
     private boolean fired=false;
 
     public DirChooser(){
+    	
+    	//Change to look and feel to make it more similar to the Windows' one
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
@@ -29,17 +31,14 @@ public class DirChooser implements Task {
 
     }
     public void esegui() {
-
+    	//Functor pattern
         if (!fired) {
 
 
             boolean found = false;
 
             fired = true;
-
-            
-            
-            
+            //Workaround to implement an icon to the JFileChooser
             JFrame icon= new JFrame();
             try {
 				icon.setIconImage(ImageIO.read(new File("gw2_64_1-0.png")));
@@ -51,7 +50,7 @@ public class DirChooser implements Task {
             f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             f.setDialogTitle("Select Guild Wars 2 directory");
 
-            
+            //Loop until "Cancel" is pressed or a valid directory is selected
             while (!found) {
                 int input = f.showDialog(icon, "Select");
 
@@ -76,11 +75,12 @@ public class DirChooser implements Task {
     }
 
 
-
+    //Check if a given path is a valid path for GW2
     public static boolean validDir(String path){
         boolean result=new File(path+"\\Gw2-64.exe").exists();
         return result;
     }
+    //setter and getter required for the functor pattern
     public boolean getCancel() { return cancel;}
 
     public JFileChooser getJFileChooser() { return f;}

@@ -15,6 +15,8 @@ import java.util.Properties;
 public class MyActionListener implements ActionListener {
     private String path;
     private CoreFrame cf;
+    
+    //Constructor
     public MyActionListener(String path, CoreFrame cf){
         this.path=path;
         this.cf=cf;
@@ -22,13 +24,18 @@ public class MyActionListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
+    	//if background checkbox is selected the autostart one will be selected automatically
     	if(e.getActionCommand().equals("background")){
     		cf.autostart.setSelected(true);
     		
     	}
+    	
+    	//Show up "About me" Frame
         if (e.getActionCommand().equals("me")){
             JOptionPane.showMessageDialog(null,"Check https://github.com/lithiumGN to stay updated", "About", JOptionPane.INFORMATION_MESSAGE);
         }
+        
+        //"Run with archdps" button is pressed
         if (e.getActionCommand().equals("with")){
 
             saveConfig(true);
@@ -38,8 +45,10 @@ public class MyActionListener implements ActionListener {
 
 
         }
+        //"Run only GW2" button is pressed
         if (e.getActionCommand().equals("without")){
             saveConfig(false);
+            //disable arcdps dll
             CoreUpdater.runWithoutDPS(path);
             runGW2();
 
@@ -49,6 +58,7 @@ public class MyActionListener implements ActionListener {
 
     }
 
+    //Used to the save settings in "gw2_launcher.cfg"
     public void saveConfig(boolean typeStart){
 
         Properties prop = new Properties();
@@ -81,7 +91,9 @@ public class MyActionListener implements ActionListener {
 
 
     }
+    
     @SuppressWarnings("unused")
+    //Create process Gw2-64.exe with some arguments
 	public void runGW2(){
         try {
 
