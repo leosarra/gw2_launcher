@@ -23,9 +23,9 @@ It requires the [Java Runtime Environment](https://www.java.com/it/download/) to
 
 ### Setup
 
-1. Place the Gw2-Launcher.exe in the Gw2 folder (Same path of Gw2-64.exe)
-2. Create a shortcut to the launcher and place it where you like (e.g, Desktop)
-3. Execute the launcher the first time and change the settings the way you want 
+1. Place the Gw2-Launcher.exe in the Gw2 folder (same path of Gw2-64.exe).
+2. Create a shortcut to the launcher and place it where you like (e.g, Desktop).
+3. Execute the launcher the first time and change the settings the way you want.
 4. Remember to use the shortcut everytime you want to lunch Guild Wars 2.
 
 ### Download
