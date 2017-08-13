@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-net-3.6.jar"/>
+	<classpathentry kind="lib" path="out/artifacts/Guild_Wars_2_Launcher_jar/Guild Wars 2 Launcher.jar"/>
+	<classpathentry kind="output" path="out/production/Guild Wars 2 Launcher"/>
+</classpath>
