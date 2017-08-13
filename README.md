@@ -8,7 +8,7 @@ This is a custom launcher that is intended to keep Guild Wars 2 and ArcDPS updat
 ### Prerequisites
 
 This application is written in Java and can only to be executed on a Windows x64 environment with a x64 version of Guild Wars 2.
-It requires the [Java Runtime Environment](https://www.java.com/it/download/) to be executed corretcly.
+It requires the [Java Runtime Environment](https://www.java.com/it/download/) to be executed correctly.
 
 
 ### Features
