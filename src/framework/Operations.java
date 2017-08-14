@@ -20,7 +20,7 @@ public class Operations {
     	SimpleFormatter sf = new SimpleFormatter();
     	fh.setFormatter(sf);
     	log.addHandler(fh);
-    	log.setLevel(Level.ALL);
+    	log.setLevel(Level.OFF);
 	}
 	
 	public static void closeLogHandlers(Logger log) {
