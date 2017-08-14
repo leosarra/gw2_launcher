@@ -22,6 +22,7 @@ public class Main {
     	
     	//Create Logger
     	Logger log = Logger.getLogger( Main.class.getName() );
+    	Operations.cleanOldLogger();
     	Operations.LogSetup(log);
     	
     	//Create configuration file if it doesn't exist already
@@ -59,6 +60,7 @@ public class Main {
             CoreFrame gui = new CoreFrame(prop.getProperty("path"));
             //Import saved args to the CoreFrame
             gui.arg_string.setText(prop.getProperty("args",""));
+            Operations.closeLogHandlers(log);
             Thread t1 = new Thread(new CoreUpdater(gui, prop.getProperty("path")));
             t1.start();
 
@@ -69,8 +71,14 @@ public class Main {
         	FastFrame gui=null;
         	
         	//Check if background option was previously selected. FastFrame changes accordingly 
-            if(prop.getProperty("background").equals("yes")) gui=new FastFrame(prop.getProperty("path"),true);
-            else gui=new FastFrame(prop.getProperty("path"),false);
+            if(prop.getProperty("background").equals("yes")) {
+            	log.log( Level.INFO, "Hide Fastframe is selected");
+            	gui=new FastFrame(prop.getProperty("path"),true);
+            }
+            else {
+            	log.log( Level.INFO, "Hide Fastframe is not selected");
+            	gui=new FastFrame(prop.getProperty("path"),false);
+            }
              //Import saved args to the CoreFrame
             gui.arg_string.setText(prop.getProperty("args",""));
             if(gui.arg_string.getText().contains("Example")) gui.arg_string.setText("");
@@ -78,6 +86,7 @@ public class Main {
             //Updater thread is created. If ("type".equals("yes") is yes it means that the preferred option for execution is "Run with ArcDPS" 
             //otherwise is "Run only GW2" ("type".equals("no").
             //Type is one of the settings contained in gw2_launcher.cfg
+            Operations.closeLogHandlers(log);
             Thread t1=null;
             if (prop.getProperty("type").equals("yes")) { t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),1));}
             else t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),0));
@@ -89,6 +98,7 @@ public class Main {
         else if (DirChooser.validDir(currentDir)){
         	log.log( Level.INFO, "Path not found, no autostart, but valid current dir");
             CoreFrame gui = new CoreFrame(currentDir);
+            Operations.closeLogHandlers(log);
             Thread t1 = new Thread(new CoreUpdater(gui, currentDir));
             t1.start();
 
@@ -97,7 +107,9 @@ public class Main {
         //JFileChooser is needed
         else {
         	log.log( Level.INFO, "FileChooser needed");
+        	Operations.closeLogHandlers(log);
             DirChooser dir=new DirChooser();
+            
             te.perform(dir);
             if(!dir.getCancel() && dir.isFired()) {
                 if (dir.getJFileChooser().getSelectedFile()==null) System.exit(0);

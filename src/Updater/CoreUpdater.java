@@ -122,6 +122,7 @@ public class CoreUpdater implements Runnable {
                 cf.status.setForeground(Color.RED);
             }
         }
+        Operations.closeLogHandlers(log);
     }
 
 
