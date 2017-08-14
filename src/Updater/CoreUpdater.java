@@ -145,8 +145,8 @@ public class CoreUpdater implements Runnable {
             //Keep the relevant part of the md5
             log.log( Level.INFO,"Md5 downloaded");
             md5_new=FileUtils.readFileToString(md5_download).substring(0, FileUtils.readFileToString(md5_download).indexOf(" "));
-            System.out.println(md5_old);
-            System.out.println(md5_new);
+            log.log( Level.INFO,"Old md5: "+md5_old);
+            log.log( Level.INFO,"New md5: "+md5_new);
 
             if(!md5_old.equals(md5_new)){ //Different checksum means that a new version must be downloaded
             	log.log( Level.INFO,"New version available");
@@ -195,7 +195,7 @@ public class CoreUpdater implements Runnable {
 
     	File ini=new File(path+"\\bin64\\arcdps.ini");
     	if (ini.exists()) ini.delete();     	//Delete existing ini file to prevent an exception
-    	System.out.println("Downloading configuration file");
+    	log.log( Level.INFO,"Downloading configuration file");
     	try {
     		//Download default configuration from the website
 			FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/arcdps.ini"),ini, 10000, 10000);
@@ -221,7 +221,6 @@ public class CoreUpdater implements Runnable {
                 Files.copy(dll.toPath(), old.toPath()); //rename d3d9.dll to d3d9_disabled.dll
                 dll= new File(path+"\\bin64\\d3d9.dll");
                 dll.delete();
-                System.out.println(dll.exists());
             } catch (IOException e) {
                 e.printStackTrace();
                 log.log( Level.SEVERE,"IOException when disabling dll");
