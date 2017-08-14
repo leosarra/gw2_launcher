@@ -5,15 +5,25 @@ import Frame.CoreFrame;
 import Frame.FastFrame;
 import Updater.CoreUpdater;
 import Updater.FastUpdater;
+import framework.Operations;
 import framework.TaskExecutor;
 
 import java.io.*;
 import java.util.Properties;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
+    	
+    	//Create Logger
+    	Logger log = Logger.getLogger( Main.class.getName() );
+    	Operations.LogSetup(log);
+    	
     	//Create configuration file if it doesn't exist already
         File config= new File("gw2_launcher.cfg");
         if (!config.exists()) try {
@@ -45,6 +55,7 @@ public class Main {
 
         //If the path contained in the settings is valid and faststart is not enabled use CoreFrame
         if (DirChooser.validDir(prop.getProperty("path")) && !prop.getProperty("faststart").equals("yes")) {
+        	log.log( Level.INFO, "Found path, no autostart");
             CoreFrame gui = new CoreFrame(prop.getProperty("path"));
             //Import saved args to the CoreFrame
             gui.arg_string.setText(prop.getProperty("args",""));
@@ -54,11 +65,12 @@ public class Main {
         }
         //Else if the path contained in the settings is valid and faststart is enabled use FastFrame
         else if (DirChooser.validDir(prop.getProperty("path")) && prop.getProperty("faststart").equals("yes")){
+        	log.log( Level.INFO, "Found path, yes autostart");
         	FastFrame gui=null;
         	
         	//Check if background option was previously selected. FastFrame changes accordingly 
             if(prop.getProperty("background").equals("yes")) gui=new FastFrame(prop.getProperty("path"),true);
-            else gui=new FastFrame(prop.getProperty("path"),true);
+            else gui=new FastFrame(prop.getProperty("path"),false);
              //Import saved args to the CoreFrame
             gui.arg_string.setText(prop.getProperty("args",""));
             if(gui.arg_string.getText().contains("Example")) gui.arg_string.setText("");
@@ -75,6 +87,7 @@ public class Main {
 
         //Else If currentDir is valid we don't need to use the JFileChooser
         else if (DirChooser.validDir(currentDir)){
+        	log.log( Level.INFO, "Path not found, no autostart, but valid current dir");
             CoreFrame gui = new CoreFrame(currentDir);
             Thread t1 = new Thread(new CoreUpdater(gui, currentDir));
             t1.start();
@@ -83,6 +96,7 @@ public class Main {
 
         //JFileChooser is needed
         else {
+        	log.log( Level.INFO, "FileChooser needed");
             DirChooser dir=new DirChooser();
             te.perform(dir);
             if(!dir.getCancel() && dir.isFired()) {

@@ -1,6 +1,8 @@
 package Updater;
 
 import Frame.FastFrame;
+import framework.Operations;
+
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 
@@ -15,6 +17,8 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FastUpdater implements Runnable {
 
@@ -26,6 +30,8 @@ public class FastUpdater implements Runnable {
 	private File old_dll;
 	private File disabled_dll;
     private int type; //0 or 1 accordingly to "gw2_settings.cfg"
+    private static Logger log = Logger.getLogger( FastUpdater.class.getName() );
+    
     public FastUpdater(FastFrame cf, String path,int type){
         this.cf=cf;
         this.path=path;
@@ -33,6 +39,7 @@ public class FastUpdater implements Runnable {
         old_dll= new File(path+"\\bin64\\d3d9_old.dll"); //backup dll of ArcDPS
         disabled_dll= new File(path+"\\bin64\\d3d9_disabled.dll"); //disabled dll of ArcDPS
         this.type=type;
+        Operations.LogSetup(log);
     }
 
 
@@ -43,11 +50,13 @@ public class FastUpdater implements Runnable {
        // System.out.println("Controllo esistenza");
         if (check){
         	//System.out.println("d3d9.dll exists");
-            updateDll(); //if d3d9.dll exists check if update is needed
+        	log.log( Level.INFO,"d3d9.dll found");
+        	updateDll(); //if d3d9.dll exists check if update is needed
             runGW2Fast(type); //Game is ready to be launched
         }
         if(!ini.exists()) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
         	int dialogButton = 0;
+        	log.log( Level.INFO,"archdps.ini not found");
         	JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);
         	if (dialogButton==0){
         		downloadINI(); //Method used to download the .ini
@@ -57,7 +66,8 @@ public class FastUpdater implements Runnable {
 
         if (!check && old_dll.exists()){
         	//If d3d9.dll is not detected but a backup is found. Rename the backup and check for an update
-            try {
+        	log.log( Level.INFO,"d3d9.dll not found but d3d9_old exists");
+        	try {
                 Files.copy(old_dll.toPath(), dll.toPath());
                 old_dll.delete();
             } catch (IOException e) {
@@ -75,7 +85,7 @@ public class FastUpdater implements Runnable {
         if (!check && disabled_dll.exists()){ 
         	//If d3d9.dll is not detected but a backup is found. Rename the backup and check for an update
             try {
-
+            	log.log( Level.INFO,"d3d9.dll not found but d3d9_disabled exists");
                 Files.copy(disabled_dll.toPath(), dll.toPath());
                 disabled_dll.delete();
             } catch (IOException e) {
@@ -90,6 +100,7 @@ public class FastUpdater implements Runnable {
         }
         
         if (!check && !old_dll.exists()){
+        	log.log( Level.INFO,"d3d9.dll, d3d9_old.dll, d3d9_disabled.dll not found");
         	//if there is not d3d9.dll and no backup it means that ArcDPS is not installed
             int dialogButton = JOptionPane.YES_NO_OPTION;
             //Ask to the user if he would like to install ArcDPS
@@ -102,18 +113,20 @@ public class FastUpdater implements Runnable {
                     e.printStackTrace();
                     cf.status.setText("  Cannot connect to the update server");
                     cf.status.setForeground(Color.RED);
+                    log.log( Level.SEVERE,"IOException when creating placeholder");
                 }
                 downloadINI(); //.ini is required for the first install
                 updateDll(); //placehold swapped with the last version of the dll
                 
                 //Change status and color of JLabel status
+                log.log( Level.INFO,"ArcDPS installed succesfully");
                 cf.status.setText("  ArcDPS Installed succesfully");
                 cf.status.setForeground(new Color(0,102,51));
                 runGW2Fast(type);
 
             }
             else {
-
+            	log.log( Level.INFO,"User doens't want ArcDPS");
                 cf.status.setText("  ArcDPS not installed");
                 cf.status.setForeground(Color.RED);
             }
@@ -128,13 +141,14 @@ public class FastUpdater implements Runnable {
     	try {
     		//Download default configuration from the website
 			FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/arcdps.ini"),ini, 10000, 10000);
-			
+			log.log( Level.INFO,"archdps.ini installed successfully");
 			//Exceptions if something goes wrong (Connection/IO)
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			cf.status.setText("  Cannot connect to the update server");
             cf.status.setForeground(Color.RED);
+            log.log( Level.SEVERE,"IOException when downloading ini");
 		}
 
     }
@@ -156,19 +170,20 @@ public class FastUpdater implements Runnable {
             File md5_download= new File(path+"\\bin64\\arcdps.dll.md5sum"); //Path of the md5 that is going to be downloaded
             //Download the md5 of the last version of ArcDPS from the website
             FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/d3d9.dll.md5sum"),md5_download, 10000, 10000);
+            log.log( Level.INFO,"Md5 downloaded");
             md5_new=FileUtils.readFileToString(md5_download).substring(0, FileUtils.readFileToString(md5_download).indexOf(" "));
             System.out.println(md5_old);
             System.out.println(md5_new);
 
             if(!md5_old.equals(md5_new)){ //Different checksum means that a new version must be downlaoded
-                System.out.println("New file disponibile");
+            	log.log( Level.INFO,"New version available");
+            	
                 File backup = new File(path+"\\bin64\\d3d9_old.dll");
                 if (backup.exists()) backup.delete(); //delete old backup to prevent an exception
                 //Create backup copy
                 Files.copy(dll.toPath(), backup.toPath());
                 //Delete old copy
                 dll.delete();
-                System.out.println(backup.exists());
                 //Change text of the JLabel status
                 cf.status.setText("     Downloading new version...");
                 //Download new dll
@@ -178,11 +193,14 @@ public class FastUpdater implements Runnable {
             }
 
             else { //Same checksum means that the user has the most recent version of ArcDPS
+            	log.log( Level.INFO,"ArcDPS already updated");
                 cf.status.setText("    ArcDPS is already updated");
                 cf.status.setForeground(new Color(0, 102, 51));
             }
            //Delete downloaded md5 now useless
+            log.log( Level.INFO,"Removing downloaded md5");
             md5_download.delete();
+            
 
 
 
@@ -191,9 +209,11 @@ public class FastUpdater implements Runnable {
             e.printStackTrace();
             cf.status.setText("  Cannot connect to the update server");
             cf.status.setForeground(Color.RED);
+            log.log( Level.SEVERE,"IOException when downloading dll");
             errorDialog(path);
         } catch (IOException e) {
             e.printStackTrace();
+            log.log( Level.SEVERE,"IOException when downloading dll");
             cf.status.setText("  Cannot connect to the update server");
             cf.status.setForeground(Color.RED);
             errorDialog(path);
@@ -209,7 +229,7 @@ public class FastUpdater implements Runnable {
 
         if (type==0) runWithoutDPS(path); //if type==0 ArcDPS' dll must be disabled
         try {
-
+        	log.log( Level.INFO,"Running Gw2. Fast mode");
         	//Create process with some arguments
             List<String> list= Arrays.asList(cf.arg_string.getText().split("\\s*,\\s*"));
             LinkedList<String> exe= new LinkedList<>(list);
@@ -218,6 +238,7 @@ public class FastUpdater implements Runnable {
             Process process = new ProcessBuilder(exe).start();
             cf.dispose();
         } catch (IOException e1) {
+        	log.log( Level.SEVERE,"Erorr while launching gw2");
             e1.printStackTrace();
         }
     }
@@ -226,6 +247,7 @@ public class FastUpdater implements Runnable {
     public static void runWithoutDPS(String path){
         File dll= new File(path+"\\bin64\\d3d9.dll");
         if (dll.exists()){
+        	log.log( Level.INFO,"Disabling dll");
             System.out.println("Rimuovo");
             File old = new File(path+"\\bin64\\d3d9_disabled.dll");
             if (old.exists()) old.delete(); //delete an older disabled dll to prevent an exception
@@ -236,6 +258,7 @@ public class FastUpdater implements Runnable {
                 System.out.println(dll.exists());
             } catch (IOException e) {
                 e.printStackTrace();
+                log.log( Level.SEVERE,"IOException when disabling dll");
                 errorDialog(path);
 
 
