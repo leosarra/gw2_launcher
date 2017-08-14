@@ -1,11 +1,17 @@
 package Chooser;
 
+import framework.Operations;
 import framework.Task;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import Updater.CoreUpdater;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DirChooser implements Task {
     private JFileChooser f=new JFileChooser();
@@ -13,6 +19,8 @@ public class DirChooser implements Task {
 
     private boolean fired=false;
 
+    private static Logger log = Logger.getLogger( CoreUpdater.class.getName() );
+    
     public DirChooser(){
     	
     	//Change to look and feel to make it more similar to the Windows' one
@@ -32,6 +40,7 @@ public class DirChooser implements Task {
     }
     public void esegui() {
     	//Functor pattern
+    	Operations.LogSetup(log);
         if (!fired) {
 
 
@@ -56,11 +65,13 @@ public class DirChooser implements Task {
 
                 if (input == JFileChooser.APPROVE_OPTION) {
                     File file = f.getSelectedFile();
-                    System.out.println(file.toString());
+                    
                     boolean check = DirChooser.validDir(file.getAbsolutePath());
                     if (check) {
                         found = true;
+                        log.log( Level.INFO,"Valid dir selected: "+file.getAbsolutePath());
                     } else {
+                    	log.log( Level.INFO,"Invalid dir selected: "+file.getAbsolutePath());
                         JOptionPane.showMessageDialog(null, "Executable not found. Please select a valid directory", "Directory not valid", JOptionPane.ERROR_MESSAGE);
                     }
 
@@ -71,6 +82,7 @@ public class DirChooser implements Task {
 
 
             }
+            Operations.closeLogHandlers(log);
         }
     }
 
