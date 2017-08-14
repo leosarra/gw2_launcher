@@ -16,8 +16,8 @@ It requires the [Java Runtime Environment](https://www.java.com/it/download/) to
 - **Auto-update:** The d3d9.dll containing ArcDPS will always be up-to-date. Each time the launcher is executed it retrives the md5 checksum of the last avaiable version of ArcDPS, if it doesn't match a new updated version will be downloaded and installed.
 - **Backup:** A backup version of the previously version of the addon will be stored in the Guild Wars 2 / bin64 directory with the name d3d9_old.dll.
 - **Light on resources:** The updater doesn't run in background during the daily-use of your computer or during your play sessions. It runs only for the time needed to update the dll, usually around 1-2 seconds, at the start of Guild Wars 2 then it terminates automatically.
-- **Configuration download:** Each time it check if archdps.ini exists and and if it were not the launcher will ask if the user would like to automatically download an archdps.ini with default settings.
-- **Fast-start:** The launcher comes with an autostart feature and one to hide the GUI. The update process will be completely invisible and will cause a just a slightly delay before the launch of the official launcher.
+- **Configuration download:** Each time it checks if archdps.ini exists and and if it were not the launcher will ask if the user would like to automatically download an archdps.ini with default settings.
+- **Fast-start:** The launcher comes with an autostart feature and one to hide the GUI. The update process will be completely invisible and will cause just a slightly delay before the launch of the official launcher.
 - **Freedom of choice:** It provides the user the ability to decide to run GW2 with or without the ArcDPS addon at anytime.
 
 
