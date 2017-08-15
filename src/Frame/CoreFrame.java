@@ -17,10 +17,10 @@ public class CoreFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public JButton startwith= new JButton("Run with addons");
     private JButton startwithout= new JButton("Run only Gw2");
-    public JLabel status = new JLabel ("    Updater is starting...");
-    public JLabel bgdm_label = new JLabel ("    \t BGDM is installed and doens't require an update...");
+    public JLabel status = new JLabel ("- Updater is starting...");
+    public JLabel bgdm_label = new JLabel (" - BGDM is installed");
 
-    private JLabel path= new JLabel("   Guild Wars 2 executable found");
+    private JLabel path= new JLabel("- Guild Wars 2 executable found");
     private JLabel arg=new JLabel("Arguments: ");
     public JCheckBox autostart= new JCheckBox("Start with these settings each time (Fast-start)");
     public JCheckBox background= new JCheckBox("Hide the GUI when fast-start is activated ");
@@ -144,9 +144,9 @@ public class CoreFrame extends JFrame{
     	if (mode.equals("none")) {
     		bgdm.setText("Install BGDM");
     		arc.setText("Install ArcDPS");
-    		bgdm_label.setText("	BGDM is not installed");
+    		bgdm_label.setText("- BGDM is not installed");
     		bgdm_label.setForeground(Color.RED);
-    		status.setText("ArcDPS is not installed");
+    		status.setText("- ArcDPS is not installed");
     		status.setForeground(Color.RED);
     		System.out.println("set");
     		
@@ -159,7 +159,7 @@ public class CoreFrame extends JFrame{
     	else if (mode.equals("arc_only")) {
     		arc.setText("Remove ArcDPS");
     		bgdm.setText("Install BGDM");
-    		bgdm_label.setText("	BGDM is not installed");
+    		bgdm_label.setText("- BGDM is not installed");
     		bgdm_label.setForeground(Color.RED);
     		
     	}

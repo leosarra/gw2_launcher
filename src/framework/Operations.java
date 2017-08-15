@@ -148,7 +148,7 @@ public class Operations {
     	} catch (IOException e) {
 			
 			e.printStackTrace();
-			cf.status.setText("  Cannot connect to the update server");
+			cf.status.setText("- Cannot connect to the update server");
             cf.status.setForeground(Color.RED);
             //log.log( Level.SEVERE,"IOException when downloading ini");
 		}
@@ -190,7 +190,7 @@ public class Operations {
                 //Delete old copy
                 dll.delete();
                 //Change text of the JLabel status
-                cf.status.setText("     Downloading new version...");
+                cf.status.setText("- Downloading new version...");
                 //Download new dll
                 FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/d3d9.dll"),dll, 10000, 10000);
                 cf.status.setText(" ArcDPS updated");
@@ -199,7 +199,7 @@ public class Operations {
 
             else { //Same checksum means that the user has the most recent version of ArcDPS
             	//log.log( Level.INFO,"ArcDPS already updated");
-                cf.status.setText("    ArcDPS is already updated");
+                cf.status.setText("- ArcDPS is already updated");
                 cf.status.setForeground(new Color(0, 102, 51));
             }
             //Delete downloaded md5
@@ -235,16 +235,16 @@ public class Operations {
 	}
 
 	public static void installBGDM(CoreFrame cf, String path) {
-		File download = new File(path+"\\bgdm_zip");
+		File download = new File(path+"\\bgdm.zip");
 		try {
 			FileUtils.copyURLToFile(new URL("https://goo.gl/VvhLcx"),download, 10000, 10000);
-			ZipFile zipFile=new ZipFile(path+"\\bgdm_zip");
+			ZipFile zipFile=new ZipFile(path+"\\bgdm.zip");
 			zipFile.extractAll(path);
 			File dll_config=new File(path+"\\bgdm.dll");
 			File dll_destination=new File(path+"\\bin64\\bgdm.dll");
 			if (dll_destination.exists()) dll_destination.delete();
 			Files.copy(dll_config.toPath(), dll_destination.toPath());
-			
+			System.out.println("BGDM zip downloaded");
 			File d3d9=new File(path+"\\d3d9.dll");
 			File d3d9_dest=new File(path+"\\bin64\\d3d9.dll");
 			if (d3d9_dest.exists()) d3d9_dest.delete();
@@ -258,7 +258,7 @@ public class Operations {
 			
 		} catch (IOException | ZipException e) {
 			// TODO Auto-generated catch block
-			cf.bgdm_label.setText("  Cannot download BGDM, check your internet");
+			cf.bgdm_label.setText("- Cannot download BGDM, check your internet");
 			cf.bgdm_label.setForeground(Color.RED);
 			e.printStackTrace();
 		}
@@ -268,10 +268,10 @@ public class Operations {
 	}
 
 	public static void installBGDMwithArc(CoreFrame cf, String path) {
-		File download = new File(path+"\\bgdm_zip");
+		File download = new File(path+"\\bgdm.zip");
 		try {
 			FileUtils.copyURLToFile(new URL("https://goo.gl/VvhLcx"),download, 10000, 10000);
-			ZipFile zipFile=new ZipFile(path+"\\bgdm_zip");
+			ZipFile zipFile=new ZipFile(path+"\\bgdm.zip");
 			zipFile.extractAll(path);
 			File dll_config=new File(path+"\\bgdm.dll");
 			File dll_destination=new File(path+"\\bin64\\bgdm.dll");
@@ -291,7 +291,7 @@ public class Operations {
 			
 		} catch (IOException | ZipException e) {
 			// TODO Auto-generated catch block
-			cf.bgdm_label.setText("  Cannot download BGDM, check your internet");
+			cf.bgdm_label.setText("- Cannot download BGDM, check your internet");
 			cf.bgdm_label.setForeground(Color.RED);
 			e.printStackTrace();
 		}

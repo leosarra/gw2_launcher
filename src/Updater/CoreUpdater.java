@@ -69,7 +69,7 @@ public class CoreUpdater implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
               //Change status and color of JLabel status
-                cf.status.setText("  Cannot connect to the update server");
+                cf.status.setText("- Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
             if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) Operations.updateDll(cf,path);
@@ -85,7 +85,7 @@ public class CoreUpdater implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
               //Change status and color of JLabel status
-                cf.status.setText("  Cannot connect to the update server");
+                cf.status.setText("- Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
             if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) Operations.updateDll(cf,path); //check for update just in case
