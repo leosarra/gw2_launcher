@@ -255,6 +255,7 @@ public class Operations {
 			File bgdm_old=new File(path+"\\bgdm.dll");
 			if (bgdm_old.exists()) bgdm_old.delete();
 
+			if(download.exists()) download.delete();
 			
 		} catch (IOException | ZipException e) {
 			// TODO Auto-generated catch block
@@ -262,6 +263,7 @@ public class Operations {
 			cf.bgdm_label.setForeground(Color.RED);
 			e.printStackTrace();
 		}
+		
 		
 		
 		
@@ -287,6 +289,8 @@ public class Operations {
 			if (d3d9.exists()) d3d9.delete();
 			File bgdm_old=new File(path+"\\bgdm.dll");
 			if (bgdm_old.exists()) bgdm_old.delete();
+			if(download.exists()) download.delete();
+			
 
 			
 		} catch (IOException | ZipException e) {
