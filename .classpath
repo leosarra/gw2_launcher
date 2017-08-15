@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="lib/commons-io-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-net-3.6.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="D:/Repo/gw2_launcher/lib/zip4j_1.3.2.jar"/>
 	<classpathentry kind="output" path="out/production/Guild Wars 2 Launcher"/>
 </classpath>

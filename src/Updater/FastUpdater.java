@@ -11,12 +11,15 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,7 +54,7 @@ public class FastUpdater implements Runnable {
         if (check){
         	//System.out.println("d3d9.dll exists");
         	log.log( Level.INFO,"d3d9.dll found");
-        	updateDll(); //if d3d9.dll exists check if update is needed
+        	if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) updateDll(); //if d3d9.dll exists check if update is needed
             runGW2Fast(type); //Game is ready to be launched
         }
         if(!ini.exists()) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
@@ -76,7 +79,7 @@ public class FastUpdater implements Runnable {
                 cf.status.setText("  Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
-            updateDll();
+        	if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) updateDll();
             runGW2Fast(type); //Game is ready to be launched
  
 
@@ -94,7 +97,7 @@ public class FastUpdater implements Runnable {
                 cf.status.setText("  Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
-            updateDll(); //check for update just in case
+            if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) updateDll(); //check for update just in case
             runGW2Fast(type); //Game is ready to be launched
 
         }
@@ -117,6 +120,7 @@ public class FastUpdater implements Runnable {
                 }
                 downloadINI(); //.ini is required for the first install
                 updateDll(); //placehold swapped with the last version of the dll
+                this.changeModProp("arc_only");
                 
                 //Change status and color of JLabel status
                 log.log( Level.INFO,"ArcDPS installed succesfully");
@@ -275,6 +279,26 @@ public class FastUpdater implements Runnable {
         	log.log( Level.INFO,"Launching gw2 without Arc after error dialog");
             FastUpdater.runWithoutDPS(path);
         }
+
+    }
+    
+    public void changeModProp(String mode){
+
+        Properties prop = new Properties();
+        OutputStream output= null;
+        prop.put("mode", mode);
+        try {
+
+            output = new FileOutputStream("gw2_launcher.cfg");
+            prop.store(output, "Config file for GW2 Launcher");
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }

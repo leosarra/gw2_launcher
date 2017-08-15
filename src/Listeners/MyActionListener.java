@@ -2,8 +2,11 @@ package Listeners;
 
 import Frame.CoreFrame;
 import Updater.CoreUpdater;
+import framework.Operations;
 
 import javax.swing.*;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -25,6 +28,60 @@ public class MyActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     	//if background checkbox is selected the autostart one will be selected automatically
+    	if(e.getActionCommand().equals("arc")) {
+    		if(cf.getMode().equals("bgdm_only")) {
+    			
+    			Operations.renameBGDMinstallArc(cf, path);
+    			saveConfig(true);
+    			
+    		}
+    		else if(cf.getMode().equals("both")) {
+    			Operations.removeArcRenameBGDM(cf, path);
+
+    			saveConfig(true);
+    		}
+    		else if(cf.getMode().equals("none")) {
+    			Operations.installArc(cf, path);
+    			saveConfig(true);
+    		}
+    		else {
+    			Operations.removeArc(cf, path);
+    			saveConfig(true);
+    		}
+    		
+    		
+    		cf.startwith.setEnabled(true);
+
+    	}
+    	
+    	
+    	
+    	if(e.getActionCommand().equals("bgdm")) {
+    		cf.startwith.setEnabled(true);
+    		if(cf.getMode().equals("none")) {
+    			Operations.installBGDM(cf,path);
+
+    			saveConfig(true);
+    		}
+    		else if (cf.getMode().equals("bgdm_only")) {
+    			Operations.removeBGDM(cf,path);
+    			saveConfig(true);
+    			
+    		}
+    		else if (cf.getMode().equals("arc_only")){
+    			Operations.installBGDMwithArc(cf,path);
+    			saveConfig(true);
+    			
+    			
+    		}
+    		else {
+    			Operations.removeChainloadBGDM(cf,path);
+    			saveConfig(true);
+    		}
+
+    		
+    	}
+
     	if(e.getActionCommand().equals("background")){
     		cf.autostart.setSelected(true);
     		
@@ -74,6 +131,8 @@ public class MyActionListener implements ActionListener {
 
         if(cf.background.isSelected())  prop.put("background", "yes");
         else prop.put("background", "no");
+        
+        prop.put("mode", cf.getMode());
         
         if(cf.arg_string.getText().contains("Example")) cf.arg_string.setText("");
         prop.put("args",cf.arg_string.getText());

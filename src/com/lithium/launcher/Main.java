@@ -53,13 +53,13 @@ public class Main {
 
         TaskExecutor te=TaskExecutor.getInstance();
         String currentDir=new File(".").getAbsolutePath();
-
         //If the path contained in the settings is valid and faststart is not enabled use CoreFrame
         if (DirChooser.validDir(prop.getProperty("path")) && !prop.getProperty("faststart").equals("yes")) {
         	log.log( Level.INFO, "Found path, no autostart");
             CoreFrame gui = new CoreFrame(prop.getProperty("path"));
             //Import saved args to the CoreFrame
             gui.arg_string.setText(prop.getProperty("args",""));
+            gui.setMode(prop.getProperty("mode","none"));
             Operations.closeLogHandlers(log);
             Thread t1 = new Thread(new CoreUpdater(gui, prop.getProperty("path")));
             t1.start();
@@ -74,10 +74,12 @@ public class Main {
             if(prop.getProperty("background").equals("yes")) {
             	log.log( Level.INFO, "Hide Fastframe is selected");
             	gui=new FastFrame(prop.getProperty("path"),true);
+            	gui.setMode(prop.getProperty("mode"));
             }
             else {
             	log.log( Level.INFO, "Hide Fastframe is not selected");
             	gui=new FastFrame(prop.getProperty("path"),false);
+            	gui.setMode(prop.getProperty("mode"));
             }
              //Import saved args to the CoreFrame
             gui.arg_string.setText(prop.getProperty("args",""));
@@ -114,6 +116,7 @@ public class Main {
             if(!dir.getCancel() && dir.isFired()) {
                 if (dir.getJFileChooser().getSelectedFile()==null) System.exit(0);
                 CoreFrame gui = new CoreFrame(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
+                gui.setMode(prop.getProperty("mode","none"));
                 Thread t1 = new Thread(new CoreUpdater(gui, dir.getJFileChooser().getSelectedFile().getAbsolutePath()));
                 t1.start();
             }

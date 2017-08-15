@@ -32,9 +32,9 @@ public class CoreUpdater implements Runnable {
     public CoreUpdater(CoreFrame cf, String path){
         this.cf=cf;
         this.path=path;
-        dll=new File(path+"\\bin64\\d3d9.dll");  //dll of ArcDPS
-        old_dll= new File(path+"\\bin64\\d3d9_old.dll"); //backup dll of ArcDPS
-        disabled_dll= new File(path+"\\bin64\\d3d9_disabled.dll"); //disabled dll of ArcDPS
+        dll=new File(path+"\\bin64\\d3d9.dll");  //dll of ArcDPS or BGDM
+        old_dll= new File(path+"\\bin64\\d3d9_old.dll"); //backup dll of ArcDPS or BGDM
+        disabled_dll= new File(path+"\\bin64\\d3d9_disabled.dll"); //disabled dll of ArcDPS or BGDM
         Operations.LogSetup(log);
     }
     
@@ -46,15 +46,15 @@ public class CoreUpdater implements Runnable {
         if (check){
             //System.out.println("d3d9.dll exists");
         	log.log( Level.INFO,"d3d9.dll found");
-            updateDll(); //if d3d9.dll exists check if update is needed
+            if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) Operations.updateDll(cf,path); //if d3d9.dll exists check if update is needed
 
         }
-        if(!ini.exists()) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
+        if(!ini.exists() && (cf.getMode().equals("both")|| cf.getMode().equals("arc_only"))) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
         	int dialogButton = 0;
         	log.log( Level.INFO,"archdps.ini not found");
         	JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);
         	if (dialogButton==0){
-        		downloadINI(); //Method used to download the .ini
+        		Operations.downloadINI(cf,path); //Method used to download the .ini
         	}
         	
         }
@@ -69,10 +69,10 @@ public class CoreUpdater implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
               //Change status and color of JLabel status
-                cf.status.setText("  Cannot connect to the update server");
+                cf.status.setText("- Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
-            updateDll();
+            if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) Operations.updateDll(cf,path);
 
         }
         
@@ -85,132 +85,22 @@ public class CoreUpdater implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
               //Change status and color of JLabel status
-                cf.status.setText("  Cannot connect to the update server");
+                cf.status.setText("- Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
-            updateDll(); //check for update just in case
+            if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) Operations.updateDll(cf,path); //check for update just in case
 
         }
 
         if (!check && !old_dll.exists()){
         	log.log( Level.INFO,"d3d9.dll, d3d9_old.dll, d3d9_disabled.dll not found");
-        	//if there is not d3d9.dll and no backup it means that ArcDPS is not installed
-            int dialogButton = JOptionPane.YES_NO_OPTION;
-            //Ask to the user if he would like to install ArcDPS
-            JOptionPane.showConfirmDialog(null,"ArcDPS not installed. Would you like to install ArcDPS?","ArcDPS not detected",dialogButton);
-            if (dialogButton==0){
-                try {
-                    dll.createNewFile(); //placeholder that is going to be updated by updateDll()
-                } catch (IOException e) {
-                	//Change status and color of JLabel status
-                    e.printStackTrace();
-                    cf.status.setText("  Cannot connect to the update server");
-                    cf.status.setForeground(Color.RED);
-                    log.log( Level.SEVERE,"IOException when creating placeholder");
-                }
-                downloadINI(); //.ini is required for the first install
-                updateDll(); //placehold swapped with the last version of the dll
-                //Change status and color of JLabel status
-                cf.status.setText("  ArcDPS Installed succesfully"); 
-                log.log( Level.INFO,"ArcDPS installed succesfully");
-                cf.status.setForeground(new Color(0,102,51));
-            }
-            else {
-            	//Change status and color of JLabel status
-            	log.log( Level.INFO,"User doens't want ArcDPS");
-                cf.status.setText("  ArcDPS not installed");
-                cf.status.setForeground(Color.RED);
-            }
+        	//if there is not d3d9.dll and no backup it means that ArcDPS or BGDM is not installed
+        	cf.startwith.setEnabled(false);
+        	
         }
         Operations.closeLogHandlers(log);
     }
 
-
-    @SuppressWarnings("deprecation") //Remove warning for a deprecated function
-	public void updateDll(){
-
-        FileInputStream fis = null;
-        try {
-        	
-        	//Generate md5 file of the dll installed in the system using some external libraries
-        	
-            fis = new FileInputStream(dll);
-            byte data[] = new byte[0];
-            data = org.apache.commons.codec.digest.DigestUtils.md5(fis);
-            char md5Chars[] = Hex.encodeHex(data);
-            md5_old = String.valueOf(md5Chars); //md5 of the dll
-
-            File md5_download= new File(path+"\\bin64\\arcdps.dll.md5sum"); //Path of the md5 that is going to be downloaded
-            //Download the md5 of the last version of ArcDPS from the website
-            FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/d3d9.dll.md5sum"),md5_download, 10000, 10000); 
-            //Keep the relevant part of the md5
-            log.log( Level.INFO,"Md5 downloaded");
-            md5_new=FileUtils.readFileToString(md5_download).substring(0, FileUtils.readFileToString(md5_download).indexOf(" "));
-            log.log( Level.INFO,"Old md5: "+md5_old);
-            log.log( Level.INFO,"New md5: "+md5_new);
-
-            if(!md5_old.equals(md5_new)){ //Different checksum means that a new version must be downloaded
-            	log.log( Level.INFO,"New version available");
-                File backup = new File(path+"\\bin64\\d3d9_old.dll");
-                if (backup.exists()) backup.delete();  //delete old backup to prevent an exception
-                //Create backup copy
-                Files.copy(dll.toPath(), backup.toPath());
-                //Delete old copy
-                dll.delete();
-                //Change text of the JLabel status
-                cf.status.setText("     Downloading new version...");
-                //Download new dll
-                FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/d3d9.dll"),dll, 10000, 10000);
-                cf.status.setText(" ArcDPS updated");
-                cf.status.setForeground(new Color(0,102,51));
-            }
-
-            else { //Same checksum means that the user has the most recent version of ArcDPS
-            	log.log( Level.INFO,"ArcDPS already updated");
-                cf.status.setText("    ArcDPS is already updated");
-                cf.status.setForeground(new Color(0, 102, 51));
-            }
-            //Delete downloaded md5
-            log.log( Level.INFO,"Removing downloaded md5");
-            md5_download.delete();
-
-
-
-
-        //Exceptions if something goes wrong (Connection/IO)
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            cf.status.setText("  Cannot connect to the update server");
-            cf.status.setForeground(Color.RED);
-            log.log( Level.SEVERE,"FileNotFoundException when downloading dll");
-        } catch (IOException e) {
-            e.printStackTrace();
-            cf.status.setText("  Cannot connect to the update server");
-            cf.status.setForeground(Color.RED);
-            log.log( Level.SEVERE,"IOException when downloading dll");
-        }
-
-    }
-    
-    public void downloadINI(){
-
-    	File ini=new File(path+"\\bin64\\arcdps.ini");
-    	if (ini.exists()) ini.delete();     	//Delete existing ini file to prevent an exception
-    	log.log( Level.INFO,"Downloading configuration file");
-    	try {
-    		//Download default configuration from the website
-			FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/arcdps.ini"),ini, 10000, 10000);
-			log.log( Level.INFO,"archdps.ini installed successfully");
-		//Exceptions if something goes wrong (Connection/IO)
-    	} catch (IOException e) {
-			
-			e.printStackTrace();
-			cf.status.setText("  Cannot connect to the update server");
-            cf.status.setForeground(Color.RED);
-            log.log( Level.SEVERE,"IOException when downloading ini");
-		}
-
-    }
     
     public static void runWithoutDPS(String path){
         File dll= new File(path+"\\bin64\\d3d9.dll");
@@ -244,4 +134,9 @@ public class CoreUpdater implements Runnable {
         }
 
     }
+    
+    
+    
+    	
+    
 }
