@@ -60,6 +60,7 @@ public class Main {
             CoreFrame gui = new CoreFrame(prop.getProperty("path"));
             //Import saved args to the CoreFrame
             gui.arg_string.setText(prop.getProperty("args",""));
+            gui.setMode(prop.getProperty("mode","none"));
             Operations.closeLogHandlers(log);
             Thread t1 = new Thread(new CoreUpdater(gui, prop.getProperty("path")));
             t1.start();
@@ -74,10 +75,12 @@ public class Main {
             if(prop.getProperty("background").equals("yes")) {
             	log.log( Level.INFO, "Hide Fastframe is selected");
             	gui=new FastFrame(prop.getProperty("path"),true);
+            	gui.setMode(prop.getProperty("mode"));
             }
             else {
             	log.log( Level.INFO, "Hide Fastframe is not selected");
             	gui=new FastFrame(prop.getProperty("path"),false);
+            	gui.setMode(prop.getProperty("mode"));
             }
              //Import saved args to the CoreFrame
             gui.arg_string.setText(prop.getProperty("args",""));

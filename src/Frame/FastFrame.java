@@ -7,7 +7,11 @@ import com.lithium.launcher.Main;
 import framework.Operations;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +29,9 @@ public class FastFrame extends JFrame{
 	private JCheckBox autostart= new JCheckBox("Start with these settings each time");
     public JTextField arg_string=new JTextField(20);
 	private String path_string;
+    public JButton arc= new JButton("Install ArcDPS");
+    public JButton bgdm= new JButton("Install BGDM");
+	private String mode;
 
 	
 	
@@ -60,5 +67,13 @@ public class FastFrame extends JFrame{
 
 
     }
+    
+    public void setMode(String mode) {
+    	this.mode=mode;
+    }
+    
+    public String getMode() { return mode;}
+    
+    
     
 }
