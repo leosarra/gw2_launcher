@@ -49,7 +49,7 @@ public class CoreUpdater implements Runnable {
             if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) Operations.updateDll(cf,path); //if d3d9.dll exists check if update is needed
 
         }
-        if(!ini.exists()) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
+        if(!ini.exists() && (cf.getMode().equals("both")|| cf.getMode().equals("arc_only"))) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
         	int dialogButton = 0;
         	log.log( Level.INFO,"archdps.ini not found");
         	JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);

@@ -62,33 +62,23 @@ public class Operations {
 	public static void installArc(CoreFrame cf, String path) {
     	int dialogButton = JOptionPane.YES_NO_OPTION;
     	File dll=new File(path+"\\bin64\\d3d9.dll");
-        //Ask to the user if he would like to install ArcDPS
-        JOptionPane.showConfirmDialog(null,"ArcDPS not installed. Would you like to install ArcDPS?","ArcDPS not detected",dialogButton);
-        if (dialogButton==0){
-            try {
-                dll.createNewFile(); //placeholder that is going to be updated by updateDll()
-            } catch (IOException e) {
-            	//Change status and color of JLabel status
-                e.printStackTrace();
-                cf.status.setText("  Cannot connect to the update server");
-                cf.status.setForeground(Color.RED);
-                //log.log( Level.SEVERE,"IOException when creating placeholder");
-            }
-            Operations.downloadINI(cf,path); //.ini is required for the first install
-            Operations.updateDll(cf,path); //placehold swapped with the last version of the dll
-            //Change status and color of JLabel status
-            cf.status.setText("  ArcDPS Installed succesfully"); 
-         //   log.log( Level.INFO,"ArcDPS installed succesfully");
-            cf.status.setForeground(new Color(0,102,51));
-        }
-        else {
-        	//Change status and color of JLabel status
-        	//log.log( Level.INFO,"User doens't want ArcDPS");
-            cf.status.setText("  ArcDPS not installed");
-            cf.status.setForeground(Color.RED);
-            cf.startwith.setEnabled(false);
-        }
-    }
+    	try {
+			dll.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	System.out.println("Installing Arc [InstallARC]");
+        
+    	Operations.downloadINI(cf,path); //.ini is required for the first install
+    	Operations.updateDll(cf,path); //placeholder swapped with the last version of the dll
+        //Change status and color of JLabel status
+        cf.status.setText("  ArcDPS Installed succesfully"); 
+        //log.log( Level.INFO,"ArcDPS installed succesfully");
+        cf.status.setForeground(new Color(0,102,51));
+        
+	}
+    
 	
 	public static void renameBGDMinstallArc(CoreFrame cf, String path) {
     	File dll=new File(path+"\\bin64\\d3d9.dll");
@@ -126,9 +116,18 @@ public class Operations {
 	
 	
 	public static void removeArc(CoreFrame cf, String path) {
+		System.out.println("Removing arc [removeArc]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
+		File dll_old=new File(path+"\\bin64\\d3d9_old.dll");
 		File ini= new File(path+"\\bin64\\arcdps.ini");
-		if (dll.exists()) dll.delete();
+		if (dll.exists()) {
+			System.out.println("cancello dll");
+			dll.delete();
+		}
+		if (dll_old.exists()) {
+			System.out.println("cancello dll_old");
+			dll_old.delete();
+		}
 		if(ini.exists()) ini.delete();
 		
 	}
@@ -206,6 +205,7 @@ public class Operations {
             //Delete downloaded md5
             //log.log( Level.INFO,"Removing downloaded md5");
             md5_download.delete();
+            fis.close();
 
 
 

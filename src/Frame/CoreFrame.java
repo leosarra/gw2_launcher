@@ -15,8 +15,8 @@ public class CoreFrame extends JFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public JButton startwith= new JButton("Run with ArcDPS");
-    private JButton startwithout= new JButton("Run only GW2 ");
+	public JButton startwith= new JButton("Run with addons");
+    private JButton startwithout= new JButton("Run only Gw2");
     public JLabel status = new JLabel ("    Updater is starting...");
     public JLabel bgdm_label = new JLabel ("    \t BGDM is installed and doens't require an update...");
 
@@ -69,8 +69,8 @@ public class CoreFrame extends JFrame{
         startwith.setActionCommand("with");
         startwithout.setActionCommand("without");
         background.setActionCommand("background");
-        arc.setActionCommand("arc_install");
-        bgdm.setActionCommand("bgdm_install");
+        arc.setActionCommand("arc");
+        bgdm.setActionCommand("bgdm");
         
         
         //Create MyActionListener
@@ -146,16 +146,17 @@ public class CoreFrame extends JFrame{
     		arc.setText("Install ArcDPS");
     		bgdm_label.setText("	BGDM is not installed");
     		bgdm_label.setForeground(Color.RED);
-    		status.setText("	BGDM is not installed");
+    		status.setText("ArcDPS is not installed");
     		status.setForeground(Color.RED);
+    		System.out.println("set");
     		
     	}
-    	if (mode.equals("both")) {
+    	else if (mode.equals("both")) {
     		arc.setText("Remove ArcDPS");
     		bgdm.setText("Remove BGDM");
     		
     	}
-    	if (mode.equals("arc_only")) {
+    	else if (mode.equals("arc_only")) {
     		arc.setText("Remove ArcDPS");
     		bgdm.setText("Install BGDM");
     		bgdm_label.setText("	BGDM is not installed");

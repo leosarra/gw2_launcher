@@ -32,23 +32,32 @@ public class MyActionListener implements ActionListener {
     		if(cf.getMode().equals("bgdm_only")) {
     			
     			Operations.renameBGDMinstallArc(cf, path);
+    			cf.setMode("both");
     			cf.status.setText("	 ArcDPS was installed successfully");
     			cf.status.setForeground(new Color(0,102,51));;
+    			saveConfig(true);
+    			
     		}
     		else if(cf.getMode().equals("both")) {
     			Operations.removeArcRenameBGDM(cf, path);
+    			cf.setMode("bgdm_only");
     			cf.status.setText("	 ArcDPS not installed");
     			cf.status.setForeground(Color.RED);
+    			saveConfig(true);
     		}
     		else if(cf.getMode().equals("none")) {
     			Operations.installArc(cf, path);
+    			cf.setMode("arc_only");
     			cf.status.setText("	 ArcDPS was installed successfully");
     			cf.status.setForeground(new Color(0,102,51));
+    			saveConfig(true);
     		}
     		else {
     			Operations.removeArc(cf, path);
+    			cf.setMode("none");
     			cf.status.setText("	 ArcDPS not installed");
     			cf.status.setForeground(Color.RED);
+    			saveConfig(true);
     		}
     		
     		
@@ -64,17 +73,20 @@ public class MyActionListener implements ActionListener {
     			Operations.installBGDM(cf,path);
     			cf.bgdm_label.setText(" 	BGDM was installed successfully");
     			cf.bgdm_label.setForeground(new Color(0,102,51));
+    			saveConfig(true);
     		}
     		else if (cf.getMode().equals("bgdm_only")) {
     			Operations.removeBGDM(cf,path);
     			cf.bgdm_label.setText(" 	BGDM not installed");
     			cf.bgdm_label.setForeground(Color.RED);
+    			saveConfig(true);
     			
     		}
     		else if (cf.getMode().equals("arc_only")){
     			Operations.installBGDMwithArc(cf,path);
     			cf.bgdm_label.setText(" 	BGDM was installed successfully");
     			cf.bgdm_label.setForeground(Color.RED);
+    			saveConfig(true);
     			
     			
     		}
@@ -82,6 +94,7 @@ public class MyActionListener implements ActionListener {
     			Operations.removeBGDM(cf,path);
     			cf.bgdm_label.setText(" 	BGDM not installed");
     			cf.bgdm_label.setForeground(Color.RED);
+    			saveConfig(true);
     		}
 
     		
@@ -137,16 +150,7 @@ public class MyActionListener implements ActionListener {
         if(cf.background.isSelected())  prop.put("background", "yes");
         else prop.put("background", "no");
         
-        if(cf.bgdm.getText().contains("Remove")&&cf.arc.getText().contains("Install")) {
-        	prop.put("mode","bgdm_only");
-        }
-        else if(cf.bgdm.getText().contains("Install")&& (cf.arc.getText().contains("Remove"))) {
-        	prop.put("mode","arc_only");
-        }
-        
-        else if (cf.bgdm.getText().contains("Install")&& (cf.arc.getText().contains("Install"))) prop.put("mode","none");
-        
-        else prop.put("mode","both");
+        prop.put("mode", cf.getMode());
         
         if(cf.arg_string.getText().contains("Example")) cf.arg_string.setText("");
         prop.put("args",cf.arg_string.getText());
