@@ -117,6 +117,7 @@ public class Main {
             if(!dir.getCancel() && dir.isFired()) {
                 if (dir.getJFileChooser().getSelectedFile()==null) System.exit(0);
                 CoreFrame gui = new CoreFrame(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
+                gui.setMode(prop.getProperty("mode","none"));
                 Thread t1 = new Thread(new CoreUpdater(gui, dir.getJFileChooser().getSelectedFile().getAbsolutePath()));
                 t1.start();
             }
