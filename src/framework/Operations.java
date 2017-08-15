@@ -74,8 +74,8 @@ public class Operations {
 		}
     	
     	log.log( Level.INFO, "Installing Arc [InstallARC]");
-        
-    	Operations.downloadINI(cf,path); //.ini is required for the first install
+        File ini= new File(path+"\\bin64\\arcdps.ini");
+    	if (!ini.exists()) Operations.downloadINI(cf,path); //.ini is required for the first install
     	Operations.updateDll(cf,path); //placeholder swapped with the last version of the dll
         //Change status and color of JLabel status
         //log.log( Level.INFO,"ArcDPS installed succesfully");
@@ -100,7 +100,8 @@ public class Operations {
 			
 			e1.printStackTrace();
 		}
-        Operations.downloadINI(cf,path); //.ini is required for the first install
+    	File ini= new File(path+"\\bin64\\arcdps.ini");
+    	if (!ini.exists()) Operations.downloadINI(cf,path); //.ini is required for the first install
         Operations.updateDll(cf,path); //placehold swapped with the last version of the dll
         log.log( Level.INFO, "Everything went smooth [renameBGDMinstallArc]");
             //Change status and color of JLabel status
