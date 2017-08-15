@@ -26,7 +26,7 @@ import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
 public class Operations {
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	static Logger log = Logger.getLogger( Main.class.getName() );
 	
 	
