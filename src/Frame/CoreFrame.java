@@ -159,7 +159,7 @@ public class CoreFrame extends JFrame{
     	else if (mode.equals("arc_only")) {
     		arc.setText("Remove ArcDPS");
     		bgdm.setText("Install BGDM");
-    		bgdm_label.setText("- BGDM is not installed");
+    		bgdm_label.setText(" - BGDM is not installed");
     		bgdm_label.setForeground(Color.RED);
     		
     	}
