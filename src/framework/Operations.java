@@ -18,6 +18,8 @@ import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 
+import com.lithium.launcher.Main;
+
 import Frame.CoreFrame;
 import Updater.CoreUpdater;
 import net.lingala.zip4j.core.ZipFile;
@@ -25,6 +27,8 @@ import net.lingala.zip4j.exception.ZipException;
 
 public class Operations {
 	private static final boolean DEBUG = true;
+	static Logger log = Logger.getLogger( Main.class.getName() );
+	
 	
 	public static void LogSetup(Logger log) {
 		if (DEBUG) {
@@ -60,7 +64,7 @@ public class Operations {
 	
 	
 	public static void installArc(CoreFrame cf, String path) {
-    	int dialogButton = JOptionPane.YES_NO_OPTION;
+		Operations.LogSetup(log);
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	try {
 			dll.createNewFile();
@@ -68,20 +72,25 @@ public class Operations {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	System.out.println("Installing Arc [InstallARC]");
+    	
+    	log.log( Level.INFO, "Installing Arc [InstallARC]");
         
     	Operations.downloadINI(cf,path); //.ini is required for the first install
     	Operations.updateDll(cf,path); //placeholder swapped with the last version of the dll
         //Change status and color of JLabel status
         //log.log( Level.INFO,"ArcDPS installed succesfully");
         cf.setMode("arc_only");
+        log.log( Level.INFO, "Arc Installed [InstallARC]");
 		cf.status.setText("- ArcDPS was installed successfully");
 		cf.status.setForeground(new Color(0,102,51));
+		Operations.closeLogHandlers(log);
         
 	}
     
 	
 	public static void renameBGDMinstallArc(CoreFrame cf, String path) {
+		Operations.LogSetup(log);
+		log.log( Level.INFO, "Renaming BGDM and installing Arc [renameBGDMinstallArc]");
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	File chainload=new File(path+"\\bin64\\d3d9_chainload.dll");
     	if (chainload.exists()) chainload.delete();
@@ -93,16 +102,19 @@ public class Operations {
 		}
         Operations.downloadINI(cf,path); //.ini is required for the first install
         Operations.updateDll(cf,path); //placehold swapped with the last version of the dll
-        
+        log.log( Level.INFO, "Everything went smooth [renameBGDMinstallArc]");
             //Change status and color of JLabel status
          //   log.log( Level.INFO,"ArcDPS installed succesfully");
 		cf.setMode("both");
 		cf.status.setText("- ArcDPS was installed successfully");
 		cf.status.setForeground(new Color(0,102,51));;
+		Operations.closeLogHandlers(log);
         }
 	
 	//Remove arc and rename BGDM from d3d9_chainload.dll to d3d9.dll
 	public static void removeArcRenameBGDM(CoreFrame cf, String path) {
+		Operations.LogSetup(log);
+		log.log( Level.INFO, "Removing Arc and renaming BGDM [removeArcRenameBGDM]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File ini= new File(path+"\\bin64\\arcdps.ini");
 		File chainload=new File(path+"\\bin64\\d3d9_chainload.dll");
@@ -114,38 +126,43 @@ public class Operations {
 			cf.status.setText("- ArcDPS not installed");
 			cf.status.setForeground(Color.RED);
 		} catch (IOException e1) {
-			
+			log.log( Level.SEVERE, "Exception IO [removeArcRenameBGDM]");
 			e1.printStackTrace();
+			
 		}
+		
+		Operations.closeLogHandlers(log);
 		
 		
 	}
 	
 	//Delete d3d9.dll of Arc
 	public static void removeArc(CoreFrame cf, String path) {
-		System.out.println("Removing arc [removeArc]");
+		Operations.LogSetup(log);
+		log.log( Level.INFO, "Removing arc [removeArc]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File dll_old=new File(path+"\\bin64\\d3d9_old.dll");
 		File ini= new File(path+"\\bin64\\arcdps.ini");
 		if (dll.exists()) {
-			System.out.println("cancello dll");
 			dll.delete();
 		}
 		if (dll_old.exists()) {
-			System.out.println("cancello dll_old");
 			dll_old.delete();
 		}
 		if(ini.exists()) ini.delete();
-		
+		log.log( Level.INFO, "Everything went smooth [removeArc]");
 		cf.setMode("none");
 		cf.status.setText("- ArcDPS not installed");
 		cf.status.setForeground(Color.RED);
+		Operations.closeLogHandlers(log);
 		
 		
 	}
         
 	//Delete d3d9_chainload of BGDM
 	public static void removeBGDM(CoreFrame cf, String path) {
+		Operations.LogSetup(log);
+		log.log( Level.INFO, "Removing BGDM [removeBGMD]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File dll_2= new File(path+"\\bin64\\bgdm.dll");
 		if (dll.exists()) dll.delete();
@@ -153,10 +170,13 @@ public class Operations {
 		cf.bgdm_label.setText("- BGDM not installed");
 		cf.bgdm_label.setForeground(Color.RED);
 		cf.setMode("none");
-		
+		log.log( Level.INFO, "Everything went smooth [removeBGMD]");
+		Operations.closeLogHandlers(log);
 	}
 	
 	public static void removeChainloadBGDM(CoreFrame cf, String path) {
+		Operations.LogSetup(log);
+		log.log( Level.INFO, "Removing BGDM as chainload [removeChainloadBGDM]");
 		File dll=new File(path+"\\bin64\\d3d9_chainload.dll");
 		File dll_2= new File(path+"\\bin64\\bgdm.dll");
 		if (dll.exists()) dll.delete();
@@ -164,10 +184,14 @@ public class Operations {
 		cf.bgdm_label.setText("- BGDM not installed");
 		cf.bgdm_label.setForeground(Color.RED);
 		cf.setMode("arc_only");
+		log.log( Level.INFO, "Everything went smooth [removeChainloadBGMD]");
+		Operations.closeLogHandlers(log);
 	}
 	
 	//Install d3d9_chainload of BGDM
 	public static void installBGDMwithArc(CoreFrame cf, String path) {
+		Operations.LogSetup(log);
+		log.log( Level.INFO, "Installing bgdm as chainload [installBGDMwithArc]");
 		File download = new File(path+"\\bgdm.zip");
 		try {
 			FileUtils.copyURLToFile(new URL("https://goo.gl/VvhLcx"),download, 10000, 10000);
@@ -192,22 +216,25 @@ public class Operations {
 			cf.bgdm_label.setText(" - BGDM was installed successfully");
 			cf.bgdm_label.setForeground(new Color(0,102,51));
 			cf.setMode("both");
-			
+			log.log( Level.INFO, "Everything went smooth [installBGDMwithArc]");
 
 			
 		} catch (IOException | ZipException e) {
 			// TODO Auto-generated catch block
 			cf.bgdm_label.setText("- Cannot download BGDM, check your internet");
 			cf.bgdm_label.setForeground(Color.RED);
+			log.log( Level.INFO, "IO/Zip Exception [installBGDMwithArc]");
 			e.printStackTrace();
 		}
-		
+		Operations.closeLogHandlers(log);
 		
 	}
 	
 
 	//Install d3d9.dll of BGDM
 	public static void installBGDM(CoreFrame cf, String path) {
+		Operations.LogSetup(log);
+		log.log( Level.INFO, "Installing bgdm alone [installBGDM]");
 		File download = new File(path+"\\bgdm.zip");
 		try {
 			//download bgdm from server
@@ -218,7 +245,6 @@ public class Operations {
 			File dll_destination=new File(path+"\\bin64\\bgdm.dll");
 			if (dll_destination.exists()) dll_destination.delete();
 			Files.copy(dll_config.toPath(), dll_destination.toPath());
-			System.out.println("BGDM zip downloaded");
 			File d3d9=new File(path+"\\d3d9.dll");
 			File d3d9_dest=new File(path+"\\bin64\\d3d9.dll");
 			if (d3d9_dest.exists()) d3d9_dest.delete();
@@ -236,13 +262,18 @@ public class Operations {
 			cf.bgdm_label.setText(" - BGDM was installed successfully");
 			cf.setMode("bgdm_only");
 			cf.bgdm_label.setForeground(new Color(0,102,51));
+			log.log( Level.INFO, "Everything went smooth [installBGDM]");
 			
 		} catch (IOException | ZipException e) {
 			// TODO Auto-generated catch block
 			cf.bgdm_label.setText("- Cannot download BGDM, check your internet");
 			cf.bgdm_label.setForeground(Color.RED);
+			log.log( Level.INFO, "IO/Zip exception [installBGDM]");
 			e.printStackTrace();
+			
+			
 		}
+		Operations.closeLogHandlers(log);
 		
 		
 		
@@ -253,28 +284,29 @@ public class Operations {
 	
 	
 	public static void downloadINI(CoreFrame cf, String path){
-
+		Operations.LogSetup(log);
     	File ini=new File(path+"\\bin64\\arcdps.ini");
     	if (ini.exists()) ini.delete();     	//Delete existing ini file to prevent an exception
-    	//log.log( Level.INFO,"Downloading configuration file");
+    	log.log( Level.INFO,"Downloading configuration file");
     	try {
     		//Download default configuration from the website
 			FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/arcdps.ini"),ini, 10000, 10000);
-			//log.log( Level.INFO,"archdps.ini installed successfully");
+			log.log( Level.INFO,"archdps.ini installed successfully");
 		//Exceptions if something goes wrong (Connection/IO)
     	} catch (IOException e) {
 			
 			e.printStackTrace();
 			cf.status.setText("- Cannot connect to the update server");
             cf.status.setForeground(Color.RED);
-            //log.log( Level.SEVERE,"IOException when downloading ini");
+            log.log( Level.SEVERE,"IOException when downloading ini");
 		}
-
+    	Operations.closeLogHandlers(log);
     }
 	
 	
 	
 	public static void updateDll(CoreFrame cf, String path){
+		Operations.LogSetup(log);
 		File dll=new File(path+"\\bin64\\d3d9.dll");
         FileInputStream fis = null;
         String md5_new;
@@ -293,13 +325,13 @@ public class Operations {
             //Download the md5 of the last version of ArcDPS from the website
             FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/d3d9.dll.md5sum"),md5_download, 10000, 10000); 
             //Keep the relevant part of the md5
-            //log.log( Level.INFO,"Md5 downloaded");
+            log.log( Level.INFO,"Md5 downloaded");
             md5_new=FileUtils.readFileToString(md5_download).substring(0, FileUtils.readFileToString(md5_download).indexOf(" "));
-            //log.log( Level.INFO,"Old md5: "+md5_old);
-            //log.log( Level.INFO,"New md5: "+md5_new);
+            log.log( Level.INFO,"Old md5: "+md5_old);
+            log.log( Level.INFO,"New md5: "+md5_new);
 
             if(!md5_old.equals(md5_new)){ //Different checksum means that a new version must be downloaded
-            	//log.log( Level.INFO,"New version available");
+            	log.log( Level.INFO,"New version available");
                 File backup = new File(path+"\\bin64\\d3d9_old.dll");
                 if (backup.exists()) backup.delete();  //delete old backup to prevent an exception
                 //Create backup copy
@@ -315,12 +347,12 @@ public class Operations {
             }
 
             else { //Same checksum means that the user has the most recent version of ArcDPS
-            	//log.log( Level.INFO,"ArcDPS already updated");
+            	log.log( Level.INFO,"ArcDPS already updated");
                 cf.status.setText("- ArcDPS is already updated");
                 cf.status.setForeground(new Color(0, 102, 51));
             }
             //Delete downloaded md5
-            //log.log( Level.INFO,"Removing downloaded md5");
+            log.log( Level.INFO,"Removing downloaded md5");
             md5_download.delete();
             fis.close();
 
@@ -332,13 +364,15 @@ public class Operations {
             e.printStackTrace();
             cf.status.setText("  Cannot connect to the update server");
             cf.status.setForeground(Color.RED);
-            //log.log( Level.SEVERE,"FileNotFoundException when downloading dll");
+            log.log( Level.SEVERE,"FileNotFoundException when downloading dll");
         } catch (IOException e) {
             e.printStackTrace();
             cf.status.setText("  Cannot connect to the update server");
             cf.status.setForeground(Color.RED);
-            //log.log( Level.SEVERE,"IOException when downloading dll");
+            log.log( Level.SEVERE,"IOException when downloading dll");
         }
+        
+        Operations.closeLogHandlers(log);
 
     }
 

@@ -53,7 +53,6 @@ public class Main {
 
         TaskExecutor te=TaskExecutor.getInstance();
         String currentDir=new File(".").getAbsolutePath();
-        System.out.println("mode: "+prop.getProperty("mode","none"));
         //If the path contained in the settings is valid and faststart is not enabled use CoreFrame
         if (DirChooser.validDir(prop.getProperty("path")) && !prop.getProperty("faststart").equals("yes")) {
         	log.log( Level.INFO, "Found path, no autostart");
