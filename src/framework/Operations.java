@@ -73,9 +73,10 @@ public class Operations {
     	Operations.downloadINI(cf,path); //.ini is required for the first install
     	Operations.updateDll(cf,path); //placeholder swapped with the last version of the dll
         //Change status and color of JLabel status
-        cf.status.setText("  ArcDPS Installed succesfully"); 
         //log.log( Level.INFO,"ArcDPS installed succesfully");
-        cf.status.setForeground(new Color(0,102,51));
+        cf.setMode("arc_only");
+		cf.status.setText("- ArcDPS was installed successfully");
+		cf.status.setForeground(new Color(0,102,51));
         
 	}
     
@@ -92,10 +93,12 @@ public class Operations {
 		}
         Operations.downloadINI(cf,path); //.ini is required for the first install
         Operations.updateDll(cf,path); //placehold swapped with the last version of the dll
+        
             //Change status and color of JLabel status
-        cf.status.setText("  ArcDPS Installed succesfully"); 
          //   log.log( Level.INFO,"ArcDPS installed succesfully");
-        cf.status.setForeground(new Color(0,102,51));
+		cf.setMode("both");
+		cf.status.setText("- ArcDPS was installed successfully");
+		cf.status.setForeground(new Color(0,102,51));;
         }
 	
 	public static void removeArcRenameBGDM(CoreFrame cf, String path) {
@@ -106,6 +109,9 @@ public class Operations {
 		if(ini.exists()) ini.delete();
 		try {
 			Files.copy(chainload.toPath(), dll.toPath());
+			cf.setMode("bgdm_only");
+			cf.status.setText("- ArcDPS not installed");
+			cf.status.setForeground(Color.RED);
 		} catch (IOException e1) {
 			
 			e1.printStackTrace();
@@ -129,6 +135,11 @@ public class Operations {
 			dll_old.delete();
 		}
 		if(ini.exists()) ini.delete();
+		
+		cf.setMode("none");
+		cf.status.setText("- ArcDPS not installed");
+		cf.status.setForeground(Color.RED);
+		
 		
 	}
         
@@ -230,16 +241,19 @@ public class Operations {
 		File dll_2= new File(path+"\\bin64\\bgdm.dll");
 		if (dll.exists()) dll.delete();
 		if(dll_2.exists()) dll_2.delete();
-		
+		cf.bgdm_label.setText("- BGDM not installed");
+		cf.bgdm_label.setForeground(Color.RED);
+		cf.setMode("none");
 		
 	}
 
 	public static void installBGDM(CoreFrame cf, String path) {
 		File download = new File(path+"\\bgdm.zip");
 		try {
+			//download bgdm from server
 			FileUtils.copyURLToFile(new URL("https://goo.gl/VvhLcx"),download, 10000, 10000);
 			ZipFile zipFile=new ZipFile(path+"\\bgdm.zip");
-			zipFile.extractAll(path);
+			zipFile.extractAll(path); //extract zip
 			File dll_config=new File(path+"\\bgdm.dll");
 			File dll_destination=new File(path+"\\bin64\\bgdm.dll");
 			if (dll_destination.exists()) dll_destination.delete();
@@ -250,12 +264,18 @@ public class Operations {
 			if (d3d9_dest.exists()) d3d9_dest.delete();
 			Files.copy(d3d9.toPath(), d3d9_dest.toPath());
 			
+			//cleanup
 			File d3d9_old=new File(path+"\\d3d9.dll");
 			if (d3d9.exists()) d3d9.delete();
 			File bgdm_old=new File(path+"\\bgdm.dll");
 			if (bgdm_old.exists()) bgdm_old.delete();
 
 			if(download.exists()) download.delete();
+			
+			//Change JLabel text and status
+			cf.bgdm_label.setText(" - BGDM was installed successfully");
+			cf.setMode("bgdm_only");
+			cf.bgdm_label.setForeground(new Color(0,102,51));
 			
 		} catch (IOException | ZipException e) {
 			// TODO Auto-generated catch block
@@ -290,6 +310,10 @@ public class Operations {
 			File bgdm_old=new File(path+"\\bgdm.dll");
 			if (bgdm_old.exists()) bgdm_old.delete();
 			if(download.exists()) download.delete();
+			//Change JLabel's text + color
+			cf.bgdm_label.setText(" - BGDM was installed successfully");
+			cf.bgdm_label.setForeground(new Color(0,102,51));
+			cf.setMode("both");
 			
 
 			

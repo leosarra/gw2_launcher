@@ -32,31 +32,20 @@ public class MyActionListener implements ActionListener {
     		if(cf.getMode().equals("bgdm_only")) {
     			
     			Operations.renameBGDMinstallArc(cf, path);
-    			cf.setMode("both");
-    			cf.status.setText("- ArcDPS was installed successfully");
-    			cf.status.setForeground(new Color(0,102,51));;
     			saveConfig(true);
     			
     		}
     		else if(cf.getMode().equals("both")) {
     			Operations.removeArcRenameBGDM(cf, path);
-    			cf.setMode("bgdm_only");
-    			cf.status.setText("- ArcDPS not installed");
-    			cf.status.setForeground(Color.RED);
+
     			saveConfig(true);
     		}
     		else if(cf.getMode().equals("none")) {
     			Operations.installArc(cf, path);
-    			cf.setMode("arc_only");
-    			cf.status.setText("- ArcDPS was installed successfully");
-    			cf.status.setForeground(new Color(0,102,51));
     			saveConfig(true);
     		}
     		else {
     			Operations.removeArc(cf, path);
-    			cf.setMode("none");
-    			cf.status.setText("- ArcDPS not installed");
-    			cf.status.setForeground(Color.RED);
     			saveConfig(true);
     		}
     		
@@ -71,32 +60,22 @@ public class MyActionListener implements ActionListener {
     		cf.startwith.setEnabled(true);
     		if(cf.getMode().equals("none")) {
     			Operations.installBGDM(cf,path);
-    			cf.bgdm_label.setText("- BGDM was installed successfully");
-    			cf.setMode("bgdm_only");
-    			cf.bgdm_label.setForeground(new Color(0,102,51));
+
     			saveConfig(true);
     		}
     		else if (cf.getMode().equals("bgdm_only")) {
     			Operations.removeBGDM(cf,path);
-    			cf.bgdm_label.setText("- BGDM not installed");
-    			cf.bgdm_label.setForeground(Color.RED);
-    			cf.setMode("none");
     			saveConfig(true);
     			
     		}
     		else if (cf.getMode().equals("arc_only")){
     			Operations.installBGDMwithArc(cf,path);
-    			cf.bgdm_label.setText("- BGDM was installed successfully");
-    			cf.bgdm_label.setForeground(Color.RED);
-    			cf.setMode("both");
     			saveConfig(true);
     			
     			
     		}
     		else {
     			Operations.removeBGDM(cf,path);
-    			cf.bgdm_label.setText("- BGDM not installed");
-    			cf.bgdm_label.setForeground(Color.RED);
     			cf.setMode("arc_only");
     			saveConfig(true);
     		}
