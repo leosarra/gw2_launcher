@@ -36,4 +36,4 @@ It requires the [Java Runtime Environment](https://www.java.com/it/download/) to
 ## Acknowledgments
 
 * Huge thanks to deltaconnected and Bhagawan for their work and perseverance in releasing updates for ArcDPS and BGDM, respectively.
-* Thanks to Lingala for the [Zip4J Library](http://www.lingala.net/zip4j/index.php)
+* Thanks to Lingala for the [Zip4J Library](http://www.lingala.net/zip4j/index.php).
