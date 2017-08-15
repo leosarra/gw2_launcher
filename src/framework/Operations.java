@@ -101,6 +101,7 @@ public class Operations {
 		cf.status.setForeground(new Color(0,102,51));;
         }
 	
+	//Remove arc and rename BGDM from d3d9_chainload.dll to d3d9.dll
 	public static void removeArcRenameBGDM(CoreFrame cf, String path) {
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File ini= new File(path+"\\bin64\\arcdps.ini");
@@ -120,7 +121,7 @@ public class Operations {
 		
 	}
 	
-	
+	//Delete d3d9.dll of Arc
 	public static void removeArc(CoreFrame cf, String path) {
 		System.out.println("Removing arc [removeArc]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
@@ -143,9 +144,9 @@ public class Operations {
 		
 	}
         
-
+	//Delete d3d9_chainload of BGDM
 	public static void removeBGDM(CoreFrame cf, String path) {
-		File dll=new File(path+"\\bin64\\d3d9_chainload.dll");
+		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File dll_2= new File(path+"\\bin64\\bgdm.dll");
 		if (dll.exists()) dll.delete();
 		if(dll_2.exists()) dll_2.delete();
@@ -155,6 +156,17 @@ public class Operations {
 		
 	}
 	
+	public static void removeChainloadBGDM(CoreFrame cf, String path) {
+		File dll=new File(path+"\\bin64\\d3d9_chainload.dll");
+		File dll_2= new File(path+"\\bin64\\bgdm.dll");
+		if (dll.exists()) dll.delete();
+		if(dll_2.exists()) dll_2.delete();
+		cf.bgdm_label.setText("- BGDM not installed");
+		cf.bgdm_label.setForeground(Color.RED);
+		cf.setMode("arc_only");
+	}
+	
+	//Install d3d9_chainload of BGDM
 	public static void installBGDMwithArc(CoreFrame cf, String path) {
 		File download = new File(path+"\\bgdm.zip");
 		try {
@@ -194,6 +206,7 @@ public class Operations {
 	}
 	
 
+	//Install d3d9.dll of BGDM
 	public static void installBGDM(CoreFrame cf, String path) {
 		File download = new File(path+"\\bgdm.zip");
 		try {
@@ -328,6 +341,8 @@ public class Operations {
         }
 
     }
+
+
 
 
 	

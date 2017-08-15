@@ -75,8 +75,7 @@ public class MyActionListener implements ActionListener {
     			
     		}
     		else {
-    			Operations.removeBGDM(cf,path);
-    			cf.setMode("arc_only");
+    			Operations.removeChainloadBGDM(cf,path);
     			saveConfig(true);
     		}
 
