@@ -43,7 +43,7 @@ public class FastFrame extends JFrame{
     public FastFrame(String dir, boolean hide){
         super("Guild Wars 2 Launcher");
         //Settings of the FastFrame object 
-        
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(310,160);
