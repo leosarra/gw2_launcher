@@ -85,6 +85,21 @@ public class MyActionListener implements ActionListener {
         Properties prop = new Properties();
         OutputStream output= null;
         prop.put("path",path);
+        InputStream input= null;
+
+        try {
+
+            input = new FileInputStream("gw2_launcher.cfg");
+            //Import settings
+            prop.load(input);
+            input.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         if (cf.autostart.isSelected()) {
             prop.put("faststart", "yes");
         }

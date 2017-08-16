@@ -34,7 +34,7 @@ public class FastFrame extends JFrame{
         //Settings of the FastFrame object 
         
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(310,160);
         if (!hide) {
         	this.setVisible(true); //if background option is selected the frame will not show up

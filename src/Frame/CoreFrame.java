@@ -46,12 +46,12 @@ public class CoreFrame extends JFrame{
 		}
 
         //Settings of the CoreFrame object 
-        this.setSize(300,373);
+        this.setSize(314,380);
         this.setVisible(true);
         getContentPane().setLayout(new GridLayout(1,2));
         this.setResizable(true);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         
         

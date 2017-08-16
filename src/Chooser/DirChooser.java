@@ -9,7 +9,13 @@ import javax.swing.*;
 import Updater.CoreUpdater;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,6 +76,7 @@ public class DirChooser implements Task {
                     if (check) {
                         found = true;
                         log.log( Level.INFO,"Valid dir selected: "+file.getAbsolutePath());
+                        changePathProp(file.getAbsolutePath());
                     } else {
                     	log.log( Level.INFO,"Invalid dir selected: "+file.getAbsolutePath());
                         JOptionPane.showMessageDialog(null, "Executable not found. Please select a valid directory", "Directory not valid", JOptionPane.ERROR_MESSAGE);
@@ -99,5 +106,41 @@ public class DirChooser implements Task {
 
     public boolean isFired() {
         return fired;
+    }
+
+    public void changePathProp(String path){
+         Properties prop = new Properties();
+         InputStream input= null;
+
+         try {
+
+             input = new FileInputStream("gw2_launcher.cfg");
+             //Import settings
+             prop.load(input);
+             input.close();
+
+         } catch (FileNotFoundException e) {
+             e.printStackTrace();
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+         
+        OutputStream output= null;
+        prop.put("path", path);
+        System.out.println("Scrivo");
+        try {
+
+            output = new FileOutputStream("gw2_launcher.cfg");
+            prop.store(output, "Config file for GW2 Launcher");
+            output.close();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

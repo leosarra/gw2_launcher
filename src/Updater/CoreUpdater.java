@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
@@ -145,6 +146,21 @@ public class CoreUpdater implements Runnable {
     public void changeModProp(String mode){
 
         Properties prop = new Properties();
+        InputStream input= null;
+
+        try {
+
+            input = new FileInputStream("gw2_launcher.cfg");
+            //Import settings
+            prop.load(input);
+            input.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         OutputStream output= null;
         prop.put("mode", mode);
         cf.setMode(mode);

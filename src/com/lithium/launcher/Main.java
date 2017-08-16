@@ -54,7 +54,7 @@ public class Main {
         TaskExecutor te=TaskExecutor.getInstance();
         String currentDir=new File(".").getAbsolutePath();
         //If the path contained in the settings is valid and faststart is not enabled use CoreFrame
-        if (DirChooser.validDir(prop.getProperty("path")) && !prop.getProperty("faststart").equals("yes")) {
+        if (DirChooser.validDir(prop.getProperty("path")) && !prop.getProperty("faststart","no").equals("yes")) {
         	log.log( Level.INFO, "Found path, no autostart");
             CoreFrame gui = new CoreFrame(prop.getProperty("path"));
             //Import saved args to the CoreFrame
@@ -66,12 +66,12 @@ public class Main {
 
         }
         //Else if the path contained in the settings is valid and faststart is enabled use FastFrame
-        else if (DirChooser.validDir(prop.getProperty("path")) && prop.getProperty("faststart").equals("yes")){
+        else if (DirChooser.validDir(prop.getProperty("path")) && prop.getProperty("faststart","no").equals("yes")){
         	log.log( Level.INFO, "Found path, yes autostart");
         	FastFrame gui=null;
         	
         	//Check if background option was previously selected. FastFrame changes accordingly 
-            if(prop.getProperty("background").equals("yes")) {
+            if(prop.getProperty("background","no").equals("yes")) {
             	log.log( Level.INFO, "Hide Fastframe is selected");
             	gui=new FastFrame(prop.getProperty("path"),true);
             	gui.setMode(prop.getProperty("mode"));
