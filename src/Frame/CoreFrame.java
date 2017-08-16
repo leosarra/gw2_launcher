@@ -54,7 +54,8 @@ public class CoreFrame extends JFrame{
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+        arc.setEnabled(false);
+        bgdm.setEnabled(false);
         
         
         //Default settings for some elements of the CoreFrame
