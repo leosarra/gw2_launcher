@@ -46,7 +46,7 @@ public class DirChooser implements Task {
     }
     public void esegui() {
     	//Functor pattern
-    	Operations.LogSetup(log);
+    	Operations.LogSetup(log,false);
         if (!fired) {
 
 

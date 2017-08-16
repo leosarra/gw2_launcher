@@ -29,11 +29,12 @@ public class Operations {
 	static Logger log = Logger.getLogger( Main.class.getName() );
 	
 	
-	public static void LogSetup(Logger log) {
+	public static void LogSetup(Logger log, boolean operations) {
 		if (DEBUG) {
 			FileHandler fh = null;
 			try {
-				fh = new FileHandler("gw2_launcher_debug.txt", true);
+				if (operations) fh = new FileHandler("gw2_launcher_log_op.txt", true);
+				else fh = new FileHandler("gw2_launcher_log.txt", true);
 			} catch (SecurityException | IOException e1) {
 				e1.printStackTrace();
 			}   
@@ -54,8 +55,10 @@ public class Operations {
 	
 	public static void cleanOldLogger() {
 		if (DEBUG) {
-			File fl=new File("gw2_launcher_debug.txt");
+			File fl=new File("gw2_launcher_log.txt");
+			File fl2=new File("gw2_launcher_log_op.txt");
 			if (fl.exists()) fl.delete();
+			if (fl2.exists()) fl2.delete();
 		}
 		
 		
@@ -63,7 +66,7 @@ public class Operations {
 	
 	
 	public static void installArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	try {
 			dll.createNewFile();
@@ -87,36 +90,13 @@ public class Operations {
 	}
     
 	
-	public static void renameBGDMinstallArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
-		log.log( Level.INFO, "Renaming BGDM and installing Arc [renameBGDMinstallArc]");
-    	File dll=new File(path+"\\bin64\\d3d9.dll");
-    	File chainload=new File(path+"\\bin64\\d3d9_chainload.dll");
-    	if (chainload.exists()) chainload.delete();
-    	try {
-			Files.copy(dll.toPath(), chainload.toPath());
-		} catch (IOException e1) {
-			
-			e1.printStackTrace();
-		}
-        Operations.downloadINI(cf,path); //.ini is required for the first install
-        Operations.updateDll(cf,path); //placehold swapped with the last version of the dll
-        log.log( Level.INFO, "Everything went smooth [renameBGDMinstallArc]");
-            //Change status and color of JLabel status
-         //   log.log( Level.INFO,"ArcDPS installed succesfully");
-		cf.setMode("both");
-		cf.status.setText("- ArcDPS was installed successfully");
-		cf.status.setForeground(new Color(0,102,51));;
-		Operations.closeLogHandlers(log);
-        }
-	
-	
 	//Delete d3d9.dll of Arc
 	public static void removeArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Removing arc [removeArc]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File dll_old=new File(path+"\\bin64\\d3d9_old.dll");
+		File dll_disabled=new File(path+"\\bin64\\d3d9_disabled.dll");
 		File ini= new File(path+"\\bin64\\arcdps.ini");
 		if (dll.exists()) {
 			dll.delete();
@@ -124,6 +104,8 @@ public class Operations {
 		if (dll_old.exists()) {
 			dll_old.delete();
 		}
+		if (dll_disabled.exists()) dll_disabled.delete();
+		
 		if(ini.exists()) ini.delete();
 		log.log( Level.INFO, "Everything went smooth [removeArc]");
 		cf.setMode("none");
@@ -136,7 +118,7 @@ public class Operations {
 
 
 	public static void downloadINI(CoreFrame cf, String path){
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
     	File ini=new File(path+"\\bin64\\arcdps.ini");
     	if (ini.exists()) ini.delete();     	//Delete existing ini file to prevent an exception
     	log.log( Level.INFO,"Downloading configuration file");
@@ -158,7 +140,7 @@ public class Operations {
 	
 	
 	public static void updateDll(CoreFrame cf, String path){
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		File dll=new File(path+"\\bin64\\d3d9.dll");
         FileInputStream fis = null;
         String md5_new;
@@ -173,6 +155,7 @@ public class Operations {
             char md5Chars[] = Hex.encodeHex(data);
             md5_old = String.valueOf(md5Chars); //md5 of the dll
 
+            fis.close();
             File md5_download= new File(path+"\\bin64\\arcdps.dll.md5sum"); //Path of the md5 that is going to be downloaded
             //Download the md5 of the last version of ArcDPS from the website
             FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/d3d9.dll.md5sum"),md5_download, 10000, 10000); 
@@ -189,7 +172,7 @@ public class Operations {
                 //Create backup copy
                 Files.copy(dll.toPath(), backup.toPath());
                 //Delete old copy
-                dll.delete();
+
                 //Change text of the JLabel status
                 cf.status.setText("- Downloading new version...");
                 //Download new dll
@@ -206,7 +189,6 @@ public class Operations {
             //Delete downloaded md5
             log.log( Level.INFO,"Removing downloaded md5");
             md5_download.delete();
-            fis.close();
 
 
 

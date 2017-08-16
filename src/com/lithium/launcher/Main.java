@@ -23,7 +23,7 @@ public class Main {
     	//Create Logger
     	Logger log = Logger.getLogger( Main.class.getName() );
     	Operations.cleanOldLogger();
-    	Operations.LogSetup(log);
+    	Operations.LogSetup(log,false);
     	
     	//Create configuration file if it doesn't exist already
         File config= new File("gw2_launcher.cfg");

@@ -42,7 +42,7 @@ public class FastUpdater implements Runnable {
         old_dll= new File(path+"\\bin64\\d3d9_old.dll"); //backup dll of ArcDPS
         disabled_dll= new File(path+"\\bin64\\d3d9_disabled.dll"); //disabled dll of ArcDPS
         this.type=type;
-        Operations.LogSetup(log);
+        Operations.LogSetup(log,false);
     }
 
 
@@ -57,17 +57,25 @@ public class FastUpdater implements Runnable {
         	updateDll(); //if d3d9.dll exists check if update is needed
             runGW2Fast(type); //Game is ready to be launched
         }
-        if(!ini.exists()) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
-        	int dialogButton = 0;
-        	log.log( Level.INFO,"archdps.ini not found");
-        	JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);
-        	if (dialogButton==0){
-        		downloadINI(); //Method used to download the .ini
-        	}
-        	
-        }
+        
+        else if (!check && disabled_dll.exists()){ 
+        	//If d3d9.dll is not detected but a backup is found. Rename the backup and check for an update
+            try {
+            	log.log( Level.INFO,"d3d9.dll not found but d3d9_disabled exists");
+                Files.copy(disabled_dll.toPath(), dll.toPath());
+                disabled_dll.delete();
+            } catch (IOException e) {
+                e.printStackTrace();
+              //Change status and color of JLabel status
+                cf.status.setText("  Cannot connect to the update server");
+                cf.status.setForeground(Color.RED);
+            }
+            updateDll(); //check for update just in case
+            runGW2Fast(type); //Game is ready to be launched
 
-        if (!check && old_dll.exists()){
+        }
+        
+        else if (!check && old_dll.exists()){
         	//If d3d9.dll is not detected but a backup is found. Rename the backup and check for an update
         	log.log( Level.INFO,"d3d9.dll not found but d3d9_old exists");
         	try {
@@ -85,24 +93,9 @@ public class FastUpdater implements Runnable {
 
         }
 
-        if (!check && disabled_dll.exists()){ 
-        	//If d3d9.dll is not detected but a backup is found. Rename the backup and check for an update
-            try {
-            	log.log( Level.INFO,"d3d9.dll not found but d3d9_disabled exists");
-                Files.copy(disabled_dll.toPath(), dll.toPath());
-                disabled_dll.delete();
-            } catch (IOException e) {
-                e.printStackTrace();
-              //Change status and color of JLabel status
-                cf.status.setText("  Cannot connect to the update server");
-                cf.status.setForeground(Color.RED);
-            }
-            updateDll(); //check for update just in case
-            runGW2Fast(type); //Game is ready to be launched
 
-        }
         
-        if (!check && !old_dll.exists()){
+        else if (!check && !old_dll.exists()){
         	log.log( Level.INFO,"d3d9.dll, d3d9_old.dll, d3d9_disabled.dll not found");
         	//if there is not d3d9.dll and no backup it means that ArcDPS is not installed
             int dialogButton = JOptionPane.YES_NO_OPTION;
@@ -135,6 +128,19 @@ public class FastUpdater implements Runnable {
                 cf.status.setForeground(Color.RED);
             }
         }
+        
+        
+        if(!ini.exists()) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
+        	int dialogButton = 0;
+        	log.log( Level.INFO,"archdps.ini not found");
+        	JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);
+        	if (dialogButton==0){
+        		downloadINI(); //Method used to download the .ini
+        	}
+        	
+        }
+
+        
     }
 
     

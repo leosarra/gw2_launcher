@@ -39,7 +39,7 @@ public class CoreUpdater implements Runnable {
         dll=new File(path+"\\bin64\\d3d9.dll");  //dll of ArcDPS or BGDM
         old_dll= new File(path+"\\bin64\\d3d9_old.dll"); //backup dll of ArcDPS or BGDM
         disabled_dll= new File(path+"\\bin64\\d3d9_disabled.dll"); //disabled dll of ArcDPS or BGDM
-        Operations.LogSetup(log);
+        Operations.LogSetup(log,false);
     }
     
     //run() from interface "Runnable"
@@ -54,6 +54,54 @@ public class CoreUpdater implements Runnable {
             Operations.updateDll(cf,path); //if d3d9.dll exists check if update is needed
 
         }
+        
+        else if (!check && disabled_dll.exists()){ 
+        	//If d3d9.dll is not detected but a disabled dll is found. Rename "disabled_d3d9.dll" and check for an update
+            try {
+            	log.log( Level.INFO,"d3d9.dll not found but d3d9_disabled exists");
+                Files.copy(disabled_dll.toPath(), dll.toPath());
+                disabled_dll.delete();
+                changeModProp("arc_only");
+            } catch (IOException e) {
+                e.printStackTrace();
+              //Change status and color of JLabel status
+                cf.status.setText("- Cannot restore ArcDPS");
+                cf.status.setForeground(Color.RED);
+            }
+            Operations.updateDll(cf,path); //check for update just in case
+            System.out.print("ciao");
+        }
+        
+
+        else if (!check && old_dll.exists()){ 
+        	//If d3d9.dll is not detected but a backup is found. Rename the backup and check for an update
+        	log.log( Level.INFO,"d3d9.dll not found but d3d9_old exists");
+            try {
+                Files.copy(old_dll.toPath(), dll.toPath());
+                old_dll.delete();
+                changeModProp("arc_only");
+                Thread.sleep(3000);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+              //Change status and color of JLabel status
+                cf.status.setText("- Cannot connect to the update server");
+                cf.status.setForeground(Color.RED);
+            }
+            
+            Operations.updateDll(cf,path);
+
+        }
+        
+        
+
+        else {
+        	log.log( Level.INFO,"d3d9.dll, d3d9_old.dll, d3d9_disabled.dll not found");
+        	//if there is not d3d9.dll and no backup it means that ArcDPS or BGDM is not installed
+        	cf.startwith.setEnabled(false);
+        	
+        }
+        
+        
         if(!ini.exists() && (cf.getMode().equals("arc_only"))) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
         	int dialogButton = 0;
         	log.log( Level.INFO,"archdps.ini not found");
@@ -65,47 +113,6 @@ public class CoreUpdater implements Runnable {
         }
         
 
-        if (!check && old_dll.exists()){ 
-        	//If d3d9.dll is not detected but a backup is found. Rename the backup and check for an update
-        	log.log( Level.INFO,"d3d9.dll not found but d3d9_old exists");
-            try {
-                Files.copy(old_dll.toPath(), dll.toPath());
-                old_dll.delete();
-                changeModProp("arc_only");
-            } catch (IOException e) {
-                e.printStackTrace();
-              //Change status and color of JLabel status
-                cf.status.setText("- Cannot connect to the update server");
-                cf.status.setForeground(Color.RED);
-            }
-            
-            Operations.updateDll(cf,path);
-
-        }
-        
-        if (!check && disabled_dll.exists()){ 
-        	//If d3d9.dll is not detected but a disabled dll is found. Rename "disabled_d3d9.dll" and check for an update
-            try {
-            	log.log( Level.INFO,"d3d9.dll not found but d3d9_disabled exists");
-                Files.copy(disabled_dll.toPath(), dll.toPath());
-                disabled_dll.delete();
-                changeModProp("arc_only");
-            } catch (IOException e) {
-                e.printStackTrace();
-              //Change status and color of JLabel status
-                cf.status.setText("- Cannot connect to the update server");
-                cf.status.setForeground(Color.RED);
-            }
-            Operations.updateDll(cf,path); //check for update just in case
-
-        }
-
-        if (!check && !old_dll.exists()){
-        	log.log( Level.INFO,"d3d9.dll, d3d9_old.dll, d3d9_disabled.dll not found");
-        	//if there is not d3d9.dll and no backup it means that ArcDPS or BGDM is not installed
-        	cf.startwith.setEnabled(false);
-        	
-        }
         Operations.closeLogHandlers(log);
     }
 
