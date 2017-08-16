@@ -46,13 +46,14 @@ public class CoreFrame extends JFrame{
 		}
 
         //Settings of the CoreFrame object 
-        this.setSize(300,373);
+        this.setSize(325,373);
         this.setVisible(true);
         getContentPane().setLayout(new GridLayout(1,2));
-        this.setResizable(true);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+        arc.setEnabled(false);
+
         
         
         //Default settings for some elements of the CoreFrame
@@ -139,18 +140,12 @@ public class CoreFrame extends JFrame{
     		status.setText("- ArcDPS is not installed");
     		status.setForeground(Color.RED);
     	}
-    	else if (mode.equals("both")) {
-    		arc.setText("Remove ArcDPS");
-    		
-    	}
-    	else if (mode.equals("arc_only")) {
+
+    	else {
     		arc.setText("Remove ArcDPS");
     		
     	}
     	
-    	else {
-    		arc.setText("Install ArcDPS");
-    	}
     }
     
     

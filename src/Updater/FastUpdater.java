@@ -42,7 +42,7 @@ public class FastUpdater implements Runnable {
         old_dll= new File(path+"\\bin64\\d3d9_old.dll"); //backup dll of ArcDPS
         disabled_dll= new File(path+"\\bin64\\d3d9_disabled.dll"); //disabled dll of ArcDPS
         this.type=type;
-        Operations.LogSetup(log);
+        Operations.LogSetup(log,false);
     }
 
 

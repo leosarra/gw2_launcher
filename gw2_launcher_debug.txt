@@ -1,0 +1,4 @@
+ago 16, 2017 2:54:20 AM com.lithium.launcher.Main main
+INFO: Found path, no autostart
+ago 16, 2017 2:54:20 AM Updater.CoreUpdater run
+INFO: d3d9.dll found

@@ -38,7 +38,7 @@ public class CoreUpdater implements Runnable {
         dll=new File(path+"\\bin64\\d3d9.dll");  //dll of ArcDPS or BGDM
         old_dll= new File(path+"\\bin64\\d3d9_old.dll"); //backup dll of ArcDPS or BGDM
         disabled_dll= new File(path+"\\bin64\\d3d9_disabled.dll"); //disabled dll of ArcDPS or BGDM
-        Operations.LogSetup(log);
+        Operations.LogSetup(log,false);
     }
     
     //run() from interface "Runnable"
@@ -105,6 +105,7 @@ public class CoreUpdater implements Runnable {
         	cf.startwith.setEnabled(false);
         	
         }
+        cf.arc.setEnabled(true);
         Operations.closeLogHandlers(log);
     }
 

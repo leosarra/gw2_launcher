@@ -13,27 +13,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import javax.swing.JOptionPane;
-
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 
 import com.lithium.launcher.Main;
 
 import Frame.CoreFrame;
-import Updater.CoreUpdater;
 
 
 public class Operations {
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	static Logger log = Logger.getLogger( Main.class.getName() );
 	
 	
-	public static void LogSetup(Logger log) {
+	public static void LogSetup(Logger log, boolean operations) {
 		if (DEBUG) {
 			FileHandler fh = null;
 			try {
-				fh = new FileHandler("gw2_launcher_debug.txt", true);
+				if (operations) fh = new FileHandler("gw2_launcher_log_op.txt", true);
+				else fh = new FileHandler("gw2_launcher_log.txt", true);
 			} catch (SecurityException | IOException e1) {
 				e1.printStackTrace();
 			}   
@@ -54,8 +52,10 @@ public class Operations {
 	
 	public static void cleanOldLogger() {
 		if (DEBUG) {
-			File fl=new File("gw2_launcher_debug.txt");
+			File fl=new File("gw2_launcher_log_op.txt");
+			File fl2=new File("gw2_launcher_log.txt");
 			if (fl.exists()) fl.delete();
+			if (fl2.exists()) fl2.delete();
 		}
 		
 		
@@ -63,7 +63,7 @@ public class Operations {
 	
 	
 	public static void installArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	try {
 			dll.createNewFile();
@@ -73,8 +73,8 @@ public class Operations {
 		}
     	
     	log.log( Level.INFO, "Installing Arc [InstallARC]");
-        
-    	Operations.downloadINI(cf,path); //.ini is required for the first install
+        File ini= new File(path+"\\bin64\\arcdps.ini");
+    	if (!ini.exists()) Operations.downloadINI(cf,path); //.ini is required for the first install
     	Operations.updateDll(cf,path); //placeholder swapped with the last version of the dll
         //Change status and color of JLabel status
         //log.log( Level.INFO,"ArcDPS installed succesfully");
@@ -88,7 +88,7 @@ public class Operations {
     
 	
 	public static void renameBGDMinstallArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Renaming BGDM and installing Arc [renameBGDMinstallArc]");
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	File chainload=new File(path+"\\bin64\\d3d9_chainload.dll");
@@ -99,7 +99,8 @@ public class Operations {
 			
 			e1.printStackTrace();
 		}
-        Operations.downloadINI(cf,path); //.ini is required for the first install
+    	File ini= new File(path+"\\bin64\\arcdps.ini");
+    	if (!ini.exists()) Operations.downloadINI(cf,path); //.ini is required for the first install
         Operations.updateDll(cf,path); //placehold swapped with the last version of the dll
         log.log( Level.INFO, "Everything went smooth [renameBGDMinstallArc]");
             //Change status and color of JLabel status
@@ -109,11 +110,11 @@ public class Operations {
 		cf.status.setForeground(new Color(0,102,51));;
 		Operations.closeLogHandlers(log);
         }
-	
+
 	
 	//Delete d3d9.dll of Arc
 	public static void removeArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Removing arc [removeArc]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File dll_old=new File(path+"\\bin64\\d3d9_old.dll");
@@ -133,10 +134,23 @@ public class Operations {
 		
 		
 	}
+ 
+	//Delete d3d9_chainload of BGDM
+	public static void removeBGDM(CoreFrame cf, String path) {
+		Operations.LogSetup(log,true);
+		log.log( Level.INFO, "Removing BGDM [removeBGMD]");
+		File dll=new File(path+"\\bin64\\d3d9.dll");
+		File dll_2= new File(path+"\\bin64\\bgdm.dll");
+		if (dll.exists()) dll.delete();
+		if(dll_2.exists()) dll_2.delete();
+		cf.setMode("none");
+		log.log( Level.INFO, "Everything went smooth [removeBGMD]");
+		Operations.closeLogHandlers(log);
+	}
 
-
-	public static void downloadINI(CoreFrame cf, String path){
-		Operations.LogSetup(log);
+	public static synchronized  void downloadINI(CoreFrame cf, String path){
+		Operations.closeLogHandlers(log);
+		Operations.LogSetup(log,true);
     	File ini=new File(path+"\\bin64\\arcdps.ini");
     	if (ini.exists()) ini.delete();     	//Delete existing ini file to prevent an exception
     	log.log( Level.INFO,"Downloading configuration file");
@@ -157,8 +171,8 @@ public class Operations {
 	
 	
 	
-	public static void updateDll(CoreFrame cf, String path){
-		Operations.LogSetup(log);
+	public static synchronized  void updateDll(CoreFrame cf, String path){
+		Operations.LogSetup(log,true);
 		File dll=new File(path+"\\bin64\\d3d9.dll");
         FileInputStream fis = null;
         String md5_new;
