@@ -26,15 +26,16 @@ import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
 public class Operations {
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	static Logger log = Logger.getLogger( Main.class.getName() );
 	
 	
-	public static void LogSetup(Logger log) {
+	public static void LogSetup(Logger log, boolean operations) {
 		if (DEBUG) {
 			FileHandler fh = null;
 			try {
-				fh = new FileHandler("gw2_launcher_debug.txt", true);
+				if (operations) fh = new FileHandler("gw2_launcher_log_op.txt", true);
+				else fh = new FileHandler("gw2_launcher_log.txt", true);
 			} catch (SecurityException | IOException e1) {
 				e1.printStackTrace();
 			}   
@@ -55,8 +56,10 @@ public class Operations {
 	
 	public static void cleanOldLogger() {
 		if (DEBUG) {
-			File fl=new File("gw2_launcher_debug.txt");
+			File fl=new File("gw2_launcher_log_op.txt");
+			File fl2=new File("gw2_launcher_log.txt");
 			if (fl.exists()) fl.delete();
+			if (fl2.exists()) fl2.delete();
 		}
 		
 		
@@ -64,7 +67,7 @@ public class Operations {
 	
 	
 	public static void installArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	try {
 			dll.createNewFile();
@@ -89,7 +92,7 @@ public class Operations {
     
 	
 	public static void renameBGDMinstallArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Renaming BGDM and installing Arc [renameBGDMinstallArc]");
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	File chainload=new File(path+"\\bin64\\d3d9_chainload.dll");
@@ -114,7 +117,7 @@ public class Operations {
 	
 	//Remove arc and rename BGDM from d3d9_chainload.dll to d3d9.dll
 	public static void removeArcRenameBGDM(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Removing Arc and renaming BGDM [removeArcRenameBGDM]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File ini= new File(path+"\\bin64\\arcdps.ini");
@@ -139,7 +142,7 @@ public class Operations {
 	
 	//Delete d3d9.dll of Arc
 	public static void removeArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Removing arc [removeArc]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File dll_old=new File(path+"\\bin64\\d3d9_old.dll");
@@ -162,7 +165,7 @@ public class Operations {
         
 	//Delete d3d9_chainload of BGDM
 	public static void removeBGDM(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Removing BGDM [removeBGMD]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File dll_2= new File(path+"\\bin64\\bgdm.dll");
@@ -176,7 +179,7 @@ public class Operations {
 	}
 	
 	public static void removeChainloadBGDM(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Removing BGDM as chainload [removeChainloadBGDM]");
 		File dll=new File(path+"\\bin64\\d3d9_chainload.dll");
 		File dll_2= new File(path+"\\bin64\\bgdm.dll");
@@ -191,7 +194,7 @@ public class Operations {
 	
 	//Install d3d9_chainload of BGDM
 	public static void installBGDMwithArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Installing bgdm as chainload [installBGDMwithArc]");
 		File download = new File(path+"\\bgdm.zip");
 		try {
@@ -234,7 +237,7 @@ public class Operations {
 
 	//Install d3d9.dll of BGDM
 	public static void installBGDM(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
+		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Installing bgdm alone [installBGDM]");
 		File download = new File(path+"\\bgdm.zip");
 		try {
@@ -284,8 +287,9 @@ public class Operations {
     
 	
 	
-	public static void downloadINI(CoreFrame cf, String path){
-		Operations.LogSetup(log);
+	public static synchronized  void downloadINI(CoreFrame cf, String path){
+		Operations.closeLogHandlers(log);
+		Operations.LogSetup(log,true);
     	File ini=new File(path+"\\bin64\\arcdps.ini");
     	if (ini.exists()) ini.delete();     	//Delete existing ini file to prevent an exception
     	log.log( Level.INFO,"Downloading configuration file");
@@ -306,8 +310,8 @@ public class Operations {
 	
 	
 	
-	public static void updateDll(CoreFrame cf, String path){
-		Operations.LogSetup(log);
+	public static synchronized  void updateDll(CoreFrame cf, String path){
+		Operations.LogSetup(log,true);
 		File dll=new File(path+"\\bin64\\d3d9.dll");
         FileInputStream fis = null;
         String md5_new;
