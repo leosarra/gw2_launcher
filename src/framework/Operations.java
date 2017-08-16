@@ -79,6 +79,13 @@ public class Operations {
         
     	Operations.downloadINI(cf,path); //.ini is required for the first install
     	Operations.updateDll(cf,path); //placeholder swapped with the last version of the dll
+    	File backup = new File(path+"\\bin64\\d3d9_old.dll");
+    	if (backup.exists()) backup.delete();
+    	try {
+			Files.copy(dll.toPath(), backup.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         //Change status and color of JLabel status
         //log.log( Level.INFO,"ArcDPS installed succesfully");
         cf.setMode("arc_only");
