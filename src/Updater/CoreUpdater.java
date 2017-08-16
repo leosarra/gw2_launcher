@@ -80,8 +80,7 @@ public class CoreUpdater implements Runnable {
                 Files.copy(old_dll.toPath(), dll.toPath());
                 old_dll.delete();
                 changeModProp("arc_only");
-                Thread.sleep(3000);
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
               //Change status and color of JLabel status
                 cf.status.setText("- Cannot connect to the update server");
