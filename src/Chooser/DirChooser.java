@@ -52,23 +52,14 @@ public class DirChooser implements Task {
 
             boolean found = false;
 
-            fired = true;
-            //Workaround to implement an icon to the JFileChooser
-            JFrame icon= new JFrame();
-            try {
-				icon.setIconImage(ImageIO.read(new File("gw2_64_1-0.png")));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
+            fired = true;            
             f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             f.setDialogTitle("Select Guild Wars 2 directory");
 
             //Loop until "Cancel" is pressed or a valid directory is selected
             while (!found) {
-                int input = f.showDialog(icon, "Select");
-
+                //int input = f.showDialog(icon, "Select");
+            	int input = f.showDialog(null, "Select");
                 if (input == JFileChooser.APPROVE_OPTION) {
                     File file = f.getSelectedFile();
                     

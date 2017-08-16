@@ -36,15 +36,6 @@ public class CoreFrame extends JFrame{
         super("Guild Wars 2 Launcher");
         path_string=dir;
         
-        
-        //Adding icon
-        try {
-			this.setIconImage(ImageIO.read(new File("gw2_64_1-0.png")));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
         //Settings of the CoreFrame object 
         this.setSize(314,380);
         this.setVisible(true);
