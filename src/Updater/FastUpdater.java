@@ -54,7 +54,7 @@ public class FastUpdater implements Runnable {
         if (check){
         	//System.out.println("d3d9.dll exists");
         	log.log( Level.INFO,"d3d9.dll found");
-        	if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) updateDll(); //if d3d9.dll exists check if update is needed
+        	updateDll(); //if d3d9.dll exists check if update is needed
             runGW2Fast(type); //Game is ready to be launched
         }
         if(!ini.exists()) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
@@ -79,7 +79,7 @@ public class FastUpdater implements Runnable {
                 cf.status.setText("  Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
-        	if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) updateDll();
+        	updateDll();
             runGW2Fast(type); //Game is ready to be launched
  
 
@@ -97,7 +97,7 @@ public class FastUpdater implements Runnable {
                 cf.status.setText("  Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
-            if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) updateDll(); //check for update just in case
+            updateDll(); //check for update just in case
             runGW2Fast(type); //Game is ready to be launched
 
         }

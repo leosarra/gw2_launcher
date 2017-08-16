@@ -12,9 +12,12 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,11 +48,12 @@ public class CoreUpdater implements Runnable {
 
         if (check){
             //System.out.println("d3d9.dll exists");
+        	changeModProp("arc_only");
         	log.log( Level.INFO,"d3d9.dll found");
-            if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) Operations.updateDll(cf,path); //if d3d9.dll exists check if update is needed
+            Operations.updateDll(cf,path); //if d3d9.dll exists check if update is needed
 
         }
-        if(!ini.exists() && (cf.getMode().equals("both")|| cf.getMode().equals("arc_only"))) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
+        if(!ini.exists() && (cf.getMode().equals("arc_only"))) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
         	int dialogButton = 0;
         	log.log( Level.INFO,"archdps.ini not found");
         	JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);
@@ -66,13 +70,15 @@ public class CoreUpdater implements Runnable {
             try {
                 Files.copy(old_dll.toPath(), dll.toPath());
                 old_dll.delete();
+                changeModProp("arc_only");
             } catch (IOException e) {
                 e.printStackTrace();
               //Change status and color of JLabel status
                 cf.status.setText("- Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
-            if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) Operations.updateDll(cf,path);
+            
+            Operations.updateDll(cf,path);
 
         }
         
@@ -82,13 +88,14 @@ public class CoreUpdater implements Runnable {
             	log.log( Level.INFO,"d3d9.dll not found but d3d9_disabled exists");
                 Files.copy(disabled_dll.toPath(), dll.toPath());
                 disabled_dll.delete();
+                changeModProp("arc_only");
             } catch (IOException e) {
                 e.printStackTrace();
               //Change status and color of JLabel status
                 cf.status.setText("- Cannot connect to the update server");
                 cf.status.setForeground(Color.RED);
             }
-            if (cf.getMode().equals("arc_only")|| cf.getMode().equals("both")) Operations.updateDll(cf,path); //check for update just in case
+            Operations.updateDll(cf,path); //check for update just in case
 
         }
 
@@ -132,6 +139,27 @@ public class CoreUpdater implements Runnable {
         if (dialogButton==0) {
             CoreUpdater.runWithoutDPS(path);
         }
+
+    }
+    
+    public void changeModProp(String mode){
+
+        Properties prop = new Properties();
+        OutputStream output= null;
+        prop.put("mode", mode);
+        cf.setMode(mode);
+        try {
+
+            output = new FileOutputStream("gw2_launcher.cfg");
+            prop.store(output, "Config file for GW2 Launcher");
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
     

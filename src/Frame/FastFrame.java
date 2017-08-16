@@ -2,20 +2,10 @@ package Frame;
 
 import javax.swing.*;
 
-import com.lithium.launcher.Main;
 
-import framework.Operations;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Properties;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+
 
 @SuppressWarnings("serial")
 public class FastFrame extends JFrame{
@@ -31,7 +21,6 @@ public class FastFrame extends JFrame{
 	private String path_string;
     public JButton arc= new JButton("Install ArcDPS");
     public JButton bgdm= new JButton("Install BGDM");
-    public JLabel bgdm_label = new JLabel (" - BGDM is installed");
 	private String mode;
 
 	
@@ -52,19 +41,17 @@ public class FastFrame extends JFrame{
         }
         
         //JPanel setup 
-        JPanel grid=new JPanel(new GridLayout(3,1));
+        JPanel grid=new JPanel(new GridLayout(2,1));
         grid.setBorder(BorderFactory.createTitledBorder("Status"));
         
         //Color setup
         status.setForeground(Color.orange);
         path.setForeground(new Color(0, 102, 51));
-        bgdm_label.setForeground(new Color(0,102,51));
         
         //Add elements to the JPanel and FastFrame
-        this.add(grid);
+        getContentPane().add(grid);
         grid.add(path);
         grid.add(status);
-        grid.add(bgdm_label);
 
 
 
@@ -77,31 +64,15 @@ public class FastFrame extends JFrame{
     public void setMode(String mode) {
     	this.mode=mode;
     	if (mode.equals("none")) {
-    		bgdm.setText("Install BGDM");
     		arc.setText("Install ArcDPS");
-    		bgdm_label.setText("- BGDM is not installed");
-    		bgdm_label.setForeground(Color.RED);
     		status.setText("- ArcDPS is not installed");
     		status.setForeground(Color.RED);
-    		System.out.println("set");
     		
     	}
-    	else if (mode.equals("both")) {
-    		arc.setText("Remove ArcDPS");
-    		bgdm.setText("Remove BGDM");
-    		
-    	}
-    	else if (mode.equals("arc_only")) {
-    		arc.setText("Remove ArcDPS");
-    		bgdm.setText("Install BGDM");
-    		bgdm_label.setText("- BGDM is not installed");
-    		bgdm_label.setForeground(Color.RED);
-    		
-    	}
-    	
+
     	else {
-    		arc.setText("Install ArcDPS");
-    		bgdm.setText("Remove BGDM");
+    		arc.setText("Remove ArcDPS");
+    		
     	}
     }
     

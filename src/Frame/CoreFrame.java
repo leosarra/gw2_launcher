@@ -15,17 +15,15 @@ public class CoreFrame extends JFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public JButton startwith= new JButton("Run with addons");
+	public JButton startwith= new JButton("Run with ArcDPS");
     private JButton startwithout= new JButton("Run only Gw2");
     public JLabel status = new JLabel ("- Updater is starting...");
-    public JLabel bgdm_label = new JLabel (" - BGDM is installed");
 
     private JLabel path= new JLabel("- Guild Wars 2 executable found");
     private JLabel arg=new JLabel("Arguments: ");
     public JCheckBox autostart= new JCheckBox("Start with these settings each time (Fast-start)");
     public JCheckBox background= new JCheckBox("Hide the GUI when fast-start is activated ");
     public JButton arc= new JButton("Install ArcDPS");
-    public JButton bgdm= new JButton("Install BGDM");
     public JTextField arg_string=new JTextField(20);
     private String path_string;
     private JButton me= new JButton("?");
@@ -63,14 +61,12 @@ public class CoreFrame extends JFrame{
         status.setForeground(new Color(204,102,0));
         arg_string.setSize(3,5);
         path.setForeground(new Color(0,102,51));
-        bgdm_label.setForeground(new Color(0,102,51));
         
         //Setting up the action commands to be used by the listeners
         startwith.setActionCommand("with");
         startwithout.setActionCommand("without");
         background.setActionCommand("background");
         arc.setActionCommand("arc");
-        bgdm.setActionCommand("bgdm");
         
         
         //Create MyActionListener
@@ -78,14 +74,13 @@ public class CoreFrame extends JFrame{
         
         //Add Listeners
         arc.addActionListener(mal);
-        bgdm.addActionListener(mal);
         startwith.addActionListener(mal);
         startwithout.addActionListener(mal);
         background.addActionListener(mal);
         arg_string.addMouseListener(new MyMouseListener(this));
 
         //Creation of multiple JPanel
-        JPanel top =new JPanel (new GridLayout(3,1));
+        JPanel top =new JPanel (new GridLayout(2,1));
         JPanel bot = new JPanel(new FlowLayout());
         JPanel mid= new JPanel();
         JPanel sel=new JPanel((new FlowLayout(FlowLayout.LEADING)));
@@ -99,10 +94,8 @@ public class CoreFrame extends JFrame{
         sel.add(status);
         sel2.add(path);
         install.add(arc);
-        install.add(bgdm);
         top.add(sel2);
         top.add(sel);
-        top.add(bgdm_label);
         mid.setLayout(new BorderLayout(0, 0));
         mid.add(install, BorderLayout.NORTH);
         settings.add(arg);
@@ -142,31 +135,21 @@ public class CoreFrame extends JFrame{
     public void setMode(String mode) {
     	this.mode=mode;
     	if (mode.equals("none")) {
-    		bgdm.setText("Install BGDM");
     		arc.setText("Install ArcDPS");
-    		bgdm_label.setText("- BGDM is not installed");
-    		bgdm_label.setForeground(Color.RED);
     		status.setText("- ArcDPS is not installed");
     		status.setForeground(Color.RED);
-    		System.out.println("set");
-    		
     	}
     	else if (mode.equals("both")) {
     		arc.setText("Remove ArcDPS");
-    		bgdm.setText("Remove BGDM");
     		
     	}
     	else if (mode.equals("arc_only")) {
     		arc.setText("Remove ArcDPS");
-    		bgdm.setText("Install BGDM");
-    		bgdm_label.setText(" - BGDM is not installed");
-    		bgdm_label.setForeground(Color.RED);
     		
     	}
     	
     	else {
     		arc.setText("Install ArcDPS");
-    		bgdm.setText("Remove BGDM");
     	}
     }
     

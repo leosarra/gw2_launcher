@@ -29,18 +29,8 @@ public class MyActionListener implements ActionListener {
 
     	//if background checkbox is selected the autostart one will be selected automatically
     	if(e.getActionCommand().equals("arc")) {
-    		if(cf.getMode().equals("bgdm_only")) {
-    			
-    			Operations.renameBGDMinstallArc(cf, path);
-    			saveConfig(true);
-    			
-    		}
-    		else if(cf.getMode().equals("both")) {
-    			Operations.removeArcRenameBGDM(cf, path);
-
-    			saveConfig(true);
-    		}
-    		else if(cf.getMode().equals("none")) {
+    		
+    		if(cf.getMode().equals("none")) {
     			Operations.installArc(cf, path);
     			saveConfig(true);
     		}
@@ -52,34 +42,6 @@ public class MyActionListener implements ActionListener {
     		
     		cf.startwith.setEnabled(true);
 
-    	}
-    	
-    	
-    	
-    	if(e.getActionCommand().equals("bgdm")) {
-    		cf.startwith.setEnabled(true);
-    		if(cf.getMode().equals("none")) {
-    			Operations.installBGDM(cf,path);
-
-    			saveConfig(true);
-    		}
-    		else if (cf.getMode().equals("bgdm_only")) {
-    			Operations.removeBGDM(cf,path);
-    			saveConfig(true);
-    			
-    		}
-    		else if (cf.getMode().equals("arc_only")){
-    			Operations.installBGDMwithArc(cf,path);
-    			saveConfig(true);
-    			
-    			
-    		}
-    		else {
-    			Operations.removeChainloadBGDM(cf,path);
-    			saveConfig(true);
-    		}
-
-    		
     	}
 
     	if(e.getActionCommand().equals("background")){
@@ -108,6 +70,8 @@ public class MyActionListener implements ActionListener {
             //disable arcdps dll
             CoreUpdater.runWithoutDPS(path);
             runGW2();
+            cf.dispose();
+            System.exit(0);
 
         }
 
@@ -162,6 +126,7 @@ public class MyActionListener implements ActionListener {
             exe.addFirst(path+"\\Gw2-64.exe");
             Process process = new ProcessBuilder(exe).start();
             cf.dispose();
+            System.exit(0);
         } catch (IOException e1) {
             e1.printStackTrace();
         }

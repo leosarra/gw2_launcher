@@ -22,8 +22,7 @@ import com.lithium.launcher.Main;
 
 import Frame.CoreFrame;
 import Updater.CoreUpdater;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
+
 
 public class Operations {
 	private static final boolean DEBUG = false;
@@ -111,30 +110,6 @@ public class Operations {
 		Operations.closeLogHandlers(log);
         }
 	
-	//Remove arc and rename BGDM from d3d9_chainload.dll to d3d9.dll
-	public static void removeArcRenameBGDM(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
-		log.log( Level.INFO, "Removing Arc and renaming BGDM [removeArcRenameBGDM]");
-		File dll=new File(path+"\\bin64\\d3d9.dll");
-		File ini= new File(path+"\\bin64\\arcdps.ini");
-		File chainload=new File(path+"\\bin64\\d3d9_chainload.dll");
-		if (dll.exists()) dll.delete();
-		if(ini.exists()) ini.delete();
-		try {
-			Files.copy(chainload.toPath(), dll.toPath());
-			cf.setMode("bgdm_only");
-			cf.status.setText("- ArcDPS not installed");
-			cf.status.setForeground(Color.RED);
-		} catch (IOException e1) {
-			log.log( Level.SEVERE, "Exception IO [removeArcRenameBGDM]");
-			e1.printStackTrace();
-			
-		}
-		
-		Operations.closeLogHandlers(log);
-		
-		
-	}
 	
 	//Delete d3d9.dll of Arc
 	public static void removeArc(CoreFrame cf, String path) {
@@ -158,131 +133,8 @@ public class Operations {
 		
 		
 	}
-        
-	//Delete d3d9_chainload of BGDM
-	public static void removeBGDM(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
-		log.log( Level.INFO, "Removing BGDM [removeBGMD]");
-		File dll=new File(path+"\\bin64\\d3d9.dll");
-		File dll_2= new File(path+"\\bin64\\bgdm.dll");
-		if (dll.exists()) dll.delete();
-		if(dll_2.exists()) dll_2.delete();
-		cf.bgdm_label.setText("- BGDM not installed");
-		cf.bgdm_label.setForeground(Color.RED);
-		cf.setMode("none");
-		log.log( Level.INFO, "Everything went smooth [removeBGMD]");
-		Operations.closeLogHandlers(log);
-	}
-	
-	public static void removeChainloadBGDM(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
-		log.log( Level.INFO, "Removing BGDM as chainload [removeChainloadBGDM]");
-		File dll=new File(path+"\\bin64\\d3d9_chainload.dll");
-		File dll_2= new File(path+"\\bin64\\bgdm.dll");
-		if (dll.exists()) dll.delete();
-		if(dll_2.exists()) dll_2.delete();
-		cf.bgdm_label.setText("- BGDM not installed");
-		cf.bgdm_label.setForeground(Color.RED);
-		cf.setMode("arc_only");
-		log.log( Level.INFO, "Everything went smooth [removeChainloadBGMD]");
-		Operations.closeLogHandlers(log);
-	}
-	
-	//Install d3d9_chainload of BGDM
-	public static void installBGDMwithArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
-		log.log( Level.INFO, "Installing bgdm as chainload [installBGDMwithArc]");
-		File download = new File(path+"\\bgdm.zip");
-		try {
-			FileUtils.copyURLToFile(new URL("https://goo.gl/VvhLcx"),download, 10000, 10000);
-			ZipFile zipFile=new ZipFile(path+"\\bgdm.zip");
-			zipFile.extractAll(path);
-			File dll_config=new File(path+"\\bgdm.dll");
-			File dll_destination=new File(path+"\\bin64\\bgdm.dll");
-			if (dll_destination.exists()) dll_destination.delete();
-			Files.copy(dll_config.toPath(), dll_destination.toPath());
-			
-			File d3d9=new File(path+"\\d3d9.dll");
-			File d3d9_dest=new File(path+"\\bin64\\d3d9_chainload.dll");
-			if (d3d9_dest.exists()) d3d9_dest.delete();
-			Files.copy(d3d9.toPath(), d3d9_dest.toPath());
-			
-			File d3d9_old=new File(path+"\\d3d9.dll");
-			if (d3d9.exists()) d3d9.delete();
-			File bgdm_old=new File(path+"\\bgdm.dll");
-			if (bgdm_old.exists()) bgdm_old.delete();
-			if(download.exists()) download.delete();
-			//Change JLabel's text + color
-			cf.bgdm_label.setText(" - BGDM was installed successfully");
-			cf.bgdm_label.setForeground(new Color(0,102,51));
-			cf.setMode("both");
-			log.log( Level.INFO, "Everything went smooth [installBGDMwithArc]");
 
-			
-		} catch (IOException | ZipException e) {
-			// TODO Auto-generated catch block
-			cf.bgdm_label.setText("- Cannot download BGDM, check your internet");
-			cf.bgdm_label.setForeground(Color.RED);
-			log.log( Level.INFO, "IO/Zip Exception [installBGDMwithArc]");
-			e.printStackTrace();
-		}
-		Operations.closeLogHandlers(log);
-		
-	}
-	
 
-	//Install d3d9.dll of BGDM
-	public static void installBGDM(CoreFrame cf, String path) {
-		Operations.LogSetup(log);
-		log.log( Level.INFO, "Installing bgdm alone [installBGDM]");
-		File download = new File(path+"\\bgdm.zip");
-		try {
-			//download bgdm from server
-			FileUtils.copyURLToFile(new URL("https://goo.gl/VvhLcx"),download, 10000, 10000);
-			ZipFile zipFile=new ZipFile(path+"\\bgdm.zip");
-			zipFile.extractAll(path); //extract zip
-			File dll_config=new File(path+"\\bgdm.dll");
-			File dll_destination=new File(path+"\\bin64\\bgdm.dll");
-			if (dll_destination.exists()) dll_destination.delete();
-			Files.copy(dll_config.toPath(), dll_destination.toPath());
-			File d3d9=new File(path+"\\d3d9.dll");
-			File d3d9_dest=new File(path+"\\bin64\\d3d9.dll");
-			if (d3d9_dest.exists()) d3d9_dest.delete();
-			Files.copy(d3d9.toPath(), d3d9_dest.toPath());
-			
-			//cleanup
-			File d3d9_old=new File(path+"\\d3d9.dll");
-			if (d3d9.exists()) d3d9.delete();
-			File bgdm_old=new File(path+"\\bgdm.dll");
-			if (bgdm_old.exists()) bgdm_old.delete();
-
-			if(download.exists()) download.delete();
-			
-			//Change JLabel text and status
-			cf.bgdm_label.setText(" - BGDM was installed successfully");
-			cf.setMode("bgdm_only");
-			cf.bgdm_label.setForeground(new Color(0,102,51));
-			log.log( Level.INFO, "Everything went smooth [installBGDM]");
-			
-		} catch (IOException | ZipException e) {
-			// TODO Auto-generated catch block
-			cf.bgdm_label.setText("- Cannot download BGDM, check your internet");
-			cf.bgdm_label.setForeground(Color.RED);
-			log.log( Level.INFO, "IO/Zip exception [installBGDM]");
-			e.printStackTrace();
-			
-			
-		}
-		Operations.closeLogHandlers(log);
-		
-		
-		
-		
-	}
-	
-    
-	
-	
 	public static void downloadINI(CoreFrame cf, String path){
 		Operations.LogSetup(log);
     	File ini=new File(path+"\\bin64\\arcdps.ini");
