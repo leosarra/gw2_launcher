@@ -28,11 +28,14 @@ It requires the [Java Runtime Environment](https://www.java.com/it/download/) to
 3. Execute the launcher the first time and change the settings the way you want.
 4. Remember to use the shortcut everytime you want to lunch Guild Wars 2.
 
+
 ### Download
 - [For Windows x64](https://www.dropbox.com/s/e83yvt4jtpdblew/Gw2-Launcher.exe?dl=0)
 	
 
-	
+### Issues
+- This program isn't signed with a certificate so Windows could stop it's execution because it comes from "an unknown developer". You can fix that by changing "Smartscreen settings" in Windows Defender Security Center from "Block" to "Warn", this change will enable you to skip the warning.
+
 ## Acknowledgments
 
 * Huge thanks to deltaconnected for his work on ArcDPS and his perseverance in releasing updates :)
