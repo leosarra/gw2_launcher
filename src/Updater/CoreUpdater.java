@@ -69,7 +69,6 @@ public class CoreUpdater implements Runnable {
                 cf.status.setForeground(Color.RED);
             }
             Operations.updateDll(cf,path); //check for update just in case
-            System.out.print("ciao");
         }
         
 
