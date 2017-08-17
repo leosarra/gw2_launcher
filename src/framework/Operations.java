@@ -65,7 +65,7 @@ public class Operations {
 	}
 	
 	
-	public static void installArc(CoreFrame cf, String path) {
+	public static synchronized void installArc(CoreFrame cf, String path) {
 		Operations.LogSetup(log,true);
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	try {
@@ -98,7 +98,7 @@ public class Operations {
     
 	
 	//Delete d3d9.dll of Arc
-	public static void removeArc(CoreFrame cf, String path) {
+	public static synchronized void removeArc(CoreFrame cf, String path) {
 		Operations.LogSetup(log,true);
 		log.log( Level.INFO, "Removing arc [removeArc]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
@@ -124,7 +124,7 @@ public class Operations {
 	}
 
 
-	public static void downloadINI(CoreFrame cf, String path){
+	public static synchronized void downloadINI(CoreFrame cf, String path){
 		Operations.LogSetup(log,true);
     	File ini=new File(path+"\\bin64\\arcdps.ini");
     	if (ini.exists()) ini.delete();     	//Delete existing ini file to prevent an exception
@@ -146,7 +146,7 @@ public class Operations {
 	
 	
 	
-	public static void updateDll(CoreFrame cf, String path){
+	public static synchronized void updateDll(CoreFrame cf, String path){
 		Operations.LogSetup(log,true);
 		File dll=new File(path+"\\bin64\\d3d9.dll");
         FileInputStream fis = null;
