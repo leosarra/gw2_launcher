@@ -17,7 +17,7 @@ It requires the [Java Runtime Environment](https://www.java.com/it/download/) to
 - **Backup:** A backup version of the previously version of the addon will be stored in the Guild Wars 2 / bin64 directory with the name d3d9_old.dll.
 - **Light on resources:** The updater doesn't run in background during the daily-use of your computer or during your play sessions. It runs only for the time needed to update the dll, usually around 1-2 seconds, at the start of Guild Wars 2 then it terminates automatically.
 - **Configuration download:** Each time it checks if archdps.ini exists and and if it were not the launcher will ask if the user would like to automatically download an archdps.ini with default settings.
-- **Fast-start:** The launcher comes with an autostart feature and one to hide the GUI. The update process will be completely invisible and will cause just a slightly delay before the launch of the official launcher.
+- **Fast-start:** The launcher comes with an autostart feature and one to hide the GUI. The update process will be completely invisible and will not require any additional input from the user.
 - **Freedom of choice:** It provides the user the ability to decide to run GW2 with or without the addons at anytime.
 
 
@@ -26,7 +26,7 @@ It requires the [Java Runtime Environment](https://www.java.com/it/download/) to
 1. Place the Gw2-Launcher.exe in the Guild Wars 2 folder (same path of Gw2-64.exe).
 2. Create a shortcut to the launcher and place it where you like (e.g, Desktop).
 3. Execute the launcher the first time and change the settings the way you want.
-4. Remember to use the shortcut everytime you want to lunch Guild Wars 2.
+4. Remember to use the shortcut everytime you want to launch Guild Wars 2.
 
 
 ### Download
