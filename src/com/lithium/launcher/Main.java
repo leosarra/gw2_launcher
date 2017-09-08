@@ -99,6 +99,7 @@ public class Main {
         //Else If currentDir is valid we don't need to use the JFileChooser
         else if (DirChooser.validDir(currentDir)){
         	log.log( Level.INFO, "Path not found, no autostart, but valid current dir");
+        	Operations.removeReshadeLoader(currentDir);
             CoreFrame gui = new CoreFrame(currentDir);
             Operations.closeLogHandlers(log);
             Thread t1 = new Thread(new CoreUpdater(gui, currentDir));
@@ -115,6 +116,7 @@ public class Main {
             te.perform(dir);
             if(!dir.getCancel() && dir.isFired()) {
                 if (dir.getJFileChooser().getSelectedFile()==null) System.exit(0);
+            	Operations.removeReshadeLoader(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
                 CoreFrame gui = new CoreFrame(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
                 gui.setMode(prop.getProperty("mode","none"));
                 Thread t1 = new Thread(new CoreUpdater(gui, dir.getJFileChooser().getSelectedFile().getAbsolutePath()));

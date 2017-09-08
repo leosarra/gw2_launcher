@@ -118,7 +118,6 @@ public class DirChooser implements Task {
          
         OutputStream output= null;
         prop.put("path", path);
-        System.out.println("Scrivo");
         try {
 
             output = new FileOutputStream("gw2_launcher.cfg");

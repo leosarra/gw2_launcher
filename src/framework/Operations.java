@@ -95,7 +95,7 @@ public class Operations {
     
 	public static synchronized void installLoaderReshade(String path) {
 		Operations.LogSetup(log,true);
-		log.log( Level.INFO, "Installing reshade support (laoder) [installLoaderReshade]");
+		log.log( Level.INFO, "Installing reshade support (loader) [installLoaderReshade]");
 		File download = new File(path+"\\bin64\\d3d9_chainload.dll");
 		if (!download.exists()) {
 		try {
@@ -140,6 +140,13 @@ public class Operations {
 		
 	}
 
+	public static synchronized void removeReshadeLoader(String path) {
+		System.out.println("entro");
+		File reshadeLoader = new File(path+"\\bin64\\d3d9_chainload.dll");
+		if (reshadeLoader.exists()) reshadeLoader.delete();
+		
+		
+	}
 
 	public static synchronized void downloadINI(CoreFrame cf, String path){
 		Operations.LogSetup(log,true);
