@@ -12,6 +12,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import java.util.zip.ZipException;
 
 import javax.swing.JOptionPane;
 
@@ -93,10 +94,29 @@ public class Operations {
 		cf.status.setText("- ArcDPS was installed successfully");
 		cf.status.setForeground(new Color(0,102,51));
 		Operations.closeLogHandlers(log);
+		
         
 	}
     
-	
+	public static synchronized void installLoaderReshade(String path) {
+		Operations.LogSetup(log,true);
+		log.log( Level.INFO, "Installing reshade support (laoder) [installLoaderReshade]");
+		File download = new File(path+"\\bin64\\d3d9_chainload.dll");
+		if (!download.exists()) {
+		try {
+			FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/reshade_loader/d3d9_chainload.dll"),download, 10000, 10000);
+		 log.log( Level.INFO, "Everything went smooth [installBGDMwithArc]");
+
+		 } catch (IOException e) {
+	    // TODO Auto-generated catch block
+		 log.log( Level.INFO, "IO/Zip Exception [installLoaderReshade]");
+		 e.printStackTrace();
+		 }
+		}
+		Operations.closeLogHandlers(log);
+				
+	}
+		
 	//Delete d3d9.dll of Arc
 	public static synchronized void removeArc(CoreFrame cf, String path) {
 		Operations.LogSetup(log,true);
@@ -104,6 +124,7 @@ public class Operations {
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File dll_old=new File(path+"\\bin64\\d3d9_old.dll");
 		File dll_disabled=new File(path+"\\bin64\\d3d9_disabled.dll");
+		File reshadeLoader = new File(path+"\\bin64\\d3d9_chainload.dll");
 		File ini= new File(path+"\\bin64\\arcdps.ini");
 		if (dll.exists()) {
 			dll.delete();
@@ -112,6 +133,7 @@ public class Operations {
 			dll_old.delete();
 		}
 		if (dll_disabled.exists()) dll_disabled.delete();
+		if (reshadeLoader.exists()) reshadeLoader.delete();
 		
 		if(ini.exists()) ini.delete();
 		log.log( Level.INFO, "Everything went smooth [removeArc]");
@@ -214,6 +236,7 @@ public class Operations {
         }
         
         Operations.closeLogHandlers(log);
+        Operations.installLoaderReshade(path);
 
     }
 
