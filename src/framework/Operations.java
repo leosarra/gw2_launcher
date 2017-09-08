@@ -12,17 +12,12 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-import java.util.zip.ZipException;
-
-import javax.swing.JOptionPane;
-
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 
 import com.lithium.launcher.Main;
 
 import Frame.CoreFrame;
-import Updater.CoreUpdater;
 
 
 public class Operations {
