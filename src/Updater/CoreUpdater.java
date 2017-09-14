@@ -32,10 +32,8 @@ public class CoreUpdater implements Runnable {
 	private File old_dll;
 	private File disabled_dll;
 	private static Logger log = Logger.getLogger( CoreUpdater.class.getName() );
+
 	
-    /**
-     * @wbp.parser.entryPoint
-     */
     public CoreUpdater(CoreFrame cf, String path){
         this.cf=cf;
         this.path=path;
