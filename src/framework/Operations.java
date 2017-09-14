@@ -21,7 +21,7 @@ import Frame.CoreFrame;
 
 
 public class Operations {
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	static Logger log = Logger.getLogger( Main.class.getName() );
 	
 	
@@ -169,7 +169,43 @@ public class Operations {
     }
 	
 	
+	//method used to download the Buildtemplates' dll
+	public static synchronized int installBTempl(CoreFrame cf, String path){
+		Operations.LogSetup(log,true);
+    	File btempl=new File(path+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
+    	if (btempl.exists()) btempl.delete();     	//Delete existing ini file to prevent an exception
+    	log.log( Level.INFO,"Downloading Buildtemplates dll");
+    	try {
+    		//Download default configuration from the website
+			FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/buildtemplates/d3d9_arcdps_buildtemplates.dll"),btempl, 10000, 10000);
+			log.log( Level.INFO,"Buildtemplates funcionality installed successfully");
+			cf.btempl.setText("Remove Buildtemplates");
+		//Exceptions if something goes wrong (Connection/IO)
+    	} catch (IOException e) {
+			
+			e.printStackTrace();
+			cf.status.setText("- Cannot connect to the update server");
+            cf.status.setForeground(Color.RED);
+            log.log( Level.SEVERE,"IOException when downloading Buildtemplates dll");
+            return -1;
+		}
+    	Operations.closeLogHandlers(log);
+    	return 0;
+    }
 	
+	
+	//method used to remove the buildtemplates' dll
+	public static synchronized int removeBTempl(CoreFrame cf, String path){
+		Operations.LogSetup(log,true);
+    	File btempl=new File(path+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
+    	if (btempl.exists()) btempl.delete();     	//Delete existing dll 
+    	log.log( Level.INFO,"Buildtemplates dll removed");
+    	Operations.closeLogHandlers(log);
+    	return 0;
+    }
+	
+	
+	//used to update arcDPS
 	public static synchronized void updateDll(CoreFrame cf, String path){
 		Operations.LogSetup(log,true);
 		File dll=new File(path+"\\bin64\\d3d9.dll");

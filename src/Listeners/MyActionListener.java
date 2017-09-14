@@ -43,6 +43,18 @@ public class MyActionListener implements ActionListener {
     		cf.startwith.setEnabled(true);
 
     	}
+    	
+    	if(e.getActionCommand().equals("btempl")) {
+    		if (cf.btempl.getText().equals("Remove Buildtemplates")) {
+    			System.out.println("rimuovo");
+    			Operations.removeBTempl(cf,path);
+    	    	cf.btempl.setText("Install Buildtemplates");
+    		}
+    		else if (cf.btempl.getText().equals("Install Buildtemplates")) {
+    			System.out.println("installo");
+    			if(Operations.installBTempl(cf, path)==0) cf.btempl.setText("Remove Buildtemplates");
+    		}
+    	}
 
     	if(e.getActionCommand().equals("background")){
     		cf.autostart.setSelected(true);
