@@ -62,7 +62,6 @@ public class Operations {
 	
 	
 	public static synchronized void installArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log,true);
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	try {
 			dll.createNewFile();
@@ -70,9 +69,6 @@ public class Operations {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	log.log( Level.INFO, "Installing Arc [InstallARC]");
-        
     	Operations.downloadINI(cf,path); //.ini is required for the first install
     	Operations.updateDll(cf,path); //placeholder swapped with the last version of the dll
     	File backup = new File(path+"\\bin64\\d3d9_old.dll");
@@ -88,7 +84,6 @@ public class Operations {
         log.log( Level.INFO, "Arc Installed [InstallARC]");
 		cf.status.setText("- ArcDPS was installed successfully");
 		cf.status.setForeground(new Color(0,102,51));
-		Operations.closeLogHandlers(log);
 		
         
 	}
@@ -120,6 +115,7 @@ public class Operations {
 		File dll_old=new File(path+"\\bin64\\d3d9_old.dll");
 		File dll_disabled=new File(path+"\\bin64\\d3d9_disabled.dll");
 		File reshadeLoader = new File(path+"\\bin64\\d3d9_chainload.dll");
+		File btempl= new File(path+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
 		File ini= new File(path+"\\bin64\\arcdps.ini");
 		if (dll.exists()) {
 			dll.delete();
@@ -129,7 +125,8 @@ public class Operations {
 		}
 		if (dll_disabled.exists()) dll_disabled.delete();
 		if (reshadeLoader.exists()) reshadeLoader.delete();
-		
+		if (btempl.exists()) btempl.delete();
+			
 		if(ini.exists()) ini.delete();
 		log.log( Level.INFO, "Everything went smooth [removeArc]");
 		cf.setMode("none");
@@ -246,6 +243,13 @@ public class Operations {
                 FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/d3d9.dll"),dll, 10000, 10000);
                 cf.status.setText(" ArcDPS updated");
                 cf.status.setForeground(new Color(0,102,51));
+                File btempl=new File(path+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
+                if (btempl.exists()) {
+                	Operations.closeLogHandlers(log);
+                	Operations.installBTempl(cf, path);
+                	Operations.LogSetup(log,true);
+                }
+                
             }
 
             else { //Same checksum means that the user has the most recent version of ArcDPS

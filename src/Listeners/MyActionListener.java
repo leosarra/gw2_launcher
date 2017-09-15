@@ -33,10 +33,13 @@ public class MyActionListener implements ActionListener {
     		if(cf.getMode().equals("none")) {
     			Operations.installArc(cf, path);
     			saveConfig(true);
+    			cf.btempl.setEnabled(true);
     		}
     		else {
     			Operations.removeArc(cf, path);
     			saveConfig(true);
+    			cf.btempl.setText("Install Buildtemplates");
+    			cf.btempl.setEnabled(false);
     		}
     		
     		
@@ -46,12 +49,10 @@ public class MyActionListener implements ActionListener {
     	
     	if(e.getActionCommand().equals("btempl")) {
     		if (cf.btempl.getText().equals("Remove Buildtemplates")) {
-    			System.out.println("rimuovo");
     			Operations.removeBTempl(cf,path);
     	    	cf.btempl.setText("Install Buildtemplates");
     		}
     		else if (cf.btempl.getText().equals("Install Buildtemplates")) {
-    			System.out.println("installo");
     			if(Operations.installBTempl(cf, path)==0) cf.btempl.setText("Remove Buildtemplates");
     		}
     	}

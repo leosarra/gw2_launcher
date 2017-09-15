@@ -133,6 +133,8 @@ public class CoreFrame extends JFrame{
     		arc.setText("Install ArcDPS");
     		status.setText("- ArcDPS is not installed");
     		status.setForeground(Color.RED);
+    		btempl.setText("Install Buildtemplates");
+    		btempl.setEnabled(false);
     	}
     	else if (mode.equals("both")) {
     		arc.setText("Remove ArcDPS");
