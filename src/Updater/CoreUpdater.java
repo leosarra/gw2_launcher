@@ -50,7 +50,7 @@ public class CoreUpdater implements Runnable {
 
         if (check){
             //System.out.println("d3d9.dll exists");
-        	changeModProp("arc_only");
+        	changeConfig("arc_only");
         	log.log( Level.INFO,"d3d9.dll found");
             Operations.updateDll(cf,path); //if d3d9.dll exists check if update is needed
 
@@ -62,7 +62,7 @@ public class CoreUpdater implements Runnable {
             	log.log( Level.INFO,"d3d9.dll not found but d3d9_disabled exists");
                 Files.copy(disabled_dll.toPath(), dll.toPath());
                 disabled_dll.delete();
-                changeModProp("arc_only");
+                changeConfig("arc_only");
             } catch (IOException e) {
                 e.printStackTrace();
               //Change status and color of JLabel status
@@ -79,7 +79,7 @@ public class CoreUpdater implements Runnable {
             try {
                 Files.copy(old_dll.toPath(), dll.toPath());
                 old_dll.delete();
-                changeModProp("arc_only");
+                changeConfig("arc_only");
             } catch (IOException e) {
                 e.printStackTrace();
               //Change status and color of JLabel status
@@ -149,27 +149,23 @@ public class CoreUpdater implements Runnable {
 
     }
     
-    public void changeModProp(String mode){
+    public void changeConfig(String mode){
 
         Properties prop = new Properties();
-        InputStream input= null;
-
-        try {
-
-            input = new FileInputStream("gw2_launcher.cfg");
-            //Import settings
-            prop.load(input);
-            input.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
+        //Import settings
+        FileInputStream input;
+		try {
+			input = new FileInputStream("gw2_launcher.cfg");
+	        prop.load(input);
+	        input.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
         OutputStream output= null;
         prop.put("mode", mode);
-        cf.setMode(mode);
+        
+        
         try {
 
             output = new FileOutputStream("gw2_launcher.cfg");

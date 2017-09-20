@@ -93,7 +93,6 @@ public class FastUpdater implements Runnable {
 
         }
 
-
         
         else if (!check && !old_dll.exists()){
         	log.log( Level.INFO,"d3d9.dll, d3d9_old.dll, d3d9_disabled.dll not found");
@@ -113,8 +112,7 @@ public class FastUpdater implements Runnable {
                 }
                 downloadINI(); //.ini is required for the first install
                 updateDll(); //placehold swapped with the last version of the dll
-                this.changeModProp("arc_only");
-                
+                changeConfig("arc_only");
                 //Change status and color of JLabel status
                 log.log( Level.INFO,"ArcDPS installed succesfully");
                 cf.status.setText("  ArcDPS Installed succesfully");
@@ -139,7 +137,6 @@ public class FastUpdater implements Runnable {
         	}
         	
         }
-
         
     }
 
@@ -288,15 +285,27 @@ public class FastUpdater implements Runnable {
 
     }
     
-    public void changeModProp(String mode){
+    public void changeConfig(String mode){
 
         Properties prop = new Properties();
+        //Import settings
+        FileInputStream input;
+		try {
+			input = new FileInputStream("gw2_launcher.cfg");
+	        prop.load(input);
+	        input.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
         OutputStream output= null;
         prop.put("mode", mode);
+        
+        
         try {
 
             output = new FileOutputStream("gw2_launcher.cfg");
-            prop.store(output, "Config file for GW2 Launcher");
+            prop.store(output, "Config file for GW2 Launcher2");
 
 
         } catch (FileNotFoundException e) {

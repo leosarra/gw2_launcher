@@ -5,6 +5,7 @@ import javax.swing.*;
 
 
 import java.awt.*;
+import java.io.File;
 
 
 @SuppressWarnings("serial")
@@ -63,16 +64,23 @@ public class FastFrame extends JFrame{
     
     public void setMode(String mode) {
     	this.mode=mode;
-    	if (mode.equals("none")) {
+    	if (mode.equals("none")) {	
     		arc.setText("Install ArcDPS");
     		status.setText("- ArcDPS is not installed");
     		status.setForeground(Color.RED);
+    	}
+    	else if (mode.equals("both")) {
+    		arc.setText("Remove ArcDPS");
+    		File templates= new File(path_string+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
     		
     	}
-
-    	else {
+    	else if (mode.equals("arc_only")) {
     		arc.setText("Remove ArcDPS");
-    		
+    		File templates= new File(path_string+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
+    	}
+    	
+    	else {
+    		arc.setText("Install ArcDPS");
     	}
     }
     
