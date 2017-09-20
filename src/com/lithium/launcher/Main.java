@@ -59,10 +59,12 @@ public class Main {
             CoreFrame gui = new CoreFrame(prop.getProperty("path"));
             //Import saved args to the CoreFrame
             gui.arg_string.setText(prop.getProperty("args",""));
-            gui.setMode(prop.getProperty("mode","none"));
+            gui.setMode(prop.getProperty("mode"));
             Operations.closeLogHandlers(log);
-            Thread t1 = new Thread(new CoreUpdater(gui, prop.getProperty("path")));
-            t1.start();
+            if (!prop.getProperty("mode").equals("none")) {
+            	Thread t1 = new Thread(new CoreUpdater(gui, prop.getProperty("path")));
+            	t1.start();
+            }
 
         }
         //Else if the path contained in the settings is valid and faststart is enabled use FastFrame

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 
 public class MyActionListener implements ActionListener {
     private String path;
@@ -36,12 +37,17 @@ public class MyActionListener implements ActionListener {
     			cf.btempl.setEnabled(true);
     		}
     		else {
+    			int dialogButton=0;
+    			 JOptionPane.showConfirmDialog(null,"Would you like to remove ArcDPS' settings files too? \n"
+    			 		+ "If you are going to install ArcDPS again press'No' ","Remove settings?",dialogButton);
+    	            if (dialogButton==0){
+    	                Operations.removeArcSetting(cf, path);
+    	            }
     			Operations.removeArc(cf, path);
     			saveConfig(true);
     			cf.btempl.setText("Install Buildtemplates");
     			cf.btempl.setEnabled(false);
     		}
-    		
     		
     		cf.startwith.setEnabled(true);
 

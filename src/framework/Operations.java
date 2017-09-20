@@ -116,7 +116,7 @@ public class Operations {
 		File dll_disabled=new File(path+"\\bin64\\d3d9_disabled.dll");
 		File reshadeLoader = new File(path+"\\bin64\\d3d9_chainload.dll");
 		File btempl= new File(path+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-		File ini= new File(path+"\\bin64\\arcdps.ini");
+
 		if (dll.exists()) {
 			dll.delete();
 		}
@@ -127,11 +127,33 @@ public class Operations {
 		if (reshadeLoader.exists()) reshadeLoader.delete();
 		if (btempl.exists()) btempl.delete();
 			
-		if(ini.exists()) ini.delete();
 		log.log( Level.INFO, "Everything went smooth [removeArc]");
 		cf.setMode("none");
 		cf.status.setText("- ArcDPS not installed");
 		cf.status.setForeground(Color.RED);
+		Operations.closeLogHandlers(log);
+		
+		
+	}
+	
+	public static synchronized void removeArcSetting(CoreFrame cf, String path) {
+		Operations.LogSetup(log,true);
+		log.log( Level.INFO, "Removing arc settings [removeArcSetting]");
+		File ini= new File(path+"\\bin64\\arcdps.ini");
+		File directory=new File(path+"\\addons\\arcdps");
+		if (ini.exists()) ini.delete();
+		
+		if (directory.exists()) {
+			try {
+				FileUtils.deleteDirectory(directory);
+			} catch (IOException e) {
+				log.log( Level.SEVERE, "Error while removing directory [removeArcSetting]");
+				e.printStackTrace();
+			}
+		}
+		
+			
+		log.log( Level.INFO, "Everything went smooth [removeArcSetting]");
 		Operations.closeLogHandlers(log);
 		
 		
