@@ -34,6 +34,8 @@ public class FastFrame extends JFrame{
         super("Guild Wars 2 Launcher");
         //Settings of the FastFrame object 
         
+        this.setIconImage(Toolkit.getDefaultToolkit().
+        	    getImage(CoreFrame.class.getResource("/img/gw2_64_1-1.png")));
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(310,160);

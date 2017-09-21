@@ -37,6 +37,9 @@ public class CoreFrame extends JFrame{
         super("Guild Wars 2 Launcher");
         path_string=dir;
         
+        this.setIconImage(Toolkit.getDefaultToolkit().
+        	    getImage(CoreFrame.class.getResource("/img/gw2_64_1-1.png")));
+        
         //Settings of the CoreFrame object 
         this.setSize(345,381);
         this.setVisible(true);
