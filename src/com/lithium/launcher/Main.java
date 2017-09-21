@@ -103,6 +103,8 @@ public class Main {
         	log.log( Level.INFO, "Path not found, no autostart, but valid current dir");
         	Operations.removeReshadeLoader(currentDir);
             CoreFrame gui = new CoreFrame(currentDir);
+            gui.setMode(prop.getProperty("mode"));
+            log.log(Level.INFO, "mode: "+prop.getProperty("mode"));
             Operations.closeLogHandlers(log);
             Thread t1 = new Thread(new CoreUpdater(gui, currentDir));
             t1.start();
