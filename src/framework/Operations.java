@@ -263,7 +263,7 @@ public class Operations {
                 cf.status.setText("- Downloading new version...");
                 //Download new dll
                 FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/d3d9.dll"),dll, 10000, 10000);
-                cf.status.setText(" ArcDPS updated");
+                cf.status.setText("- ArcDPS updated");
                 cf.status.setForeground(new Color(0,102,51));
                 File btempl=new File(path+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
                 if (btempl.exists()) {
