@@ -10,10 +10,10 @@ import framework.TaskExecutor;
 
 import java.io.*;
 import java.util.Properties;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
 	
@@ -50,7 +50,15 @@ public class Main {
         }
 
 
-
+        //Change look and feel
+        try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         TaskExecutor te=TaskExecutor.getInstance();
         String currentDir=new File(".").getAbsolutePath();
         //If the path contained in the settings is valid and faststart is not enabled use CoreFrame
@@ -58,10 +66,11 @@ public class Main {
         	log.log( Level.INFO, "Found path, no autostart");
             CoreFrame gui = new CoreFrame(prop.getProperty("path"));
             //Import saved args to the CoreFrame
-            gui.arg_string.setText(prop.getProperty("args",""));
-            gui.setMode(prop.getProperty("mode"));
+            gui.arg_string.setText(prop.getProperty("args","Example: -autologin, -noaudio, -bmp "));
+            if(gui.arg_string.getText().equals("")) gui.arg_string.setText("Example: -autologin, -noaudio, -bmp ");
+            gui.setMode(prop.getProperty("mode","none"));
             Operations.closeLogHandlers(log);
-            if (!prop.getProperty("mode").equals("none")) {
+            if (!prop.getProperty("mode","none").equals("none")) {
             	Thread t1 = new Thread(new CoreUpdater(gui, prop.getProperty("path")));
             	t1.start();
             }
@@ -84,9 +93,9 @@ public class Main {
             	gui.setMode(prop.getProperty("mode"));
             }
              //Import saved args to the CoreFrame
-            gui.arg_string.setText(prop.getProperty("args",""));
-            if(gui.arg_string.getText().contains("Example")) gui.arg_string.setText("");
-            
+            gui.arg_string.setText(prop.getProperty("args","Example: -autologin, -noaudio, -bmp"));
+            if(gui.arg_string.getText().equals("")) gui.arg_string.setText("Example: -autologin, -noaudio, -bmp ");
+
             //Updater thread is created. If ("type".equals("yes") is yes it means that the preferred option for execution is "Run with ArcDPS" 
             //otherwise is "Run only GW2" ("type".equals("no").
             //Type is one of the settings contained in gw2_launcher.cfg
@@ -106,9 +115,11 @@ public class Main {
             gui.setMode(prop.getProperty("mode"));
             log.log(Level.INFO, "mode: "+prop.getProperty("mode"));
             Operations.closeLogHandlers(log);
-            Thread t1 = new Thread(new CoreUpdater(gui, currentDir));
-            t1.start();
-
+            if (!prop.getProperty("mode","none").equals("none")) {
+            	Thread t1 = new Thread(new CoreUpdater(gui, currentDir));
+                t1.start();
+            }
+            
         }
 
         //JFileChooser is needed
@@ -123,8 +134,10 @@ public class Main {
             	Operations.removeReshadeLoader(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
                 CoreFrame gui = new CoreFrame(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
                 gui.setMode(prop.getProperty("mode","none"));
-                Thread t1 = new Thread(new CoreUpdater(gui, dir.getJFileChooser().getSelectedFile().getAbsolutePath()));
-                t1.start();
+                if (!prop.getProperty("mode","none").equals("none")) {
+                	Thread t1 = new Thread(new CoreUpdater(gui, dir.getJFileChooser().getSelectedFile().getAbsolutePath()));
+                    t1.start();
+                }
             }
 
         }

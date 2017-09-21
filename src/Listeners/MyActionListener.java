@@ -35,6 +35,7 @@ public class MyActionListener implements ActionListener {
     			Operations.installArc(cf, path);
     			saveConfig(true);
     			cf.btempl.setEnabled(true);
+        		cf.startwith.setEnabled(true);
     		}
     		else {
     			int dialogButton=0;
@@ -47,9 +48,9 @@ public class MyActionListener implements ActionListener {
     			saveConfig(true);
     			cf.btempl.setText("Install Buildtemplates");
     			cf.btempl.setEnabled(false);
+    			cf.startwith.setEnabled(false);
     		}
-    		
-    		cf.startwith.setEnabled(true);
+
 
     	}
     	
@@ -153,7 +154,7 @@ public class MyActionListener implements ActionListener {
     //Create process Gw2-64.exe with some arguments
 	public void runGW2(){
         try {
-
+        	if(cf.arg_string.getText().contains("Example")) cf.arg_string.setText("");
             List<String> list= Arrays.asList(cf.arg_string.getText().split("\\s*,\\s*"));
             LinkedList<String> exe= new LinkedList<>(list);
             System.out.println(list);

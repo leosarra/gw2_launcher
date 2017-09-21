@@ -34,12 +34,13 @@ public class CoreFrame extends JFrame{
 
 
     public CoreFrame(String dir){
-        super("Guild Wars 2 Launcher");
+    	super("Guild Wars 2 Launcher");
         path_string=dir;
         
         this.setIconImage(Toolkit.getDefaultToolkit().
         	    getImage(CoreFrame.class.getResource("/img/gw2_64_1-1.png")));
         
+       
         //Settings of the CoreFrame object 
         this.setSize(345,381);
         this.setVisible(true);
@@ -138,6 +139,7 @@ public class CoreFrame extends JFrame{
     		status.setForeground(Color.RED);
     		btempl.setText("Install Buildtemplates");
     		btempl.setEnabled(false);
+    		startwith.setEnabled(false);
     	}
     	else if (mode.equals("both")) {
     		arc.setText("Remove ArcDPS");
