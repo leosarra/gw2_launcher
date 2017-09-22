@@ -82,7 +82,7 @@ public class Operations {
         //log.log( Level.INFO,"ArcDPS installed succesfully");
         cf.setMode("arc_only");
         log.log( Level.INFO, "Arc Installed [InstallARC]");
-		cf.status.setText("- ArcDPS was installed successfully");
+		cf.status.setText("- ArcDPS was successfully installed ");
 		cf.status.setForeground(new Color(0,102,51));
 		
         
