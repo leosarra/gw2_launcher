@@ -40,7 +40,7 @@ public class MyActionListener implements ActionListener {
     		else {
     			int dialogButton=0;
     			 JOptionPane.showConfirmDialog(null,"Would you like to remove ArcDPS' settings files too? \n"
-    			 		+ "If you are going to install ArcDPS again press'No' ","Remove settings?",dialogButton);
+    			 		+ "If you are going to install ArcDPS in the future press 'No'. ","Remove settings?",dialogButton);
     	            if (dialogButton==0){
     	                Operations.removeArcSetting(cf, path);
     	            }
@@ -133,8 +133,8 @@ public class MyActionListener implements ActionListener {
         
         prop.put("mode", cf.getMode());
         
-        if(cf.arg_string.getText().contains("Example")) cf.arg_string.setText("");
-        prop.put("args",cf.arg_string.getText());
+        if(cf.arg_string.getText().contains("Example")) prop.put("args","");
+        else prop.put("args",cf.arg_string.getText());
         try {
 
             output = new FileOutputStream("gw2_launcher.cfg");
