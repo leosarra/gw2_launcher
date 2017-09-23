@@ -22,7 +22,7 @@ public class CoreFrame extends JFrame{
     private JLabel path= new JLabel("- Guild Wars 2 executable found");
     private JLabel arg=new JLabel("Arguments: ");
     public JCheckBox autostart= new JCheckBox("Start with these settings each time (Fast-start)");
-    public JCheckBox background= new JCheckBox("Hide the GUI when fast-start is activated ");
+    public JCheckBox background= new JCheckBox("Hide the GUI when fast-start is enabled ");
     public JButton arc= new JButton("Install ArcDPS");
     public JButton btempl= new JButton("Install Buildtemplates");
     public JTextField arg_string=new JTextField(20);
@@ -48,7 +48,7 @@ public class CoreFrame extends JFrame{
         this.setResizable(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
+        this.setResizable(false);
         
         
         //Default settings for some elements of the CoreFrame
