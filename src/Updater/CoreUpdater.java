@@ -170,6 +170,7 @@ public class CoreUpdater implements Runnable {
 
             output = new FileOutputStream("gw2_launcher.cfg");
             prop.store(output, "Config file for GW2 Launcher");
+            output.close();
 
 
         } catch (FileNotFoundException e) {
