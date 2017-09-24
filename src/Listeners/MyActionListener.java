@@ -36,6 +36,9 @@ public class MyActionListener implements ActionListener {
     			saveConfig(true);
     			cf.btempl.setEnabled(true);
         		cf.startwith.setEnabled(true);
+        		cf.autostart.setEnabled(true);
+        		cf.background.setEnabled(true);
+        		cf.startwith.setEnabled(true);
     		}
     		else {
     			int dialogButton=0;
@@ -49,6 +52,8 @@ public class MyActionListener implements ActionListener {
     			cf.btempl.setText("Install Buildtemplates");
     			cf.btempl.setEnabled(false);
     			cf.startwith.setEnabled(false);
+    			cf.autostart.setEnabled(false);
+        		cf.background.setEnabled(false);
     		}
 
 

@@ -140,6 +140,8 @@ public class CoreFrame extends JFrame{
     		btempl.setText("Install Buildtemplates");
     		btempl.setEnabled(false);
     		startwith.setEnabled(false);
+    		autostart.setEnabled(false);
+    		background.setEnabled(false);
     	}
     	else if (mode.equals("both")) {
     		arc.setText("Remove ArcDPS");
