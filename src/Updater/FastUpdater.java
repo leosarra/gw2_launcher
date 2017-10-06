@@ -240,13 +240,15 @@ public class FastUpdater implements Runnable {
         	//Create process with some arguments
             List<String> list= Arrays.asList(cf.arg_string.getText().split("\\s*,\\s*"));
             LinkedList<String> exe= new LinkedList<>(list);
+            cf.dispose();
             log.log( Level.INFO,"Args: "+list);
             exe.addFirst(path+"\\Gw2-64.exe");
             Process process = new ProcessBuilder(exe).start();
-            cf.dispose();
+            System.exit(0);
         } catch (IOException e1) {
         	log.log( Level.SEVERE,"Erorr while launching gw2");
             e1.printStackTrace();
+            System.exit(1);
         }
     }
 

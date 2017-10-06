@@ -160,15 +160,16 @@ public class MyActionListener implements ActionListener {
 	public void runGW2(){
         try {
         	if(cf.arg_string.getText().contains("Example")) cf.arg_string.setText("");
+            cf.dispose();
             List<String> list= Arrays.asList(cf.arg_string.getText().split("\\s*,\\s*"));
             LinkedList<String> exe= new LinkedList<>(list);
             System.out.println(list);
             exe.addFirst(path+"\\Gw2-64.exe");
             Process process = new ProcessBuilder(exe).start();
-            cf.dispose();
             System.exit(0);
         } catch (IOException e1) {
             e1.printStackTrace();
+            System.exit(1);
         }
 
     }
