@@ -1,9 +1,11 @@
-package Chooser;
+package chooser;
 
 import framework.Operations;
 import framework.Task;
+import updater.CoreUpdater;
+
 import javax.swing.*;
-import Updater.CoreUpdater;
+
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;

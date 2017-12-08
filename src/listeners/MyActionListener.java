@@ -1,8 +1,8 @@
-package Listeners;
+package listeners;
 
-import Frame.CoreFrame;
-import Updater.CoreUpdater;
+import frame.CoreFrame;
 import framework.Operations;
+import updater.CoreUpdater;
 
 import javax.swing.*;
 

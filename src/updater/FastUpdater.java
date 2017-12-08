@@ -1,10 +1,11 @@
-package Updater;
+package updater;
 
-import Frame.FastFrame;
 import framework.Operations;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
+
+import frame.FastFrame;
 
 import javax.swing.*;
 import java.awt.*;

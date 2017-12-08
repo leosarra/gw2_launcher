@@ -15,9 +15,8 @@ import java.util.logging.SimpleFormatter;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 
-import com.lithium.launcher.Main;
-
-import Frame.CoreFrame;
+import frame.CoreFrame;
+import launcher.Main;
 
 
 public class Operations {

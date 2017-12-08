@@ -1,4 +1,4 @@
-package Frame;
+package frame;
 
 import javax.swing.*;
 

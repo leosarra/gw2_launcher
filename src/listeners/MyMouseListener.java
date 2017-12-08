@@ -1,10 +1,10 @@
-package Listeners;
-
-import Frame.CoreFrame;
+package listeners;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import frame.CoreFrame;
 
 public class MyMouseListener implements MouseListener {
     public CoreFrame cf;

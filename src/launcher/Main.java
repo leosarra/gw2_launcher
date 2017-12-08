@@ -1,12 +1,12 @@
-package com.lithium.launcher;
+package launcher;
 
-import Chooser.DirChooser;
-import Frame.CoreFrame;
-import Frame.FastFrame;
-import Updater.CoreUpdater;
-import Updater.FastUpdater;
+import chooser.DirChooser;
+import frame.CoreFrame;
+import frame.FastFrame;
 import framework.Operations;
 import framework.TaskExecutor;
+import updater.CoreUpdater;
+import updater.FastUpdater;
 
 import java.io.*;
 import java.util.Properties;
