@@ -19,7 +19,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
     private static final String username="LithiumSR";
     private static final String repoName="gw2_launcher";
-    private static final String version="1.0.1";
+    private static final String version="1.0.2";
 
     public static void main(String[] args) throws InterruptedException {
     	
@@ -108,7 +108,6 @@ public class Main {
             //Type is one of the settings contained in gw2_launcher.cfg
             Operations.closeLogHandlers(log);
             Thread t1=null;
-            System.out.println(prop.getProperty("useAddons"));
             if (prop.getProperty("useAddons","yes").equals("yes")) { t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),true));}
             else t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),false));
             t1.start();

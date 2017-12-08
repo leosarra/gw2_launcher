@@ -159,7 +159,6 @@ public class Operations {
 	}
 
 	public static synchronized void removeReshadeLoader(String path) {
-		System.out.println("entro");
 		File reshadeLoader = new File(path+"\\bin64\\d3d9_chainload.dll");
 		if (reshadeLoader.exists()) reshadeLoader.delete();
 		

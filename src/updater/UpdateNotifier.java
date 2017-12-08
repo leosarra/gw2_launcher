@@ -44,10 +44,8 @@ public class UpdateNotifier implements Runnable {
 	                        logger.log(Level.SEVERE,"An update is avaiable. Please get the update at "+URI);
 	                        int dialogButton=0;
 	                        JOptionPane.showConfirmDialog(null,"An update for the launcher is avaiable. Would you like to go to the download page?","An update is avaiable",dialogButton);
-	                        System.out.println(dialogButton);
 	                        if (dialogButton==JOptionPane.YES_OPTION){
 	                        	try {
-	                        		System.out.println("ESEGUO");
 									java.awt.Desktop.getDesktop().browse(new java.net.URI(URI));
 								} catch (IOException | URISyntaxException e) {
 									e.printStackTrace();
