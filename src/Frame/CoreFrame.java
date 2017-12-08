@@ -63,7 +63,7 @@ public class CoreFrame extends JFrame{
         startwithout.setActionCommand("without");
         background.setActionCommand("background");
         arc.setActionCommand("arc");
-        btempl.setActionCommand("btempl");
+        btempl.setActionCommand("btempl_install");
         
         
         //Create MyActionListener
@@ -146,14 +146,20 @@ public class CoreFrame extends JFrame{
     	else if (mode.equals("both")) {
     		arc.setText("Remove ArcDPS");
     		File templates= new File(path_string+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-    		if(templates.exists()) btempl.setText("Remove Buildtemplates");
+    		if(templates.exists()) {
+    			btempl.setText("Remove Buildtemplates");
+        		btempl.setActionCommand("btempl_remove");
+    		}
     		else btempl.setText("Install Buildtemplates");
     		
     	}
     	else if (mode.equals("arc_only")) {
     		arc.setText("Remove ArcDPS");
     		File templates= new File(path_string+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-    		if (templates.exists()) btempl.setText("Remove Buildtemplates");
+    		if (templates.exists()) {
+    			btempl.setText("Remove Buildtemplates");
+        		btempl.setActionCommand("btempl_remove");
+    		}
     		else btempl.setText("Install Buildtemplates");
     	}
     	

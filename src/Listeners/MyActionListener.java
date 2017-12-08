@@ -59,14 +59,22 @@ public class MyActionListener implements ActionListener {
 
     	}
     	
-    	if(e.getActionCommand().equals("btempl")) {
-    		if (cf.btempl.getText().equals("Remove Buildtemplates")) {
-    			Operations.removeBTempl(cf,path);
-    	    	cf.btempl.setText("Install Buildtemplates");
+    	if(e.getActionCommand().equals("btempl_install")) {
+    		if(Operations.installBTempl(cf, path)==0) {
+    			cf.btempl.setText("Remove Buildtemplates");
+    			cf.btempl.setActionCommand("btempl_remove");
     		}
-    		else if (cf.btempl.getText().equals("Install Buildtemplates")) {
-    			if(Operations.installBTempl(cf, path)==0) cf.btempl.setText("Remove Buildtemplates");
+    		
+    	}
+  
+    
+    	if(e.getActionCommand().equals("btempl_remove")) {
+    		int ris=Operations.removeBTempl(cf,path);
+    		if (Operations.removeBTempl(cf,path)==0) {
+    			cf.btempl.setText("Install Buildtemplates");
+    			cf.btempl.setActionCommand("btempl_install");
     		}
+
     	}
 
     	if(e.getActionCommand().equals("background")){
@@ -81,14 +89,10 @@ public class MyActionListener implements ActionListener {
         
         //"Run with archdps" button is pressed
         if (e.getActionCommand().equals("with")){
-
             saveConfig(true);
-
-
             runGW2();
-
-
         }
+        
         //"Run only GW2" button is pressed
         if (e.getActionCommand().equals("without")){
             saveConfig(false);
@@ -97,11 +101,7 @@ public class MyActionListener implements ActionListener {
             runGW2();
             cf.dispose();
             System.exit(0);
-
         }
-
-
-
     }
 
     //Used to the save settings in "gw2_launcher.cfg"
