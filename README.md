@@ -30,7 +30,7 @@ It requires the [Java Runtime Environment](https://www.java.com/it/download/) to
 
 
 ### Download
-- [For Windows x64](https://www.dropbox.com/s/e83yvt4jtpdblew/Gw2-Launcher.exe?dl=0)
+- [For Windows x64](https://github.com/LithiumSR/gw2_launcher/releases)
 	
 
 ### Issues
