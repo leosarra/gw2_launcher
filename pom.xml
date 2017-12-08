@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.lithium</groupId>
   <artifactId>Guild_Wars_2_Launcher</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <name>Guild Wars 2 Launcher</name>
   
   <description>Custom launcher for Guild Wars 2 with the purpose to keep ArcDPS up-to-date and fully functional</description>

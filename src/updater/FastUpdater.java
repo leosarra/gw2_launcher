@@ -100,8 +100,8 @@ public class FastUpdater implements Runnable {
         	//if there is not d3d9.dll and no backup it means that ArcDPS is not installed
             int dialogButton = JOptionPane.YES_NO_OPTION;
             //Ask to the user if he would like to install ArcDPS
-            JOptionPane.showConfirmDialog(null,"ArcDPS not installed. Would you like to install ArcDPS?","ArcDPS not detected",dialogButton);
-            if (dialogButton==JOptionPane.YES_OPTION){
+            int dialogResult=JOptionPane.showConfirmDialog(null,"ArcDPS not installed. Would you like to install ArcDPS?","ArcDPS not detected",dialogButton);
+            if (dialogResult==JOptionPane.YES_OPTION){
                 try {
                     dll.createNewFile(); //placeholder that is going to be updated by updateDll()
                 } catch (IOException e) {
@@ -130,10 +130,10 @@ public class FastUpdater implements Runnable {
         
         
         if(!ini.exists()) { //If ini file is not detected ask to the user if he would like to restore it with a default version from the website
-        	int dialogButton = 0;
+        	int dialogButton = JOptionPane.YES_NO_OPTION;
         	log.log( Level.INFO,"archdps.ini not found");
-        	JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);
-        	if (dialogButton==JOptionPane.YES_OPTION){
+        	int dialogResult=JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);
+        	if (dialogResult==JOptionPane.YES_OPTION){
         		downloadINI(); //Method used to download the .ini
         	}
         	
@@ -273,9 +273,9 @@ public class FastUpdater implements Runnable {
     //Error dialog needed for static methods
     public static void errorDialog(String path){
         int dialogButton = JOptionPane.YES_NO_OPTION;
-        JOptionPane.showConfirmDialog(null,"Something went wrong. Check your internet connection. Would you like to run GW2 without ArcDPS?",
+        int dialogResult=JOptionPane.showConfirmDialog(null,"Something went wrong. Check your internet connection. Would you like to run GW2 without ArcDPS?",
                 "Updater failed",dialogButton);
-        if (dialogButton==JOptionPane.YES_OPTION) {
+        if (dialogResult==JOptionPane.YES_OPTION) {
         	log.log( Level.INFO,"Launching gw2 without Arc after error dialog");
             FastUpdater.runWithoutDPS(path);
         }

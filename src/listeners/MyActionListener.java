@@ -41,10 +41,10 @@ public class MyActionListener implements ActionListener {
         		cf.startwith.setEnabled(true);
     		}
     		else {
-    			int dialogButton=0;
-    			 JOptionPane.showConfirmDialog(null,"Would you like to remove ArcDPS' settings files too? \n"
+    			int dialogButton=JOptionPane.YES_NO_OPTION;
+    			int dialogResult=JOptionPane.showConfirmDialog(null,"Would you like to remove ArcDPS' settings files too? \n"
     			 		+ "If you are going to install ArcDPS in the future press 'No'. ","Remove settings?",dialogButton);
-    	            if (dialogButton==0){
+    	            if (dialogResult==JOptionPane.YES_OPTION){
     	                Operations.removeArcSetting(cf, path);
     	            }
     			Operations.removeArc(cf, path);

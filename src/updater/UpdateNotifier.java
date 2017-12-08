@@ -42,9 +42,9 @@ public class UpdateNotifier implements Runnable {
 	                    if (sem.isGreaterThan(version)) {
 	                    	String URI="http://www.github.com/"+username+"/"+repoName+"/releases";
 	                        logger.log(Level.SEVERE,"An update is avaiable. Please get the update at "+URI);
-	                        int dialogButton=0;
-	                        JOptionPane.showConfirmDialog(null,"An update for the launcher is avaiable. Would you like to go to the download page?","An update is avaiable",dialogButton);
-	                        if (dialogButton==JOptionPane.YES_OPTION){
+	                        int dialogButton=JOptionPane.YES_NO_OPTION;
+	                        int dialogResult=JOptionPane.showConfirmDialog(null,"An update for the launcher is avaiable. Would you like to go to the download page?","An update is avaiable",dialogButton);
+	                        if (dialogResult==JOptionPane.YES_OPTION){
 	                        	try {
 									java.awt.Desktop.getDesktop().browse(new java.net.URI(URI));
 								} catch (IOException | URISyntaxException e) {
