@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.lithium</groupId>
   <artifactId>Guild_Wars_2_Launcher</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.9.0</version>
   <name>Guild Wars 2 Launcher</name>
   
   <description>Custom launcher for Guild Wars 2 with the purpose to keep ArcDPS up-to-date and fully functional</description>
@@ -19,7 +19,7 @@
     	<artifactId>semver4j</artifactId>
     	<version>2.1.0</version>
     </dependency>
-    
+        
     <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 	<dependency>
     	<groupId>commons-codec</groupId>
@@ -27,6 +27,12 @@
    		<version>1.11</version>
 	</dependency>
 	
+	        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        
 	<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 	<dependency>
     	<groupId>commons-io</groupId>
@@ -64,6 +70,28 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-shade-plugin</artifactId>
+		  <version>2.3</version>
+		  <executions>
+		     <!-- Run shade goal on package phase -->
+		    <execution>
+			<phase>package</phase>
+			<goals>
+				<goal>shade</goal>
+			</goals>
+			<configuration>
+			  <transformers>
+				<!-- add Main-Class to manifest file -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+					<mainClass>launcher.Main</mainClass>
+				</transformer>
+			  </transformers>
+			</configuration>
+		      </execution>
+		  </executions>
+		</plugin>
     </plugins>
   </build>
   <url>https://github.com/LithiumSR/gw2_launcher</url>

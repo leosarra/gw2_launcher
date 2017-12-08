@@ -131,11 +131,7 @@ public class CoreUpdater implements Runnable {
                 e.printStackTrace();
                 log.log( Level.SEVERE,"IOException when disabling dll");
                 errorDialog(path);
-
-
             }
-
-
         }
     }
 

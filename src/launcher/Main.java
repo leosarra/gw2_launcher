@@ -7,6 +7,7 @@ import framework.Operations;
 import framework.TaskExecutor;
 import updater.CoreUpdater;
 import updater.FastUpdater;
+import updater.UpdateNotifier;
 
 import java.io.*;
 import java.util.Properties;
@@ -16,7 +17,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
-	
+    private static final String username="LithiumSR";
+    private static final String repoName="gw2_launcher";
+    private static final String version="0.9.0";
 
     public static void main(String[] args) throws InterruptedException {
     	
@@ -58,7 +61,11 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
+        Thread pj_updater= new Thread(new UpdateNotifier(version,repoName,username));
+        pj_updater.start();
+        if ((prop.getProperty("faststart","no").equals("yes"))) {
+        	pj_updater.join();
+        }
         TaskExecutor te=TaskExecutor.getInstance();
         String currentDir=new File(".").getAbsolutePath();
         //If the path contained in the settings is valid and faststart is not enabled use CoreFrame
@@ -102,7 +109,7 @@ public class Main {
             Operations.closeLogHandlers(log);
             Thread t1=null;
             System.out.println(prop.getProperty("useAddons"));
-            if (prop.getProperty("useAddons").equals("yes")|| prop.getProperty("useAddons")==null) { t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),true));}
+            if (prop.getProperty("useAddons","yes").equals("yes")) { t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),true));}
             else t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),false));
             t1.start();
 
