@@ -32,10 +32,10 @@ public class FastUpdater implements Runnable {
     private  File dll;
 	private File old_dll;
 	private File disabled_dll;
-    private int type; //0 or 1 accordingly to "gw2_settings.cfg"
+    private boolean type; //0 or 1 accordingly to "gw2_settings.cfg"
     private static Logger log = Logger.getLogger( FastUpdater.class.getName() );
     
-    public FastUpdater(FastFrame cf, String path,int type){
+    public FastUpdater(FastFrame cf, String path,boolean type){
         this.cf=cf;
         this.path=path;
         dll=new File(path+"\\bin64\\d3d9.dll"); //dll of ArcDPS
@@ -201,16 +201,14 @@ public class FastUpdater implements Runnable {
 
             else { //Same checksum means that the user has the most recent version of ArcDPS
             	log.log( Level.INFO,"ArcDPS already updated");
-                cf.status.setText("    ArcDPS is already updated");
+                cf.status.setText("- ArcDPS is already updated");
                 cf.status.setForeground(new Color(0, 102, 51));
             }
-           //Delete downloaded md5 now useless
+           //Delete downloaded md5 now useless and close stream
             log.log( Level.INFO,"Removing downloaded md5");
             md5_download.delete();
+            fis.close();
             
-
-
-
         //Exceptions if something goes wrong (Connection/IO)
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -232,24 +230,24 @@ public class FastUpdater implements Runnable {
 
 
     @SuppressWarnings("unused")
-	public void runGW2Fast(int type){
+	public void runGW2Fast(boolean useAddons){
 
-        if (type==0) runWithoutDPS(path); //if type==0 ArcDPS' dll must be disabled
+        if (useAddons==false) runWithoutDPS(path); //if type==0 ArcDPS' dll must be disabled
         try {
-        	log.log( Level.INFO,"Running Gw2. Fast mode");
-        	//Create process with some arguments
-            List<String> list= Arrays.asList(cf.arg_string.getText().split("\\s*,\\s*"));
-            LinkedList<String> exe= new LinkedList<>(list);
-            cf.dispose();
-            log.log( Level.INFO,"Args: "+list);
-            exe.addFirst(path+"\\Gw2-64.exe");
-            Process process = new ProcessBuilder(exe).start();
-            System.exit(0);
-        } catch (IOException e1) {
-        	log.log( Level.SEVERE,"Erorr while launching gw2");
-            e1.printStackTrace();
-            System.exit(1);
-        }
+    		log.log( Level.INFO,"Running Gw2. Fast mode");
+    		//Create process with some arguments
+    		List<String> list= Arrays.asList(cf.arg_string.getText().split("\\s*,\\s*"));
+    		LinkedList<String> exe= new LinkedList<>(list);
+    		cf.dispose();
+    		log.log( Level.INFO,"Args: "+list);
+    		exe.addFirst(path+"\\Gw2-64.exe");
+    		Process process = new ProcessBuilder(exe).start();
+    		System.exit(0);
+    		} catch (IOException e1) {
+    			log.log( Level.SEVERE,"Error while launching gw2");
+    			e1.printStackTrace();
+    			System.exit(1);
+    			}
     }
 
 
@@ -261,17 +259,13 @@ public class FastUpdater implements Runnable {
             if (old.exists()) old.delete(); //delete an older disabled dll to prevent an exception
             try {
                 Files.copy(dll.toPath(), old.toPath()); //rename d3d9.dll to d3d9_disabled.dll
-                dll= new File(path+"\\bin64\\d3d9.dll");
-                dll.delete();
+                File dll_disabled= new File(path+"\\bin64\\d3d9.dll");
+                dll_disabled.delete();
             } catch (IOException e) {
                 e.printStackTrace();
                 log.log( Level.SEVERE,"IOException when disabling dll");
                 errorDialog(path);
-
-
             }
-
-
         }
     }
 

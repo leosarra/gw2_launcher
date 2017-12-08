@@ -86,9 +86,4 @@ public class FastFrame extends JFrame{
     	else {
     		arc.setText("Install ArcDPS");
     	}
-    }
-    
-    
-    
-    
-}
+    }}

@@ -103,7 +103,7 @@ public class MyActionListener implements ActionListener {
     }
 
     //Used to the save settings in "gw2_launcher.cfg"
-    public void saveConfig(boolean typeStart){
+    public void saveConfig(boolean useAddons){
 
         Properties prop = new Properties();
         OutputStream output= null;
@@ -128,8 +128,8 @@ public class MyActionListener implements ActionListener {
         }
         else prop.put("faststart","no");
 
-        if (typeStart==true) prop.put("type","yes");
-        else prop.put("type","no");
+        if (useAddons==true) prop.put("useAddons","yes");
+        else prop.put("useAddons","no");
 
         if(cf.background.isSelected())  prop.put("background", "yes");
         else prop.put("background", "no");

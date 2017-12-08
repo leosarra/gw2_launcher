@@ -101,8 +101,9 @@ public class Main {
             //Type is one of the settings contained in gw2_launcher.cfg
             Operations.closeLogHandlers(log);
             Thread t1=null;
-            if (prop.getProperty("type").equals("yes")) { t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),1));}
-            else t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),0));
+            System.out.println(prop.getProperty("useAddons"));
+            if (prop.getProperty("useAddons").equals("yes")|| prop.getProperty("useAddons")==null) { t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),true));}
+            else t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),false));
             t1.start();
 
         }
