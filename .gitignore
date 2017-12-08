@@ -4,3 +4,6 @@ gw2_launcher_log.txt
 gw2_launcher_log_op.txt
 /target/
 *.cfg
+/out/
+/.settings/
+*.class
