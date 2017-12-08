@@ -66,10 +66,8 @@ public class MyActionListener implements ActionListener {
     		}
     		
     	}
-  
     
     	if(e.getActionCommand().equals("btempl_remove")) {
-    		int ris=Operations.removeBTempl(cf,path);
     		if (Operations.removeBTempl(cf,path)==0) {
     			cf.btempl.setText("Install Buildtemplates");
     			cf.btempl.setActionCommand("btempl_install");
