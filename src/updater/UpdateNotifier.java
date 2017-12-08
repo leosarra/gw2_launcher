@@ -69,7 +69,6 @@ public class UpdateNotifier implements Runnable {
         WebResource webResource = client.resource(UriBuilder.fromUri("https://api.github.com/repos/"+username+"/"+repoName+"/releases").build());
         ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
         String output = response.getEntity(String.class);
-        //System.out.println(output);
         return output;
     }
 }

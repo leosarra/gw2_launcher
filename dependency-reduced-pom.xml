@@ -12,9 +12,9 @@
     <resources>
       <resource>
         <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
+      </resource>
+      <resource>
+        <directory>resources</directory>
       </resource>
     </resources>
     <plugins>

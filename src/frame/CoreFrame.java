@@ -39,7 +39,7 @@ public class CoreFrame extends JFrame{
         path_string=dir;
         
         this.setIconImage(Toolkit.getDefaultToolkit().
-        	    getImage(CoreFrame.class.getResource("/img/gw2_64_1-1.png")));
+        	    getImage(CoreFrame.class.getResource("/gw2_64_1-1.png")));
         
        
         //Settings of the CoreFrame object 

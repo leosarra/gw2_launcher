@@ -26,23 +26,6 @@ public class DirChooser implements Task {
 
     private static Logger log = Logger.getLogger( CoreUpdater.class.getName() );
     
-    public DirChooser(){
-    	
-    	//Change to look and feel to make it more similar to the Windows' one
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-        SwingUtilities.updateComponentTreeUI(f);
-
-    }
     public void esegui() {
     	//Functor pattern
     	Operations.LogSetup(log,false);
@@ -59,8 +42,7 @@ public class DirChooser implements Task {
             icon.setLocationRelativeTo(null);
             icon.setUndecorated(true);
             icon.setVisible(true);
-            icon.setIconImage(Toolkit.getDefaultToolkit().
-            	    getImage(JFrame.class.getResource("/img/gw2_64_1-1.png")));
+            icon.setIconImage(Toolkit.getDefaultToolkit().getImage(DirChooser.class.getResource("/gw2_64_1-1.png")));
             icon.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             //Loop until "Cancel" is pressed or a valid directory is selected
             while (!found) {

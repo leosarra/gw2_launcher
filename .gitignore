@@ -3,3 +3,4 @@ gw2_launcher.cfg
 gw2_launcher_log.txt
 gw2_launcher_log_op.txt
 /target/
+*.cfg
