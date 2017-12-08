@@ -106,7 +106,7 @@ public class CoreUpdater implements Runnable {
         	int dialogButton = 0;
         	log.log( Level.INFO,"archdps.ini not found");
         	JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);
-        	if (dialogButton==0){
+        	if (dialogButton==JOptionPane.YES_OPTION){
         		Operations.downloadINI(cf,path); //Method used to download the .ini
         	}
         	
@@ -140,7 +140,7 @@ public class CoreUpdater implements Runnable {
         int dialogButton = JOptionPane.YES_NO_OPTION;
         JOptionPane.showConfirmDialog(null,"Something went wrong. Check your internet connection. Would you like to run GW2 without ArcDPS?",
                 "Updater failed",dialogButton);
-        if (dialogButton==0) {
+        if (dialogButton==JOptionPane.YES_OPTION) {
             CoreUpdater.runWithoutDPS(path);
         }
 
