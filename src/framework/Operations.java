@@ -245,7 +245,7 @@ public class Operations {
             FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/d3d9.dll.md5sum"),md5_download, 10000, 10000); 
             //Keep the relevant part of the md5
             log.log( Level.INFO,"Md5 downloaded");
-            md5_new=FileUtils.readFileToString(md5_download).substring(0, FileUtils.readFileToString(md5_download).indexOf(" "));
+            md5_new=FileUtils.readFileToString(md5_download,"UTF-8").substring(0, FileUtils.readFileToString(md5_download,"UTF-8").indexOf(" "));
             log.log( Level.INFO,"Old md5: "+md5_old);
             log.log( Level.INFO,"New md5: "+md5_new);
 
