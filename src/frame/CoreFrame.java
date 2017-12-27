@@ -1,14 +1,10 @@
 package frame;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import listeners.MyActionListener;
 import listeners.MyMouseListener;
-
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 
 public class CoreFrame extends JFrame{
 

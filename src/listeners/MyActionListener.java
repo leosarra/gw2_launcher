@@ -3,10 +3,7 @@ package listeners;
 import frame.CoreFrame;
 import framework.Operations;
 import updater.CoreUpdater;
-
 import javax.swing.*;
-
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -14,7 +11,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 
 public class MyActionListener implements ActionListener {
     private String path;
