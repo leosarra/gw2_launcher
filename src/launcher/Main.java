@@ -19,7 +19,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
     private static final String username="LithiumSR";
     private static final String repoName="gw2_launcher";
-    private static final String version="1.0.3";
+    private static final String version="1.0.4";
 
     public static void main(String[] args) throws InterruptedException {
     	
