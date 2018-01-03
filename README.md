@@ -8,7 +8,7 @@ This is a custom launcher that is intended to keep Guild Wars 2 and ArcDPS fully
 ### Prerequisites
 
 This application is written in Java and can only to be executed on a Windows x64 environment with a x64 version of Guild Wars 2.
-It requires the [Java Runtime Environment](https://www.java.com/it/download/) to be executed correctly.
+It requires the [Java Runtime Environment](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (JRE 9 and above is highly recommended) to be executed correctly.
 
 
 ### Features
@@ -35,7 +35,7 @@ It requires the [Java Runtime Environment](https://www.java.com/it/download/) to
 
 ### Issues
 - This program isn't signed with a certificate so Windows could stop it's execution because it comes from "an unknown developer". You can fix that by changing "Smartscreen settings" in Windows Defender Security Center from "Block" to "Warn", this change will enable you to skip the warning.
-
+- If you have a screen with an high DPI value and the UI of this custom launcher is not displayed correctly please install update your [Java Runtime Environment](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (JRE 9 and above is required if you have an high DPI screen).
 ## Acknowledgments
 
 * Huge thanks to deltaconnected for his work on ArcDPS and his perseverance in releasing updates :)
