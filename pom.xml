@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.lithium</groupId>
   <artifactId>Guild_Wars_2_Launcher</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
   <name>Guild Wars 2 Launcher</name>
   
   <description>Custom launcher for Guild Wars 2 with the purpose to keep ArcDPS up-to-date and fully functional</description>
@@ -112,7 +112,7 @@
                             <mainClass>launcher.Main</mainClass>
                             <preCp>anything</preCp>
                         </classPath>
-                        <icon>resources/gw2_64_1-1.ico</icon>
+                        <icon>resources/gw2_64_high_res.ico</icon>
                         <jre>
                             <minVersion>1.8.0</minVersion>
                             <jdkPreference>preferJre</jdkPreference>

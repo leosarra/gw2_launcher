@@ -4,7 +4,7 @@
   <groupId>org.lithium</groupId>
   <artifactId>Guild_Wars_2_Launcher</artifactId>
   <name>Guild Wars 2 Launcher</name>
-  <version>1.0.1</version>
+  <version>1.0.6</version>
   <description>Custom launcher for Guild Wars 2 with the purpose to keep ArcDPS up-to-date and fully functional</description>
   <url>https://github.com/LithiumSR/gw2_launcher</url>
   <build>
@@ -41,6 +41,46 @@
                   <mainClass>launcher.Main</mainClass>
                 </transformer>
               </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+        <artifactId>launch4j-maven-plugin</artifactId>
+        <version>1.7.21</version>
+        <executions>
+          <execution>
+            <id>l4j-clui</id>
+            <phase>package</phase>
+            <goals>
+              <goal>launch4j</goal>
+            </goals>
+            <configuration>
+              <headerType>gui</headerType>
+              <jar>${project.build.directory}/${project.artifactId}-${project.version}.jar</jar>
+              <outfile>${project.build.directory}/Gw2-Launcher.exe</outfile>
+              <downloadUrl>http://java.com/download</downloadUrl>
+              <classPath>
+                <mainClass>launcher.Main</mainClass>
+                <preCp>anything</preCp>
+              </classPath>
+              <icon>resources/gw2_64_high_res.ico</icon>
+              <jre>
+                <minVersion>1.8.0</minVersion>
+                <jdkPreference>preferJre</jdkPreference>
+              </jre>
+              <versionInfo>
+                <fileVersion>${project.version}.0</fileVersion>
+                <txtFileVersion>${project.version}.0</txtFileVersion>
+                <fileDescription>${project.name}</fileDescription>
+                <productVersion>${project.version}.0</productVersion>
+                <copyright>Leonardo Sarra</copyright>
+                <txtProductVersion>${project.version}.0</txtProductVersion>
+                <productName>${project.name}</productName>
+                <internalName>Gw2_Launcher</internalName>
+                <originalFilename>Gw2-Launcher.exe</originalFilename>
+              </versionInfo>
             </configuration>
           </execution>
         </executions>
