@@ -1,7 +1,6 @@
 package chooser;
 
 import framework.Operations;
-import framework.Task;
 import updater.CoreUpdater;
 
 import javax.swing.*;
@@ -9,7 +8,6 @@ import javax.swing.*;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,22 +16,17 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DirChooser implements Task {
+public class DirChooser {
     private JFileChooser f=new JFileChooser();
     private boolean cancel=false;
-
     private boolean fired=false;
-
     private static Logger log = Logger.getLogger( CoreUpdater.class.getName() );
     
-    public void esegui() {
+    public void execute() {
     	//Functor pattern
     	Operations.LogSetup(log,false);
         if (!fired) {
-
-
             boolean found = false;
-
             fired = true;            
             f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             f.setDialogTitle("Select Guild Wars 2 directory");
@@ -65,8 +58,6 @@ public class DirChooser implements Task {
                     cancel = true;
                     System.exit(0);
                 }
-
-
             }
             Operations.closeLogHandlers(log);
         }
@@ -88,37 +79,11 @@ public class DirChooser implements Task {
     }
 
     public void changePathProp(String path){
-         Properties prop = new Properties();
-         InputStream input= null;
-
-         try {
-
-             input = new FileInputStream("gw2_launcher.cfg");
-             //Import settings
-             prop.load(input);
-             input.close();
-
-         } catch (FileNotFoundException e) {
-             e.printStackTrace();
-         } catch (IOException e) {
-             e.printStackTrace();
-         }
-         
+        Properties prop = new Properties();
+        Operations.loadProp(prop,"gw2_launcher.cfg");
         OutputStream output= null;
         prop.put("path", path);
-        try {
-
-            output = new FileOutputStream("gw2_launcher.cfg");
-            prop.store(output, "Config file for GW2 Launcher");
-            output.close();
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Operations.saveProp(prop,"gw2_launcher.cfg");
 
     }
 }
