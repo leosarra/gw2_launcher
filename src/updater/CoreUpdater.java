@@ -137,35 +137,10 @@ public class CoreUpdater implements Runnable {
     }
     
     public void changeConfig(String mode){
-
         Properties prop = new Properties();
-        //Import settings
-        FileInputStream input;
-		try {
-			input = new FileInputStream("gw2_launcher.cfg");
-	        prop.load(input);
-	        input.close();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
-        OutputStream output= null;
+        Operations.loadProp(prop,"gw2_launcher.cfg");
         prop.put("mode", mode);
-        
-        
-        try {
-
-            output = new FileOutputStream("gw2_launcher.cfg");
-            prop.store(output, "Config file for GW2 Launcher");
-            output.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        Operations.saveProp(prop,"gw2_launcher.cfg");
     }
     
     

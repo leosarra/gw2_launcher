@@ -294,22 +294,9 @@ public class FastUpdater implements Runnable {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
-        OutputStream output= null;
+
         prop.put("mode", mode);
-        
-        
-        try {
-
-            output = new FileOutputStream("gw2_launcher.cfg");
-            prop.store(output, "Config file for GW2 Launcher2");
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Operations.saveProp(prop,"gw2_launcher.cfg");
 
 
     }
