@@ -4,7 +4,6 @@ import chooser.DirChooser;
 import frame.CoreFrame;
 import frame.FastFrame;
 import framework.Operations;
-import framework.TaskExecutor;
 import updater.CoreUpdater;
 import updater.FastUpdater;
 import updater.UpdateNotifier;
@@ -19,7 +18,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
     private static final String username="LithiumSR";
     private static final String repoName="gw2_launcher";
-    private static final String version="1.0.6";
+    private static final String version="1.0.7";
 
     public static void main(String[] args) throws InterruptedException {
     	
@@ -37,21 +36,7 @@ public class Main {
         }
 
         Properties prop = new Properties();
-        InputStream input= null;
-
-        try {
-
-            input = new FileInputStream("gw2_launcher.cfg");
-            //Import settings
-            prop.load(input);
-            input.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Operations.loadProp(prop,"gw2_launcher.cfg");
 
         //Change look and feel
         try {
@@ -66,7 +51,6 @@ public class Main {
         if ((prop.getProperty("faststart","no").equals("yes"))) {
         	pj_updater.join();
         }
-        TaskExecutor te=TaskExecutor.getInstance();
         String currentDir=new File(".").getAbsolutePath();
         //If the path contained in the settings is valid and faststart is not enabled use CoreFrame
         if (DirChooser.validDir(prop.getProperty("path")) && !prop.getProperty("faststart","no").equals("yes")) {
@@ -134,8 +118,7 @@ public class Main {
         	log.log( Level.INFO, "FileChooser needed");
         	Operations.closeLogHandlers(log);
             DirChooser dir=new DirChooser();
-            
-            te.perform(dir);
+            dir.execute();
             if(!dir.getCancel() && dir.isFired()) {
                 if (dir.getJFileChooser().getSelectedFile()==null) System.exit(0);
             	Operations.removeReshadeLoader(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
