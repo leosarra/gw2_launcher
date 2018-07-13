@@ -1,12 +1,10 @@
 package framework;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -58,8 +56,29 @@ public class Operations {
 		
 		
 	}
-	
-	
+
+	public static Properties loadProp(Properties prop, String path){
+		InputStream input= null;
+		try {
+			input = new FileInputStream(path);
+			//Import settings
+			prop.load(input);
+			input.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return prop;
+	}
+
+	public static void saveProp(Properties prop, String path){
+		try {
+			OutputStream output = new FileOutputStream("gw2_launcher.cfg");
+			prop.store(output, "Config file for GW2 Launcher");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static synchronized void installArc(CoreFrame cf, String path) {
     	File dll=new File(path+"\\bin64\\d3d9.dll");
     	try {
