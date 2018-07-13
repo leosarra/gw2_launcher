@@ -100,24 +100,10 @@ public class MyActionListener implements ActionListener {
 
     //Used to the save settings in "gw2_launcher.cfg"
     public void saveConfig(boolean useAddons){
-
         Properties prop = new Properties();
         OutputStream output= null;
         prop.put("path",path);
-        InputStream input= null;
-
-        try {
-
-            input = new FileInputStream("gw2_launcher.cfg");
-            //Import settings
-            prop.load(input);
-            input.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Operations.loadProp(prop,"gw2_launcher.cfg");
         
         if (cf.autostart.isSelected()) {
             prop.put("faststart", "yes");
@@ -134,19 +120,7 @@ public class MyActionListener implements ActionListener {
         
         if(cf.arg_string.getText().contains("Example")) prop.put("args","");
         else prop.put("args",cf.arg_string.getText());
-        try {
-
-            output = new FileOutputStream("gw2_launcher.cfg");
-            prop.store(output, "Config file for GW2 Launcher");
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        Operations.saveProp(prop,"gw2_launcher.cfg");
     }
     
     @SuppressWarnings("unused")
