@@ -1,16 +1,17 @@
 package updater;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
+
 import com.vdurmont.semver4j.Semver;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import javax.swing.JOptionPane;
-import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ public class UpdateNotifier implements Runnable {
     public void run() {
         Logger logger = Logger.getLogger("mis_update_notifier");
         String output= getJSONData();
-        if (output.startsWith("[")){
+        if (output!= null && output.startsWith("[")){
             JSONArray jarray;
 			try {
 				jarray = new JSONArray(output);
@@ -52,7 +53,7 @@ public class UpdateNotifier implements Runnable {
 								}
 	                    	}
 	                    }
-	                    else logger.log(Level.INFO,"MIS is updated");
+	                    else logger.log(Level.INFO,"GW2_Launcher is updated");
 	                }
 	            else logger.log(Level.WARNING,"Unable to find updates on Github");
 	                }
@@ -65,10 +66,21 @@ public class UpdateNotifier implements Runnable {
 
 
     private String getJSONData(){
-        Client client = Client.create();
-        WebResource webResource = client.resource(UriBuilder.fromUri("https://api.github.com/repos/"+username+"/"+repoName+"/releases").build());
-        ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-        String output = response.getEntity(String.class);
-        return output;
+		Request req = new Request.Builder().url("https://api.github.com/repos/"+username+"/"+repoName+"/releases").header("Accept","application/json")
+				.header("Content-Type","application/json").build();
+		OkHttpClient client = new OkHttpClient.Builder()
+				.connectTimeout(15, TimeUnit.SECONDS)
+				.readTimeout(10, TimeUnit.SECONDS).retryOnConnectionFailure(true)
+				.build();
+		Response resp = null;
+		String body = null;
+		try {
+			resp = client.newCall(req).execute();
+			if(resp.body()==null) return null;
+			body = resp.body().string();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return body;
     }
 }
