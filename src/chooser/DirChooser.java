@@ -13,21 +13,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DirChooser {
-    private JFileChooser f=new JFileChooser();
-    private boolean cancel=false;
-    private boolean fired=false;
-    private static Logger log = Logger.getLogger( CoreUpdater.class.getName() );
-    
+    private JFileChooser f = new JFileChooser();
+    private boolean cancel = false;
+    private boolean fired = false;
+    private static Logger log = Logger.getLogger(CoreUpdater.class.getName());
+
     public void execute() {
-    	//Functor pattern
-    	LauncherHelper.LogSetup(log,false);
+        //Functor pattern
+        LauncherHelper.LogSetup(log, false);
         if (!fired) {
             boolean found = false;
-            fired = true;            
+            fired = true;
             f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             f.setDialogTitle("Select Guild Wars 2 directory");
             //Workaround to add an icon in the JFileChooser dialog
-            JFrame icon= new JFrame();
+            JFrame icon = new JFrame();
             icon.setLocationRelativeTo(null);
             icon.setUndecorated(true);
             icon.setVisible(true);
@@ -36,17 +36,17 @@ public class DirChooser {
             //Loop until "Cancel" is pressed or a valid directory is selected
             while (!found) {
                 //int input = f.showDialog(icon, "Select");
-            	int input = f.showDialog(icon, "Select");
+                int input = f.showDialog(icon, "Select");
                 if (input == JFileChooser.APPROVE_OPTION) {
                     File file = f.getSelectedFile();
-                    
+
                     boolean check = DirChooser.validDir(file.getAbsolutePath());
                     if (check) {
                         found = true;
-                        log.log( Level.INFO,"Valid dir selected: "+file.getAbsolutePath());
+                        log.log(Level.INFO, "Valid dir selected: " + file.getAbsolutePath());
                         changePathProp(file.getAbsolutePath());
                     } else {
-                    	log.log( Level.INFO,"Invalid dir selected: "+file.getAbsolutePath());
+                        log.log(Level.INFO, "Invalid dir selected: " + file.getAbsolutePath());
                         JOptionPane.showMessageDialog(null, "Executable not found. Please select a valid directory", "Directory not valid", JOptionPane.ERROR_MESSAGE);
                     }
 
@@ -61,25 +61,30 @@ public class DirChooser {
 
 
     //Check if a given path is a valid path for GW2
-    public static boolean validDir(String path){
-        boolean result=new File(path+"\\Gw2-64.exe").exists();
+    public static boolean validDir(String path) {
+        boolean result = new File(path + "\\Gw2-64.exe").exists();
         return result;
     }
-    //setter and getter required for the functor pattern
-    public boolean getCancel() { return cancel;}
 
-    public JFileChooser getJFileChooser() { return f;}
+    //setter and getter required for the functor pattern
+    public boolean getCancel() {
+        return cancel;
+    }
+
+    public JFileChooser getJFileChooser() {
+        return f;
+    }
 
     public boolean isFired() {
         return fired;
     }
 
-    public void changePathProp(String path){
+    public void changePathProp(String path) {
         Properties prop = new Properties();
-        LauncherHelper.loadProp(prop,"gw2_launcher.cfg");
-        OutputStream output= null;
+        LauncherHelper.loadProp(prop, "gw2_launcher.cfg");
+        OutputStream output = null;
         prop.put("path", path);
-        LauncherHelper.saveProp(prop,"gw2_launcher.cfg");
+        LauncherHelper.saveProp(prop, "gw2_launcher.cfg");
 
     }
 }

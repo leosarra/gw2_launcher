@@ -3,6 +3,7 @@ package listeners;
 import frame.CoreFrame;
 import helpers.LauncherHelper;
 import updater.CoreUpdater;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,61 +16,60 @@ import java.util.Properties;
 public class MyActionListener implements ActionListener {
     private String path;
     private CoreFrame cf;
-    
+
     //Constructor
-    public MyActionListener(String path, CoreFrame cf){
-        this.path=path;
-        this.cf=cf;
+    public MyActionListener(String path, CoreFrame cf) {
+        this.path = path;
+        this.cf = cf;
     }
 
     public void actionPerformed(ActionEvent e) {
 
-    	//if background checkbox is selected the autostart one will be selected automatically
-    	if(e.getActionCommand().equals("arc")) {
-    		
-    		if(cf.getMode().equals("none")) {
-    			LauncherHelper.installArc(cf, path);
-    			saveConfig(true);
-        		cf.startwith.setEnabled(true);
-        		cf.autostart.setEnabled(true);
-        		cf.background.setEnabled(true);
-        		cf.startwith.setEnabled(true);
-    		}
-    		else {
-    			int dialogButton=JOptionPane.YES_NO_OPTION;
-    			int dialogResult=JOptionPane.showConfirmDialog(null,"Would you like to remove ArcDPS' settings files too? \n"
-    			 		+ "If you are going to install ArcDPS in the future press 'No'. ","Remove settings?",dialogButton);
-    	            if (dialogResult==JOptionPane.YES_OPTION){
-    	                LauncherHelper.removeArcSetting(cf, path);
-    	            }
-    			LauncherHelper.removeArc(cf, path);
-    			saveConfig(true);
-    			cf.startwith.setEnabled(false);
-    			cf.autostart.setEnabled(false);
-        		cf.background.setEnabled(false);
-    		}
+        //if background checkbox is selected the autostart one will be selected automatically
+        if (e.getActionCommand().equals("arc")) {
+
+            if (cf.getMode().equals("none")) {
+                LauncherHelper.installArc(cf, path);
+                saveConfig(true);
+                cf.startwith.setEnabled(true);
+                cf.autostart.setEnabled(true);
+                cf.background.setEnabled(true);
+                cf.startwith.setEnabled(true);
+            } else {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Would you like to remove ArcDPS' settings files too? \n"
+                        + "If you are going to install ArcDPS in the future press 'No'. ", "Remove settings?", dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    LauncherHelper.removeArcSetting(cf, path);
+                }
+                LauncherHelper.removeArc(cf, path);
+                saveConfig(true);
+                cf.startwith.setEnabled(false);
+                cf.autostart.setEnabled(false);
+                cf.background.setEnabled(false);
+            }
 
 
-    	}
-
-    	if(e.getActionCommand().equals("background")){
-    		cf.autostart.setSelected(true);
-    		
-    	}
-    	
-    	//Show up "About me" Frame
-        if (e.getActionCommand().equals("me")){
-            JOptionPane.showMessageDialog(null,"Check https://github.com/lithiumSR to stay updated", "About", JOptionPane.INFORMATION_MESSAGE);
         }
-        
+
+        if (e.getActionCommand().equals("background")) {
+            cf.autostart.setSelected(true);
+
+        }
+
+        //Show up "About me" Frame
+        if (e.getActionCommand().equals("me")) {
+            JOptionPane.showMessageDialog(null, "Check https://github.com/lithiumSR to stay updated", "About", JOptionPane.INFORMATION_MESSAGE);
+        }
+
         //"Run with archdps" button is pressed
-        if (e.getActionCommand().equals("with")){
+        if (e.getActionCommand().equals("with")) {
             saveConfig(true);
             runGW2();
         }
-        
+
         //"Run only GW2" button is pressed
-        if (e.getActionCommand().equals("without")){
+        if (e.getActionCommand().equals("without")) {
             saveConfig(false);
             //disable arcdps dll
             CoreUpdater.runWithoutDPS(path);
@@ -80,40 +80,39 @@ public class MyActionListener implements ActionListener {
     }
 
     //Used to the save settings in "gw2_launcher.cfg"
-    private void saveConfig(boolean useAddons){
+    private void saveConfig(boolean useAddons) {
         Properties prop = new Properties();
-        OutputStream output= null;
-        prop.put("path",path);
-        LauncherHelper.loadProp(prop,"gw2_launcher.cfg");
-        
+        OutputStream output = null;
+        prop.put("path", path);
+        LauncherHelper.loadProp(prop, "gw2_launcher.cfg");
+
         if (cf.autostart.isSelected()) {
             prop.put("faststart", "yes");
-        }
-        else prop.put("faststart","no");
+        } else prop.put("faststart", "no");
 
-        if (useAddons) prop.put("useAddons","yes");
-        else prop.put("useAddons","no");
+        if (useAddons) prop.put("useAddons", "yes");
+        else prop.put("useAddons", "no");
 
-        if(cf.background.isSelected())  prop.put("background", "yes");
+        if (cf.background.isSelected()) prop.put("background", "yes");
         else prop.put("background", "no");
-        
+
         prop.put("mode", cf.getMode());
-        
-        if(cf.arg_string.getText().contains("Example")) prop.put("args","");
-        else prop.put("args",cf.arg_string.getText());
-        LauncherHelper.saveProp(prop,"gw2_launcher.cfg");
+
+        if (cf.arg_string.getText().contains("Example")) prop.put("args", "");
+        else prop.put("args", cf.arg_string.getText());
+        LauncherHelper.saveProp(prop, "gw2_launcher.cfg");
     }
-    
+
     @SuppressWarnings("unused")
     //Create process Gw2-64.exe with some arguments
-    private void runGW2(){
+    private void runGW2() {
         try {
-        	if(cf.arg_string.getText().contains("Example")) cf.arg_string.setText("");
+            if (cf.arg_string.getText().contains("Example")) cf.arg_string.setText("");
             cf.dispose();
-            List<String> list= Arrays.asList(cf.arg_string.getText().split("\\s*,\\s*"));
-            LinkedList<String> exe= new LinkedList<>(list);
+            List<String> list = Arrays.asList(cf.arg_string.getText().split("\\s*,\\s*"));
+            LinkedList<String> exe = new LinkedList<>(list);
             System.out.println(list);
-            exe.addFirst(path+"\\Gw2-64.exe");
+            exe.addFirst(path + "\\Gw2-64.exe");
             Process process = new ProcessBuilder(exe).start();
             System.exit(0);
         } catch (IOException e1) {
