@@ -1,15 +1,11 @@
 package updater;
 
-import framework.Operations;
+import helpers.LauncherHelper;
 import frame.CoreFrame;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -31,7 +27,7 @@ public class CoreUpdater implements Runnable {
         dll=new File(path+"\\bin64\\d3d9.dll");  //dll of ArcDPS or BGDM
         old_dll= new File(path+"\\bin64\\d3d9_old.dll"); //backup dll of ArcDPS or BGDM
         disabled_dll= new File(path+"\\bin64\\d3d9_disabled.dll"); //disabled dll of ArcDPS or BGDM
-        Operations.LogSetup(log,false);
+        LauncherHelper.LogSetup(log,false);
     }
     
     //run() from interface "Runnable"
@@ -43,7 +39,7 @@ public class CoreUpdater implements Runnable {
             //System.out.println("d3d9.dll exists");
         	changeConfig("arc_only");
         	log.log( Level.INFO,"d3d9.dll found");
-            Operations.updateDll(cf,path); //if d3d9.dll exists check if update is needed
+            LauncherHelper.updateDll(cf,path); //if d3d9.dll exists check if update is needed
 
         }
         
@@ -60,7 +56,7 @@ public class CoreUpdater implements Runnable {
                 cf.status.setText("- Cannot restore ArcDPS");
                 cf.status.setForeground(Color.RED);
             }
-            Operations.updateDll(cf,path); //check for update just in case
+            LauncherHelper.updateDll(cf,path); //check for update just in case
         }
         
 
@@ -78,7 +74,7 @@ public class CoreUpdater implements Runnable {
                 cf.status.setForeground(Color.RED);
             }
             
-            Operations.updateDll(cf,path);
+            LauncherHelper.updateDll(cf,path);
 
         }
         
@@ -97,13 +93,13 @@ public class CoreUpdater implements Runnable {
         	log.log( Level.INFO,"archdps.ini not found");
         	int dialogResult = JOptionPane.showConfirmDialog(null,"ArcDPS configuration file not found. Would you like to download a default configoration?","ArcDPS configuration file not detected",dialogButton);
         	if (dialogResult==JOptionPane.YES_OPTION){
-        		Operations.downloadINI(cf,path); //Method used to download the .ini
+        		LauncherHelper.downloadINI(cf,path); //Method used to download the .ini
         	}
         	
         }
         
 
-        Operations.closeLogHandlers(log);
+        LauncherHelper.closeLogHandlers(log);
     }
 
     
@@ -138,9 +134,9 @@ public class CoreUpdater implements Runnable {
     
     public void changeConfig(String mode){
         Properties prop = new Properties();
-        Operations.loadProp(prop,"gw2_launcher.cfg");
+        LauncherHelper.loadProp(prop,"gw2_launcher.cfg");
         prop.put("mode", mode);
-        Operations.saveProp(prop,"gw2_launcher.cfg");
+        LauncherHelper.saveProp(prop,"gw2_launcher.cfg");
     }
     
     

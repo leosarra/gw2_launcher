@@ -1,4 +1,4 @@
-package framework;
+package helpers;
 
 import java.awt.Color;
 import java.io.*;
@@ -17,9 +17,9 @@ import frame.CoreFrame;
 import launcher.Main;
 
 
-public class Operations {
+public class LauncherHelper {
 	private static final boolean DEBUG = false;
-	static Logger log = Logger.getLogger( Main.class.getName() );
+	private static Logger log = Logger.getLogger( Main.class.getName() );
 	
 	
 	public static void LogSetup(Logger log, boolean operations) {
@@ -87,8 +87,8 @@ public class Operations {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	Operations.downloadINI(cf,path); //.ini is required for the first install
-    	Operations.updateDll(cf,path); //placeholder swapped with the last version of the dll
+    	LauncherHelper.downloadINI(cf,path); //.ini is required for the first install
+    	LauncherHelper.updateDll(cf,path); //placeholder swapped with the last version of the dll
     	File backup = new File(path+"\\bin64\\d3d9_old.dll");
     	if (backup.exists()) backup.delete();
     	try {
@@ -107,12 +107,12 @@ public class Operations {
 	}
     
 	public static synchronized void installLoaderReshade(String path) {
-		Operations.LogSetup(log,true);
+		LauncherHelper.LogSetup(log,true);
 		log.log( Level.INFO, "Installing reshade support (loader) [installLoaderReshade]");
 		File download = new File(path+"\\bin64\\d3d9_chainload.dll");
 		if (!download.exists()) {
 		try {
-			FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/reshade_loader/d3d9_chainload.dll"),download, 10000, 10000);
+			FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/reshade_loader/d3d9_chainload.dll"),download, 10000, 10000);
 		 log.log( Level.INFO, "Everything went smooth [installBGDMwithArc]");
 
 		 } catch (IOException e) {
@@ -121,13 +121,13 @@ public class Operations {
 		 e.printStackTrace();
 		 }
 		}
-		Operations.closeLogHandlers(log);
+		LauncherHelper.closeLogHandlers(log);
 				
 	}
 		
 	//Delete d3d9.dll of Arc
 	public static synchronized void removeArc(CoreFrame cf, String path) {
-		Operations.LogSetup(log,true);
+		LauncherHelper.LogSetup(log,true);
 		log.log( Level.INFO, "Removing arc [removeArc]");
 		File dll=new File(path+"\\bin64\\d3d9.dll");
 		File dll_old=new File(path+"\\bin64\\d3d9_old.dll");
@@ -149,13 +149,13 @@ public class Operations {
 		cf.setMode("none");
 		cf.status.setText("- ArcDPS not installed");
 		cf.status.setForeground(Color.RED);
-		Operations.closeLogHandlers(log);
+		LauncherHelper.closeLogHandlers(log);
 		
 		
 	}
 	
 	public static synchronized void removeArcSetting(CoreFrame cf, String path) {
-		Operations.LogSetup(log,true);
+		LauncherHelper.LogSetup(log,true);
 		log.log( Level.INFO, "Removing arc settings [removeArcSetting]");
 		File ini= new File(path+"\\bin64\\arcdps.ini");
 		File directory=new File(path+"\\addons\\arcdps");
@@ -172,7 +172,7 @@ public class Operations {
 		
 			
 		log.log( Level.INFO, "Everything went smooth [removeArcSetting]");
-		Operations.closeLogHandlers(log);
+		LauncherHelper.closeLogHandlers(log);
 		
 		
 	}
@@ -185,7 +185,7 @@ public class Operations {
 	}
 
 	public static synchronized void downloadINI(CoreFrame cf, String path){
-		Operations.LogSetup(log,true);
+		LauncherHelper.LogSetup(log,true);
     	File ini=new File(path+"\\bin64\\arcdps.ini");
     	if (ini.exists()) ini.delete();     	//Delete existing ini file to prevent an exception
     	log.log( Level.INFO,"Downloading configuration file");
@@ -195,67 +195,27 @@ public class Operations {
 			log.log( Level.INFO,"archdps.ini installed successfully");
 		//Exceptions if something goes wrong (Connection/IO)
     	} catch (IOException e) {
-			
 			e.printStackTrace();
 			cf.status.setText("- Cannot connect to the update server");
             cf.status.setForeground(Color.RED);
             log.log( Level.SEVERE,"IOException when downloading ini");
 		}
-    	Operations.closeLogHandlers(log);
+    	LauncherHelper.closeLogHandlers(log);
     }
-	
-	
-	//method used to download the Buildtemplates' dll
-	public static synchronized int installBTempl(CoreFrame cf, String path){
-		Operations.LogSetup(log,true);
-    	File btempl=new File(path+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-    	if (btempl.exists()) btempl.delete();     	//Delete existing ini file to prevent an exception
-    	log.log( Level.INFO,"Downloading Buildtemplates dll");
-    	try {
-    		//Download default configuration from the website
-			FileUtils.copyURLToFile(new URL("http://www.deltaconnected.com/arcdps/x64/buildtemplates/d3d9_arcdps_buildtemplates.dll"),btempl, 10000, 10000);
-			log.log( Level.INFO,"Buildtemplates funcionality installed successfully");
-			cf.btempl.setText("Remove Buildtemplates");
-		//Exceptions if something goes wrong (Connection/IO)
-    	} catch (IOException e) {
-			
-			e.printStackTrace();
-			cf.status.setText("- Cannot connect to the update server");
-            cf.status.setForeground(Color.RED);
-            log.log( Level.SEVERE,"IOException when downloading Buildtemplates dll");
-            return -1;
-		}
-    	Operations.closeLogHandlers(log);
-    	return 0;
-    }
-	
-	
-	//method used to remove the buildtemplates' dll
-	public static synchronized int removeBTempl(CoreFrame cf, String path){
-		Operations.LogSetup(log,true);
-    	File btempl=new File(path+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-    	if (btempl.exists()) btempl.delete();     	//Delete existing dll 
-    	log.log( Level.INFO,"Buildtemplates dll removed");
-    	Operations.closeLogHandlers(log);
-    	return 0;
-    }
-	
+
 	
 	//used to update arcDPS
 	public static synchronized void updateDll(CoreFrame cf, String path){
-		Operations.LogSetup(log,true);
+		LauncherHelper.LogSetup(log,true);
 		File dll=new File(path+"\\bin64\\d3d9.dll");
         FileInputStream fis = null;
         String md5_new;
         String md5_old;
         try {
-        	
         	//Generate md5 file of the dll installed in the system using some external libraries
-        	
             fis = new FileInputStream(dll);
-            byte data[] = new byte[0];
-            data = org.apache.commons.codec.digest.DigestUtils.md5(fis);
-            char md5Chars[] = Hex.encodeHex(data);
+            byte[] data = org.apache.commons.codec.digest.DigestUtils.md5(fis);
+            char[] md5Chars = Hex.encodeHex(data);
             md5_old = String.valueOf(md5Chars); //md5 of the dll
 
             fis.close();
@@ -283,12 +243,7 @@ public class Operations {
                 cf.status.setText("- ArcDPS updated");
                 cf.status.setForeground(new Color(0,102,51));
                 File btempl=new File(path+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-                if (btempl.exists()) {
-                	Operations.closeLogHandlers(log);
-                	Operations.installBTempl(cf, path);
-                	Operations.LogSetup(log,true);
-                }
-                
+                if (btempl.exists()) btempl.delete();
             }
 
             else { //Same checksum means that the user has the most recent version of ArcDPS
@@ -315,10 +270,8 @@ public class Operations {
             cf.status.setForeground(Color.RED);
             log.log( Level.SEVERE,"IOException when downloading dll");
         }
-        
-        Operations.closeLogHandlers(log);
-        Operations.installLoaderReshade(path);
-
+        LauncherHelper.closeLogHandlers(log);
+        LauncherHelper.installLoaderReshade(path);
     }
 
 

@@ -3,7 +3,7 @@ package launcher;
 import chooser.DirChooser;
 import frame.CoreFrame;
 import frame.FastFrame;
-import framework.Operations;
+import helpers.LauncherHelper;
 import updater.CoreUpdater;
 import updater.FastUpdater;
 import updater.UpdateNotifier;
@@ -24,8 +24,8 @@ public class Main {
     	
     	//Create Logger
     	Logger log = Logger.getLogger( Main.class.getName() );
-    	Operations.cleanOldLogger();
-    	Operations.LogSetup(log,false);
+    	LauncherHelper.cleanOldLogger();
+    	LauncherHelper.LogSetup(log,false);
     	
     	//Create configuration file if it doesn't exist already
         File config= new File("gw2_launcher.cfg");
@@ -36,7 +36,7 @@ public class Main {
         }
 
         Properties prop = new Properties();
-        Operations.loadProp(prop,"gw2_launcher.cfg");
+        LauncherHelper.loadProp(prop,"gw2_launcher.cfg");
 
         //Change look and feel
         try {
@@ -60,7 +60,7 @@ public class Main {
             gui.arg_string.setText(prop.getProperty("args","Example: -autologin, -noaudio, -bmp "));
             if(gui.arg_string.getText().equals("")) gui.arg_string.setText("Example: -autologin, -noaudio, -bmp ");
             gui.setMode(prop.getProperty("mode","none"));
-            Operations.closeLogHandlers(log);
+            LauncherHelper.closeLogHandlers(log);
             if (!prop.getProperty("mode","none").equals("none")) {
             	Thread t1 = new Thread(new CoreUpdater(gui, prop.getProperty("path")));
             	t1.start();
@@ -90,7 +90,7 @@ public class Main {
             //Updater thread is created. If ("type".equals("yes") is yes it means that the preferred option for execution is "Run with ArcDPS" 
             //otherwise is "Run only GW2" ("type".equals("no").
             //Type is one of the settings contained in gw2_launcher.cfg
-            Operations.closeLogHandlers(log);
+            LauncherHelper.closeLogHandlers(log);
             Thread t1=null;
             if (prop.getProperty("useAddons","yes").equals("yes")) { t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),true));}
             else t1= new Thread(new FastUpdater(gui,prop.getProperty("path"),false));
@@ -101,11 +101,11 @@ public class Main {
         //Else If currentDir is valid we don't need to use the JFileChooser
         else if (DirChooser.validDir(currentDir)){
         	log.log( Level.INFO, "Path not found, no autostart, but valid current dir");
-        	Operations.removeReshadeLoader(currentDir);
+        	LauncherHelper.removeReshadeLoader(currentDir);
             CoreFrame gui = new CoreFrame(currentDir);
             gui.setMode(prop.getProperty("mode","none"));
             log.log(Level.INFO, "mode: "+prop.getProperty("mode"));
-            Operations.closeLogHandlers(log);
+            LauncherHelper.closeLogHandlers(log);
             if (!prop.getProperty("mode","none").equals("none")) {
             	Thread t1 = new Thread(new CoreUpdater(gui, currentDir));
                 t1.start();
@@ -116,12 +116,12 @@ public class Main {
         //JFileChooser is needed
         else {
         	log.log( Level.INFO, "FileChooser needed");
-        	Operations.closeLogHandlers(log);
+        	LauncherHelper.closeLogHandlers(log);
             DirChooser dir=new DirChooser();
             dir.execute();
             if(!dir.getCancel() && dir.isFired()) {
                 if (dir.getJFileChooser().getSelectedFile()==null) System.exit(0);
-            	Operations.removeReshadeLoader(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
+            	LauncherHelper.removeReshadeLoader(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
                 CoreFrame gui = new CoreFrame(dir.getJFileChooser().getSelectedFile().getAbsolutePath());
                 gui.setMode(prop.getProperty("mode","none"));
                 if (!prop.getProperty("mode","none").equals("none")) {

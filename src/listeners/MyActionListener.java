@@ -1,7 +1,7 @@
 package listeners;
 
 import frame.CoreFrame;
-import framework.Operations;
+import helpers.LauncherHelper;
 import updater.CoreUpdater;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -28,9 +28,8 @@ public class MyActionListener implements ActionListener {
     	if(e.getActionCommand().equals("arc")) {
     		
     		if(cf.getMode().equals("none")) {
-    			Operations.installArc(cf, path);
+    			LauncherHelper.installArc(cf, path);
     			saveConfig(true);
-    			cf.btempl.setEnabled(true);
         		cf.startwith.setEnabled(true);
         		cf.autostart.setEnabled(true);
         		cf.background.setEnabled(true);
@@ -41,33 +40,15 @@ public class MyActionListener implements ActionListener {
     			int dialogResult=JOptionPane.showConfirmDialog(null,"Would you like to remove ArcDPS' settings files too? \n"
     			 		+ "If you are going to install ArcDPS in the future press 'No'. ","Remove settings?",dialogButton);
     	            if (dialogResult==JOptionPane.YES_OPTION){
-    	                Operations.removeArcSetting(cf, path);
+    	                LauncherHelper.removeArcSetting(cf, path);
     	            }
-    			Operations.removeArc(cf, path);
+    			LauncherHelper.removeArc(cf, path);
     			saveConfig(true);
-    			cf.btempl.setText("Install Buildtemplates");
-    			cf.btempl.setEnabled(false);
     			cf.startwith.setEnabled(false);
     			cf.autostart.setEnabled(false);
         		cf.background.setEnabled(false);
     		}
 
-
-    	}
-    	
-    	if(e.getActionCommand().equals("btempl_install")) {
-    		if(Operations.installBTempl(cf, path)==0) {
-    			cf.btempl.setText("Remove Buildtemplates");
-    			cf.btempl.setActionCommand("btempl_remove");
-    		}
-    		
-    	}
-    
-    	if(e.getActionCommand().equals("btempl_remove")) {
-    		if (Operations.removeBTempl(cf,path)==0) {
-    			cf.btempl.setText("Install Buildtemplates");
-    			cf.btempl.setActionCommand("btempl_install");
-    		}
 
     	}
 
@@ -99,18 +80,18 @@ public class MyActionListener implements ActionListener {
     }
 
     //Used to the save settings in "gw2_launcher.cfg"
-    public void saveConfig(boolean useAddons){
+    private void saveConfig(boolean useAddons){
         Properties prop = new Properties();
         OutputStream output= null;
         prop.put("path",path);
-        Operations.loadProp(prop,"gw2_launcher.cfg");
+        LauncherHelper.loadProp(prop,"gw2_launcher.cfg");
         
         if (cf.autostart.isSelected()) {
             prop.put("faststart", "yes");
         }
         else prop.put("faststart","no");
 
-        if (useAddons==true) prop.put("useAddons","yes");
+        if (useAddons) prop.put("useAddons","yes");
         else prop.put("useAddons","no");
 
         if(cf.background.isSelected())  prop.put("background", "yes");
@@ -120,12 +101,12 @@ public class MyActionListener implements ActionListener {
         
         if(cf.arg_string.getText().contains("Example")) prop.put("args","");
         else prop.put("args",cf.arg_string.getText());
-        Operations.saveProp(prop,"gw2_launcher.cfg");
+        LauncherHelper.saveProp(prop,"gw2_launcher.cfg");
     }
     
     @SuppressWarnings("unused")
     //Create process Gw2-64.exe with some arguments
-	public void runGW2(){
+    private void runGW2(){
         try {
         	if(cf.arg_string.getText().contains("Example")) cf.arg_string.setText("");
             cf.dispose();

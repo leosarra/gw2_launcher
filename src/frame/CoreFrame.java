@@ -20,9 +20,8 @@ public class CoreFrame extends JFrame{
     private JLabel arg=new JLabel("Arguments: ");
     public JCheckBox autostart= new JCheckBox("Start with these settings each time (Fast-start)");
     public JCheckBox background= new JCheckBox("Hide the GUI when fast-start is enabled ");
-    public JButton arc= new JButton("Install ArcDPS");
-    public JButton btempl= new JButton("Install Buildtemplates");
     public JTextField arg_string=new JTextField(20);
+    private JButton arc= new JButton("Install ArcDPS");
     private String path_string;
     private JButton me= new JButton("?");
     private String mode;
@@ -60,15 +59,11 @@ public class CoreFrame extends JFrame{
         startwithout.setActionCommand("without");
         background.setActionCommand("background");
         arc.setActionCommand("arc");
-        btempl.setActionCommand("btempl_install");
-        
-        
         //Create MyActionListener
         MyActionListener mal= new MyActionListener(path_string,this);
         
         //Add Listeners
         arc.addActionListener(mal);
-        btempl.addActionListener(mal);
         startwith.addActionListener(mal);
         startwithout.addActionListener(mal);
         background.addActionListener(mal);
@@ -89,7 +84,6 @@ public class CoreFrame extends JFrame{
         sel.add(status);
         sel2.add(path);
         install.add(arc);
-        install.add(btempl);
         top.add(sel2);
         top.add(sel);
         mid.setLayout(new BorderLayout(0, 0));
@@ -130,39 +124,23 @@ public class CoreFrame extends JFrame{
     
     public void setMode(String mode) {
     	this.mode=mode;
-    	if (mode.equals("none")) {	
-    		arc.setText("Install ArcDPS");
-    		status.setText("- ArcDPS is not installed");
-    		status.setForeground(Color.RED);
-    		btempl.setText("Install Buildtemplates");
-    		btempl.setEnabled(false);
-    		startwith.setEnabled(false);
-    		autostart.setEnabled(false);
-    		background.setEnabled(false);
-    	}
-    	else if (mode.equals("both")) {
-    		arc.setText("Remove ArcDPS");
-    		File templates= new File(path_string+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-    		if(templates.exists()) {
-    			btempl.setText("Remove Buildtemplates");
-        		btempl.setActionCommand("btempl_remove");
-    		}
-    		else btempl.setText("Install Buildtemplates");
-    		
-    	}
-    	else if (mode.equals("arc_only")) {
-    		arc.setText("Remove ArcDPS");
-    		File templates= new File(path_string+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-    		if (templates.exists()) {
-    			btempl.setText("Remove Buildtemplates");
-        		btempl.setActionCommand("btempl_remove");
-    		}
-    		else btempl.setText("Install Buildtemplates");
-    	}
-    	
-    	else {
-    		arc.setText("Install ArcDPS");
-    	}
+        switch (mode) {
+            case "none":
+                arc.setText("Install ArcDPS");
+                status.setText("- ArcDPS is not installed");
+                status.setForeground(Color.RED);
+                startwith.setEnabled(false);
+                autostart.setEnabled(false);
+                background.setEnabled(false);
+                break;
+            case "both":
+            case "arc_only":
+                arc.setText("Remove ArcDPS");
+                break;
+            default:
+                arc.setText("Install ArcDPS");
+                break;
+        }
     }
     
     

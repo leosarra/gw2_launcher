@@ -20,8 +20,7 @@ public class FastFrame extends JFrame{
 	private JCheckBox autostart= new JCheckBox("Start with these settings each time");
     public JTextField arg_string=new JTextField(20);
 	private String path_string;
-    public JButton arc= new JButton("Install ArcDPS");
-    public JButton bgdm= new JButton("Install BGDM");
+    private JButton arc= new JButton("Install ArcDPS");
 	private String mode;
 
 	
@@ -68,22 +67,18 @@ public class FastFrame extends JFrame{
     
     public void setMode(String mode) {
     	this.mode=mode;
-    	if (mode.equals("none")) {	
-    		arc.setText("Install ArcDPS");
-    		status.setText("- ArcDPS is not installed");
-    		status.setForeground(Color.RED);
-    	}
-    	else if (mode.equals("both")) {
-    		arc.setText("Remove ArcDPS");
-    		File templates= new File(path_string+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-    		
-    	}
-    	else if (mode.equals("arc_only")) {
-    		arc.setText("Remove ArcDPS");
-    		File templates= new File(path_string+"\\bin64\\d3d9_arcdps_buildtemplates.dll");
-    	}
-    	
-    	else {
-    		arc.setText("Install ArcDPS");
-    	}
+        switch (mode) {
+            case "none":
+                arc.setText("Install ArcDPS");
+                status.setText("- ArcDPS is not installed");
+                status.setForeground(Color.RED);
+                break;
+            case "both":
+            case "arc_only":
+                arc.setText("Remove ArcDPS");
+                break;
+            default:
+                arc.setText("Install ArcDPS");
+                break;
+        }
     }}

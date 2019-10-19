@@ -1,6 +1,6 @@
 package updater;
 
-import framework.Operations;
+import helpers.LauncherHelper;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
@@ -12,9 +12,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.Arrays;
@@ -43,7 +41,7 @@ public class FastUpdater implements Runnable {
         old_dll= new File(path+"\\bin64\\d3d9_old.dll"); //backup dll of ArcDPS
         disabled_dll= new File(path+"\\bin64\\d3d9_disabled.dll"); //disabled dll of ArcDPS
         this.type=type;
-        Operations.LogSetup(log,false);
+        LauncherHelper.LogSetup(log,false);
     }
 
 
@@ -296,7 +294,7 @@ public class FastUpdater implements Runnable {
 		}
 
         prop.put("mode", mode);
-        Operations.saveProp(prop,"gw2_launcher.cfg");
+        LauncherHelper.saveProp(prop,"gw2_launcher.cfg");
 
 
     }

@@ -1,16 +1,12 @@
 package chooser;
 
-import framework.Operations;
+import helpers.LauncherHelper;
 import updater.CoreUpdater;
 
 import javax.swing.*;
 
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -24,7 +20,7 @@ public class DirChooser {
     
     public void execute() {
     	//Functor pattern
-    	Operations.LogSetup(log,false);
+    	LauncherHelper.LogSetup(log,false);
         if (!fired) {
             boolean found = false;
             fired = true;            
@@ -59,7 +55,7 @@ public class DirChooser {
                     System.exit(0);
                 }
             }
-            Operations.closeLogHandlers(log);
+            LauncherHelper.closeLogHandlers(log);
         }
     }
 
@@ -80,10 +76,10 @@ public class DirChooser {
 
     public void changePathProp(String path){
         Properties prop = new Properties();
-        Operations.loadProp(prop,"gw2_launcher.cfg");
+        LauncherHelper.loadProp(prop,"gw2_launcher.cfg");
         OutputStream output= null;
         prop.put("path", path);
-        Operations.saveProp(prop,"gw2_launcher.cfg");
+        LauncherHelper.saveProp(prop,"gw2_launcher.cfg");
 
     }
 }
